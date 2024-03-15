@@ -1,0 +1,18 @@
+---
+pdb:
+  type: Article
+  title: "Protein Data Bank: the single global archive for 3D macromolecular structure data"
+  doi: "10.1093/nar/gky949"
+  author: "wwPDB consortium"
+  issn: "0305-1048"
+  url: https://doi.org/10.1093/nar/gky949
+
+biology-nobel:
+  type: web
+  title: "Structural Biology and Nobel prizes"
+  url: https://pdb101.rcsb.org/learn/other-resources/structural-biology-and-nobel-prizes
+
+coord-models:
+  type: Article
+  title: "Model building and refinement practice"
+  author: [Gerard J. Keywegt, T. Alwyn Jones]

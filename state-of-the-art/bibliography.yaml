@@ -5,14 +5,111 @@ pdb:
   doi: "10.1093/nar/gky949"
   author: "wwPDB consortium"
   issn: "0305-1048"
+  page-range: 1-1
   url: https://doi.org/10.1093/nar/gky949
 
-biology-nobel:
-  type: web
-  title: "Structural Biology and Nobel prizes"
-  url: https://pdb101.rcsb.org/learn/other-resources/structural-biology-and-nobel-prizes
+pdb-entry-stats:
+  type: Web
+  title: "PDB Statistics: Overall Growth of Released Structures Per Year"
+  url:
+    value: https://www.rcsb.org/stats/growth/growth-released-structures
+    date: 2024-03-16
 
+pdb-methods:
+  type: Web
+  title: "PDB Data Distribution by Experimental Method and Molecular Type"
+  url:
+    value: https://www.rcsb.org/stats/summary
+    date: 2024-03-16
+
+biology-nobel:
+  type: Web
+  title: "Structural Biology and Nobel prizes"
+  url:
+    value: https://pdb101.rcsb.org/learn/other-resources/structural-biology-and-nobel-prizes
+    date: 2024-03-15
+
+structure-errors:
+  type: Article
+  title: "Between objectivity and subjectivity"
+  doi: "10.1038/343687a0"
+  author: [Carl-Ivar Bränden, T. Alwyn Jones]
+  url:
+    value: https://www.nature.com/articles/343687a0
+    date: 2024-03-15
+
+pdb-validation:
+  type: Article
+  title: "Validation of Structures in the Protein Data Bank"
+  doi: 10.1016/j.str.2017.10.009
+  page-range: 1916-1927
+  author:
+    [
+      Gore,
+      Swanand,
+      Garcia,
+      Eduardo Sanz,
+      Hendrickx,
+      Pieter MS,
+      Gutmanas,
+      Aleksandras,
+      Westbrook,
+      John D,
+      Yang,
+      Huanwang,
+      Feng,
+      Zukang,
+      Baskaran,
+      Kumaran,
+      Berrisford,
+      John M,
+      Hudson,
+      Brian P,
+      and others,
+    ]
+  url:
+    value: https://doi.org/10.1016/j.str.2017.10.009
+    date: 2024-03-16
+  parent:
+    type: Periodical
+    title: Structure
+    volume: 25
+    issue: 12
+
+pdb-standalone-server:
+  type: Web
+  title: "Stand-alone wwPDB Validation Service"
+  url:
+    value: https://www.wwpdb.org/validation/validation-servers
+    date: 2024-03-17
+
+pdb-standalone-server-details:
+  type: Web
+  title: "OneDep Validation Web Service Interface"
+  url:
+    value: https://www.wwpdb.org/validation/onedep-validation-web-service-interface
+    date: 2024-03-17
+
+# FIXME: pages
 coord-models:
   type: Article
   title: "Model building and refinement practice"
   author: [Gerard J. Keywegt, T. Alwyn Jones]
+
+containers:
+  type: Article
+  title: "Virtualization and containerization of application infrastructure: A comparison"
+  author: [Scheepers, Mathijs Jeroen]
+  year: 2014
+
+kubernetes:
+  type: Web
+  url:
+    value: https://kubernetes.io/
+    date: 2024-03-16
+
+ansible:
+  type: Web
+  url:
+    value: https://www.ansible.com/overview/how-ansible-works
+    date: 2024-03-16

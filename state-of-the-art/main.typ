@@ -1,16 +1,19 @@
-#set page(
-  numbering: "1"
-)
-
-// #show ref: set text(fill: rgb(0, 0, 255))
-
-#set page(margin: 1.75in)
+#set page(margin: 1.75in, numbering: "1")
 #set par(leading: 0.55em, justify: true)
 #set text(font: "New Computer Modern")
 #show raw: set text(font: "New Computer Modern Mono")
-#show heading: set block(above: 1.4em, below: 1em)
+#show heading: set block(above: 1.4em, below: 1em, )
 
-= Structural biology validation landscape
+
+#align(center, text(17pt)[
+  *Structural biology validation landscape*
+])
+
+#align(center)[
+  Martin Jediný \
+  Masaryk University \
+  #link("mailto:xjediny@fi.muni.cz")
+]
 
 Structural biology, as a branch of molecular biology, is a life science that has
 seen much impact in the scientific world. This is proven by the fact that as of
@@ -48,15 +51,16 @@ process, the PDB consortium created the wwPDB standalone validation web server @
 It is a scaled-down version of the validation pipeline that is used during
 deposition proper @pdb-standalone-server.
 
-// TODO: Mention the 600 weekly uses of the API in 2017
 Public access to the standalone server is provided using a web server, a CLI
-application, and a Python library @pdb-validation[p. 1920] @pdb-standalone-server-details. However, the service is constituted of only 2
-compute servers (2 x 16 CPUs, 2 x 128 GB RAM) for the entire world. The low
-throughput make it impractical to be used in research projects that need to
+application, and a Python library @pdb-validation[p. 1920]
+@pdb-standalone-server-details. However, the service is constituted of only 2
+compute servers (2 x 16 CPUs, 2 x 128 GB RAM), which serve the entire world. The
+// TODO: low throughput? why?
+low throughput makes it impractical to be used in research projects that need to
 validate a lot of structures. Even though the software components of the
-validation pipeline are public @pdb-validation[p. 1922], the implementation of the pipeline itself is
-not. For this reason, it is not possible to deploy it using on-premise
-infrastructure.
+validation pipeline are public @pdb-validation[p. 1922], the implementation of
+the pipeline itself is not. For this reason, it is not possible to deploy it
+using on-premise infrastructure.
 
 To allow for simple deployment and high-throughput validations, a new solution
 is needed. Unfortunately, not all components of the pipeline are publicly

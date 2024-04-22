@@ -1,5 +1,5 @@
 
-#set page(margin: 1.75in, numbering: "1")
+#set page(margin: 1.75in)
 #set par(leading: 0.55em, justify: true)
 #set text(font: "New Computer Modern")
 #show raw: set text(font: "New Computer Modern Mono")
@@ -22,6 +22,8 @@
   ]
 ]
 
+
+
 #linebreak()
 #linebreak()
 
@@ -41,7 +43,7 @@
 
 #pagebreak()
 
-#heading(numbering: none)[
+#heading(numbering: none, outlined: false)[
   Declaration 
 ]
 Hereby I declare that this paper is my original authorial work, which I have
@@ -61,7 +63,7 @@ reference to the due source.
 #pagebreak()
 
 #align(bottom)[
-  #heading(numbering: none)[
+  #heading(numbering: none, outlined: false)[
     Acknowledgements 
   ]
   Computational resources were provided by the e-INFRA CZ project (ID:90254),
@@ -70,9 +72,12 @@ reference to the due source.
 
 #pagebreak()
 
-#outline()
+#outline(indent: auto)
 
 #pagebreak()
+
+#set page(numbering: "1")
+#counter(page).update(1)
 
 #heading(numbering: none)[
   Introduction

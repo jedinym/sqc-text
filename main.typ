@@ -1,4 +1,3 @@
-
 #set page(margin: 1.75in)
 #set par(leading: 0.55em, justify: true)
 #set text(font: "New Computer Modern")
@@ -6,39 +5,37 @@
 #show heading: set block(above: 1.4em, below: 1em, )
 #set heading(numbering: "1.1")
 
-#align(center, text(17pt)[
-  *Replication of PDB validation server functionality in the MetaCentrum*
-  #linebreak()
-  *environment*
-])
 
-#linebreak()
-#linebreak()
-#linebreak()
 
 #align(center)[
-  #text(size: 17pt)[
-    Bachelor's Thesis 
-  ]
-]
+  #text(size: 15pt)[
+    Masaryk University
+    #linebreak()
+    Faculty of Informatics
 
+    #linebreak()
 
+    #image("img/FI-MU-logo-75-mm-1200-DPI-RGB.png", width: 40%)
 
-#linebreak()
-#linebreak()
+    #linebreak()
+    #linebreak()
+    #linebreak()
 
-#align(center)[
-  #text(size: 17pt)[
+    *Bachelor's Thesis*
+
+    #linebreak()
+
+    #text(size: 17pt, font: "Noto Sans", hyphenate: false)[
+      #set par(justify: false)
+      *Replication of PDB validation server functionality in the MetaCentrum environment*
+    ]
+
+    #linebreak()
+
     Martin Jediný
+
+    Spring 2024
   ]
-]
-
-#align(center + horizon)[
-  #image("img/FI-MU-logo-75-mm-1200-DPI-RGB.png", width: 40%)
-]
-
-#align(bottom + center)[
-  Brno, Spring 2024
 ]
 
 #pagebreak()
@@ -114,5 +111,41 @@ _Ansible_ to the _Kubernetes_ cluster provided by the _MetaCentrum_ virtual
 organization.
 
 #pagebreak()
+
+= PDB Validation Pipeline
+
+== Composition
+Describe what the pipeline is made of and its outputs.
+
+== Usage
+Describe how the standalone pipeline is used.
+
+= Design
+
+== Requirements
+
+== Architecture
+
+= Implementation
+
+== Validation Service
+
+== Validation Client Library
+
+= Deployment
+Describe deployment architecture (in metacentrum k8s environment).
+
+== Automation
+Describe how to deploy SQC to a k8s namespace. 
+Describe ansible setup (vaults, inventories).
+
+= Evaluation
+Compare aspects of the service to the PDB standalone validation server.
+
+== Throughput
+Test throughput against PDB with maximum k8s scaling.
+
+== API 
+Compare API access to PDB methods.
 
 #bibliography("bibliography.yaml")

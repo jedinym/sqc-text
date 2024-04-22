@@ -15,7 +15,11 @@
 
     #linebreak()
 
-    #image("img/FI-MU-logo-75-mm-1200-DPI-RGB.png", width: 40%)
+    // color logo
+    #image("img/fi-mu-logo-color.png", width: 40%)
+
+    // BW logo
+    // #image("img/FI-MU-logo-75-mm-1200-DPI-RGB.png", width: 40%)
 
     #linebreak()
     #linebreak()
@@ -139,6 +143,8 @@ Describe deployment architecture (in metacentrum k8s environment).
 == Automation
 Describe how to deploy SQC to a k8s namespace. 
 Describe ansible setup (vaults, inventories).
+Don't forget kubectl configuration.
+Don't forget docker image build and push.
 
 = Evaluation
 Compare aspects of the service to the PDB standalone validation server.

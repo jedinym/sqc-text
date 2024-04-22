@@ -1,6 +1,9 @@
 name: Build thesis document
 on: push
 
+permissions:
+  contents: write
+
 jobs:
   build_thesis:
     runs-on: ubuntu-latest

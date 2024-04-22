@@ -113,8 +113,6 @@ organization.
 #pagebreak()
 
 = PDB Validation Pipeline
-
-== Composition
 Describe what the pipeline is made of and its outputs.
 
 == Usage
@@ -123,10 +121,13 @@ Describe how the standalone pipeline is used.
 = Design
 
 == Requirements
+Functional and non-functional requirements.
 
 == Architecture
+Describe how and why the architecture was chosen.
 
 = Implementation
+Describe the issues faced in the implementation.
 
 == Validation Service
 
@@ -143,9 +144,14 @@ Describe ansible setup (vaults, inventories).
 Compare aspects of the service to the PDB standalone validation server.
 
 == Throughput
-Test throughput against PDB with maximum k8s scaling.
+Test throughput of variable-size structures against PDB with maximum k8s scaling.
 
 == API 
 Compare API access to PDB methods.
+
+== Validation Results
+Cry about different results and inaccessible reference data.
+
+#pagebreak()
 
 #bibliography("bibliography.yaml")

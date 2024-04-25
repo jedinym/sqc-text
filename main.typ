@@ -134,6 +134,7 @@ Describe how and why the architecture was chosen.
 Describe the issues faced in the implementation.
 
 == Validation Service
+Describe dockerification. MolProbity output parsing.
 
 == Validation Client Library
 
@@ -157,6 +158,9 @@ Compare API access to PDB methods.
 
 == Validation Results
 Cry about different results and inaccessible reference data.
+
+= Future improvements
+Describe stuff that's missing or can be improved.
 
 #pagebreak()
 

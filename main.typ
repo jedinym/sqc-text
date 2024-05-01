@@ -116,11 +116,20 @@ organization.
 
 #pagebreak()
 
-= PDB Validation Pipeline
-Describe what the pipeline is made of and its outputs.
+= Biomacromolecules
 
-== Usage
+// alt title: Computer representation of structural data
+= Macromolecular structural data
+
+= Tools and methods
+
+== Protein Data Bank
+
+== PDB Validation Pipeline
+Describe what the pipeline is made of and its outputs.
 Describe how the standalone pipeline is used.
+
+== MolProbity
 
 = Design
 
@@ -131,7 +140,6 @@ Functional and non-functional requirements.
 Describe how and why the architecture was chosen.
 
 = Implementation
-Describe the issues faced in the implementation.
 
 == Validation Service
 Describe dockerification. MolProbity output parsing.
@@ -159,7 +167,9 @@ Compare API access to PDB methods.
 == Validation Results
 Cry about different results and inaccessible reference data.
 
-= Future improvements
+= Conclusion
+
+== Future plans 
 Describe stuff that's missing or can be improved.
 
 #pagebreak()

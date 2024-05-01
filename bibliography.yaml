@@ -8,6 +8,54 @@ pdb:
   page-range: 1-1
   url: https://doi.org/10.1093/nar/gky949
 
+pdb-history:
+  type: article
+  author: Helen M Berman
+  title: "The Protein Data Bank: a historical perspective"
+  page-range: 88-95
+  issued:
+    year: 2008
+  publisher: International Union of Crystallography
+  parent:
+    type: Periodical
+    title: "Acta Crystallographica Section A: Foundations of Crystallography"
+    volume: 64
+    issue: 1
+  url: https://doi.org/10.1107/S0108767307035623
+
+hybrid-36:
+  type: web
+  title: "hybrid-36: PDB serial and sequence numbers"
+  url:
+    value: https://cci.lbl.gov/hybrid_36/
+    date: 2024-05-01
+
+pdb-formats:
+  type: web
+  title: File Formats and the PDB
+  url:
+    value: https://www.wwpdb.org/documentation/file-formats-and-the-pdb
+    date: 2024-05-01
+
+pdb-format-guides:
+  type: web
+  title: File Format Documentation
+
+  url:
+    value: https://www.wwpdb.org/documentation/file-format
+    date: 2024-05-01
+
+mmcif:
+  type: article
+  title: Macromolecular crystallographic information file
+  url: https://doi.org/10.1016/S0076-6879(97)77032-0
+  author: [Philip E. Bourne, Helen M. Berman, Brian McMahon, Keith D. Watenpaugh, John D. Westbrook, Paula M.D. Fitzgerald]
+  parent: 
+    type: Periodical
+    title: Methods in Enzymology
+    volume: 277
+    page-range: 571-590 
+
 pdb-validation:
   type: Article
   title: "Validation of Structures in the Protein Data Bank"
@@ -35,9 +83,7 @@ pdb-validation:
       Brian P,
       and others,
     ]
-  url:
-    value: https://doi.org/10.1016/j.str.2017.10.009
-    date: 2024-03-16
+  value: https://doi.org/10.1016/j.str.2017.10.009
   parent:
     type: Periodical
     title: Structure

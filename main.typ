@@ -97,10 +97,10 @@ quality of a structure is paramount in creating inferences from experiments.
 
 This reality is reflected by the fact that every structure deposited into the
 _Protein Data Bank_ (the single global archive of three-dimensional structural
-models @pdb) is validated using community-developed tools @pdb-validation[p.
-1917]. Based on the results of these tools, the validation pipeline generates a
-report @pdb-validation that can be used for further refining the coordinate
-models.
+models @pdb; see more in @pdb-section) is validated using community-developed
+tools @pdb-validation[p.  1917]. Based on the results of these tools, the
+validation pipeline generates a report @pdb-validation that can be used for
+further refining the coordinate models.
 
 However, the throughput of the validation pipeline provided by the _Protein Data
 Bank_ is too low for use in some research projects (e.g., iterative validation
@@ -119,17 +119,56 @@ organization.
 = Biomacromolecules
 
 // alt title: Computer representation of structural data
-= Macromolecular structural data
+= Macromolecular Structural Data
+The composition of macromolecules is captured in computer-readable form (and
+human-readable to some extent) using a chemical file format. These exist in the
+form of text files, which describe the locations of atoms in three-dimensional
+space. Metadata about the represented structure may also be included. In this
+chapter, the two formats relevant to this thesis are introduced.
+
+== PDB Format
+// TODO: mention updates made by PDB (pdb-format-guides reference)
+The Protein Data Bank format is the original format used by the PDB. It was
+originally developed in 1976 as a simple human-readable format @pdb-history. 
+
+// TODO: explain the format more
+Each line of the file contains a _record_ - information about some aspect of the
+structure. The records can contain metadata (e.g. `AUTHOR`, `HEADER` or `TITLE`) or
+data about the chemical strucutre of the molecule (e.g. `SEQRES` or `ATOM`).
+
+// TODO: explain what is a residue in PDB
+// TODO: mention that large structures can be split into several files
+Unfortunately, the lines are fixed-width as the format is based on the original
+80 column punched card @pdb-history. Because of this, the number of atoms,
+residues and chain identificators in the file is limited. This renders the
+format less suitable for handling very large structures.
+
+// TODO: describe limitations more
+Some attempts have been made to improve the format over the years (e.g. the
+hybrid-36 counting system for atom and residue numbers @hybrid-36), but none of
+them have been particularly prevalent, as it would be difficult to adapt
+existing tools.
+ 
+The PDB format has been deprecated by the Protein Data Bank in favor of the
+PDBx/mmCIF format in 2014 @pdb-formats.
+
+== PDBx/mmCIF Format
+The PDBx/mmCIF format was developed to address the limitations inherent in
+the legacy PDB format @mmcif[p. 571].
+
+// TODO: what do here?
 
 = Tools and methods
 
-== Protein Data Bank
+== Protein Data Bank <pdb-section>
 
 == PDB Validation Pipeline
 Describe what the pipeline is made of and its outputs.
 Describe how the standalone pipeline is used.
 
-== MolProbity
+== MolProbity <molprobity>
+
+== Gemmi
 
 = Design
 
@@ -173,5 +212,5 @@ Cry about different results and inaccessible reference data.
 Describe stuff that's missing or can be improved.
 
 #pagebreak()
-
-#bibliography("bibliography.yaml")
+  
+#bibliography("bibliography.yaml") 

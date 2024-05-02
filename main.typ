@@ -127,21 +127,22 @@ space. Metadata about the represented structure may also be included. In this
 chapter, the two formats relevant to this thesis are introduced.
 
 == PDB Format
-// TODO: mention updates made by PDB (pdb-format-guides reference)
 The Protein Data Bank format is the original format used by the PDB. It was
-originally developed in 1976 as a simple human-readable format @pdb-history. 
+originally developed in 1976 as a simple human-readable format@pdb-history. 
 
-// TODO: explain the format more
 Each line of the file contains a _record_ - information about some aspect of the
-structure. The records can contain metadata (e.g. `AUTHOR`, `HEADER` or `TITLE`) or
-data about the chemical strucutre of the molecule (e.g. `SEQRES` or `ATOM`).
+structure. The records can contain metadata (e.g. `AUTHOR`, `HEADER` or `TITLE`)
+or data about the chemical strucutre of the molecule (e.g. `SEQRES` or `ATOM`).
+Additionally, the wwPDB (worldwide Protein Data Bank) has used the `REMARK`
+record type to extend the format to support new details about the experimental
+methods used to obtain the macromolecular data @pdb-format-guides.
 
 // TODO: explain what is a residue in PDB
 // TODO: mention that large structures can be split into several files
-Unfortunately, the lines are fixed-width as the format is based on the original
-80 column punched card @pdb-history. Because of this, the number of atoms,
-residues and chain identificators in the file is limited. This renders the
-format less suitable for handling very large structures.
+Unfortunately, the lines of the file are fixed-width as the format is based on
+the original 80 column punched card @pdb-history. Because of this, the number of
+atoms, residues and chain identificators in the file is limited. This renders
+the format less suitable for handling very large structures.
 
 // TODO: describe limitations more
 Some attempts have been made to improve the format over the years (e.g. the
@@ -167,8 +168,6 @@ Describe what the pipeline is made of and its outputs.
 Describe how the standalone pipeline is used.
 
 == MolProbity <molprobity>
-
-== Gemmi
 
 = Design
 

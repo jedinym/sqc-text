@@ -56,6 +56,32 @@ mmcif:
     volume: 277
     page-range: 571-590 
 
+pdb-entry-stats:
+  type: Web
+  title: "PDB Statistics: Overall Growth of Released Structures Per Year"
+  url:
+    value: https://www.rcsb.org/stats/growth/growth-released-structures
+    date: 2024-05-02
+
+pdb-stats-summary:
+  type: Web
+  title: PDB Data Distribution by Experimental Method and Molecular Type
+  url:
+    value: https://www.rcsb.org/stats/summary
+    date: 2024-05-02
+
+wwpdb:
+  type: article
+  title: Announcing the worldwide Protein Data Bank
+  date: 2003
+  author: [Helen Berman, Kim Henrick, Haruki Nakamura]
+  parent:
+    type: Periodical
+    title: Nature Structural & Molecular Biology 
+    volume: 10
+    page-range: 980
+
+
 pdb-validation:
   type: Article
   title: "Validation of Structures in the Protein Data Bank"

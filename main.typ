@@ -138,16 +138,20 @@ record type to extend the format to support new details about the experimental
 methods used to obtain the macromolecular data @pdb-format-guides.
 
 // TODO: explain what is a residue in PDB
-// TODO: mention that large structures can be split into several files
+// TODO: maybe mention that large structures can be split into several files
 Unfortunately, the lines of the file are fixed-width as the format is based on
-the original 80 column punched card @pdb-history. Because of this, the number of
-atoms, residues and chain identificators in the file is limited. This renders
-the format less suitable for handling very large structures.
+the original 80 column punched card @pdb-history. Because of this, limitations
+exist on the stored structure:
 
-// TODO: describe limitations more
-Some attempts have been made to improve the format over the years (e.g. the
-hybrid-36 counting system for atom and residue numbers @hybrid-36), but none of
-them have been particularly prevalent, as it would be difficult to adapt
+- Maximum 100000 atoms in structure
+- Maximum 10000 residues in one chain
+- Maximum 62 chains in structure
+
+This renders the format less suitable for handling very large structures.
+
+Some attempts have been made to improve these limitations over the years (e.g.
+the hybrid-36 counting system for atom and residue numbers @hybrid-36), but none
+of them have been particularly prevalent, as it would be difficult to adapt
 existing tools.
  
 The PDB format has been deprecated by the Protein Data Bank in favor of the
@@ -162,12 +166,34 @@ the legacy PDB format @mmcif[p. 571].
 = Tools and methods
 
 == Protein Data Bank <pdb-section>
+The Protein Data Bank (PDB) is the single global archive of three-dimensional
+macromolecular structures. Established in 1971, its purpose is to serve as a
+central repository for macromolecular data, ensuring their accessibility to all
+@pdb-history.
 
-== PDB Validation Pipeline
+// TODO: add references
+Since 2003, it is managed by the wwPDB consortium @wwpdb, consisting of: 
+- Research Collaboratory for Structural Bioinformatics (RCSB)
+- Macromolecular Structure Database (MSD) at the European Bioinformatics Institute (EBI) 
+- Protein Data Bank Japan (PDBj) at the Institute for Protein Research in Osaka University
+- Electron Microscopy Data Bank (EMDB)
+
+As of now (May 2024), it stores over two hundred and nineteen thousand
+structures @pdb-entry-stats. Eighty-four percent of this data was obtained using
+X-ray crystallography, nine percent using electron microscopy, and around six
+percent by nuclear magnetic resonance @pdb-stats-summary.
+
+// TODO: bridge to need for deposition validation
+
+=== OneDep deposition system
 Describe what the pipeline is made of and its outputs.
 Describe how the standalone pipeline is used.
 
 == MolProbity <molprobity>
+
+== Ansible
+
+== Kubernetes
 
 = Design
 

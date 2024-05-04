@@ -1,3 +1,6 @@
+#import "@preview/unify:0.5.0": num
+#import "@preview/big-todo:0.2.0": *
+
 #set page(margin: 1.75in)
 #set par(leading: 0.55em, justify: true)
 #set text(font: "New Computer Modern")
@@ -5,7 +8,7 @@
 #show heading: set block(above: 1.4em, below: 1em, )
 #set heading(numbering: "1.1")
 
-
+#todo_outline
 
 #align(center)[
   #text(size: 15pt)[
@@ -114,19 +117,67 @@ run batch validations of thousands of structures. The service is deployed via
 _Ansible_ to the _Kubernetes_ cluster provided by the _MetaCentrum_ virtual
 organization.
 
+#todo[Explain sections of thesis.]
+
 #pagebreak()
 
 = Biomacromolecules
+As defined by the IUPAC (International Union of Pure and Applied Chemistry), a
+biopolymer or a biomacromolecule is a macromolecule #footnote[Large molecules 
+consisting of many repeating subunits.] produced by living organisms
+@iupac-glossary. These include proteins, nucleic acids and polysacharrides
+@iupac-glossary.
 
-// alt title: Computer representation of structural data
+== Proteins
+Proteins are polypeptides that have molecular mass of around 10,000 or more
+@iupac-glossary-95[p. 1361]. They comprise one or more chains of $alpha$-amino
+acids #footnote[There are over 500 different amino acids but only 22 are
+incorporated into proteins @amino-acids.] linked by peptide bonds (i.e. covalent
+bonds from the carbonyl carbon of one amino acid to the nitrogen atom of another
+with loss of water) @iupac-glossary-95[p. 1356].
+
+#figure(
+  image("img/AminoacidCondensation.svg"),
+  caption: "The dehydration condensation of two amino acids to form a peptide bond (in red). Sourced from Wikimedia Commons."
+) <peptide-bond>
+
+Proteins perform a vast array of functions in organisms: catalysing reactions,
+providing structure to cells, replicating DNA, transporting molecules, and more
+@mol-cell-bio[p. 59]. Their function is dictated by their three-dimensional
+structure, which is determined by the sequence of amino acids they are composed
+of @mol-cell-bio[p. 60].
+
+== Nucleic acids
+Nucleic acids, polymers comprised of monomers (subunits) known as nucleotides,
+are categorized into two classes: deoxyribonucleic acid (DNA) and ribonucleic
+acid (RNA) @mol-cell-bio[p. 102].
+
+DNA molecules contain the information that dictates the sequences, and
+consequently, the structures of all proteins within a cell @mol-cell-bio[p.
+101].
+
+== Polysacharrides
+
 = Macromolecular Structural Data
+Macromolecules can be represented in computers in one, two or three dimensions.
+In this chapter we first introduce these representations, and then take a closer
+look at the three-dimensional representations, as they are the most relevant to
+this thesis.
+
+== One-dimensional structure
+
+== Two-dimensional structure
+
+== Three-dimensional structure
+
+#todo[adjust this text to chapter]
 The composition of macromolecules is captured in computer-readable form (and
 human-readable to some extent) using a chemical file format. These exist in the
 form of text files, which describe the locations of atoms in three-dimensional
 space. Metadata about the represented structure may also be included. In this
 chapter, the two formats relevant to this thesis are introduced.
 
-== PDB Format
+=== PDB Format
 The Protein Data Bank format is the original format used by the PDB. It was
 originally developed in 1976 as a simple human-readable format@pdb-history. 
 
@@ -137,15 +188,15 @@ Additionally, the wwPDB (worldwide Protein Data Bank) has used the `REMARK`
 record type to extend the format to support new details about the experimental
 methods used to obtain the macromolecular data @pdb-format-guides.
 
-// TODO: explain what is a residue in PDB
+#todo[explain what a residue is in PDB]
 // TODO: maybe mention that large structures can be split into several files
 Unfortunately, the lines of the file are fixed-width as the format is based on
 the original 80 column punched card @pdb-history. Because of this, limitations
 exist on the stored structure:
 
-- Maximum 100000 atoms in structure
-- Maximum 10000 residues in one chain
-- Maximum 62 chains in structure
+- Maximum $num("100000")$ atoms in structure
+- Maximum $num("10000")$ residues in one chain
+- Maximum $num("62")$ chains in structure
 
 This renders the format less suitable for handling very large structures.
 
@@ -157,11 +208,11 @@ existing tools.
 The PDB format has been deprecated by the Protein Data Bank in favor of the
 PDBx/mmCIF format in 2014 @pdb-formats.
 
-== PDBx/mmCIF Format
+=== PDBx/mmCIF Format
 The PDBx/mmCIF format was developed to address the limitations inherent in
 the legacy PDB format @mmcif[p. 571].
 
-// TODO: what do here?
+#todo[Think about what is important here]
 
 = Tools and methods
 
@@ -171,7 +222,7 @@ macromolecular structures. Established in 1971, its purpose is to serve as a
 central repository for macromolecular data, ensuring their accessibility to all
 @pdb-history.
 
-// TODO: add references
+#todo[add references]
 Since 2003, it is managed by the wwPDB consortium @wwpdb, consisting of: 
 - Research Collaboratory for Structural Bioinformatics (RCSB)
 - Macromolecular Structure Database (MSD) at the European Bioinformatics Institute (EBI) 
@@ -183,9 +234,11 @@ structures @pdb-entry-stats. Eighty-four percent of this data was obtained using
 X-ray crystallography, nine percent using electron microscopy, and around six
 percent by nuclear magnetic resonance @pdb-stats-summary.
 
-// TODO: bridge to need for deposition validation
+// TODO: mention OneDep
+#todo[mention OneDep]
+#todo[bridge to need for deposition validation]
 
-=== OneDep deposition system
+== PDB validation pipeline
 Describe what the pipeline is made of and its outputs.
 Describe how the standalone pipeline is used.
 
@@ -238,4 +291,4 @@ Describe stuff that's missing or can be improved.
 
 #pagebreak()
   
-#bibliography("bibliography.yaml") 
+#bibliography("bibliography.yaml", style: "ieee") 

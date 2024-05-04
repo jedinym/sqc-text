@@ -1,4 +1,40 @@
 ---
+iupac-glossary:
+  type: article
+  title: Glossary for chemists of terms used in biotechnology (IUPAC Recommendations 1992)
+  url: https://doi.org/10.1351/pac199264010143
+  author: [B. Nagel , H. Dellweg, L. M. Gierasch]
+  date: 1992
+  parent:
+    title: Pure and Applied Chemistry
+
+iupac-glossary-95:
+  type: article
+  title: Glossary of class names of organic compounds and reactivity intermediates based on structure (IUPAC Recommendations 1995)
+  url: https://doi.org/10.1351/pac199567081307
+  author: [G. P. Moss , P. A. S. Smith, D. Tavernier]
+  date: 1995
+  parent:
+    title: Pure and Applied Chemistry
+
+mol-cell-bio:
+  type: book
+  title: Molecular Cell Biology
+  author: [Harvey Lodish, Arnold Berk, Paul Matsudaira, Chris A. Kaiser, Monty Krieger, Matthew P. Scott, Lawrence Zipursky, James Darnell]
+  date: 2008
+  publisher: W. H. Freeman
+  serial-number:
+    isbn: 9780716743668
+
+amino-acids:
+  type: article
+  title: Selenocysteine, Pyrrolysine, and the Unique Energy Metabolism of Methanogenic Archaea
+  author: [Michal Rother, Joseph A. Krzycki]
+  date: 2019
+  url: https://doi.org/10.1155%2F2010%2F453642
+  parent:
+    title: Archaea
+
 pdb:
   type: Article
   title: "Protein Data Bank: the single global archive for 3D macromolecular structure data"
@@ -7,6 +43,12 @@ pdb:
   issn: "0305-1048"
   page-range: 1-1
   url: https://doi.org/10.1093/nar/gky949
+  date: 2019
+  parent: 
+    type: Periodical
+    title: Nucleic Acids Research
+    volume: 47
+    page-range: 520-528
 
 pdb-history:
   type: article

@@ -8,7 +8,9 @@
 #show heading: set block(above: 1.4em, below: 1em, )
 #set heading(numbering: "1.1")
 
+// TODO: remove
 #todo_outline
+#pagebreak()
 
 #align(center)[
   #text(size: 15pt)[
@@ -122,39 +124,51 @@ organization.
 #pagebreak()
 
 = Biomacromolecules
-As defined by the IUPAC (International Union of Pure and Applied Chemistry), a
-biopolymer or a biomacromolecule is a macromolecule #footnote[Large molecules 
+The IUPAC #footnote[International Union of Pure and Applied Chemistry] defines a
+biopolymer or a biomacromolecule as a macromolecule #footnote[Large molecules 
 consisting of many repeating subunits.] produced by living organisms
-@iupac-glossary. These include proteins, nucleic acids and polysacharrides
-@iupac-glossary.
+@iupac-glossary. These include proteins, nucleic acids and polysaccharrides
+@iupac-glossary. In this chapter, we briefly introduce these three basic
+biomacromolecules.
 
 == Proteins
-Proteins are polypeptides that have molecular mass of around 10,000 or more
+Proteins are polypeptides with a molecular mass of around 10,000 or more
 @iupac-glossary-95[p. 1361]. They comprise one or more chains of $alpha$-amino
-acids #footnote[There are over 500 different amino acids but only 22 are
-incorporated into proteins @amino-acids.] linked by peptide bonds (i.e. covalent
+acids #footnote[There are over 500 different amino acids, but only 22 are
+incorporated into proteins @amino-acids.] linked by peptide bonds #footnote[Covalent
 bonds from the carbonyl carbon of one amino acid to the nitrogen atom of another
-with loss of water) @iupac-glossary-95[p. 1356].
+with loss of water.] @iupac-glossary-95[p. 1356].
 
 #figure(
   image("img/AminoacidCondensation.svg"),
   caption: "The dehydration condensation of two amino acids to form a peptide bond (in red). Sourced from Wikimedia Commons."
 ) <peptide-bond>
 
-Proteins perform a vast array of functions in organisms: catalysing reactions,
+Proteins perform a vast array of functions in organisms: catalyzing reactions,
 providing structure to cells, replicating DNA, transporting molecules, and more
-@mol-cell-bio[p. 59]. Their function is dictated by their three-dimensional
-structure, which is determined by the sequence of amino acids they are composed
-of @mol-cell-bio[p. 60].
+@mol-cell-bio[p. 59]. The sequence of amino acids determines the protein's
+three-dimensional structure, which then dictates its function @mol-cell-bio[p. 60].
 
 == Nucleic acids
-Nucleic acids, polymers comprised of monomers (subunits) known as nucleotides,
-are categorized into two classes: deoxyribonucleic acid (DNA) and ribonucleic
-acid (RNA) @mol-cell-bio[p. 102].
+Nucleic acids are polymers comprised of monomers (subunits) known as nucleotides
+@mol-cell-bio[p. 40]. They are categorized into two classes: deoxyribonucleic
+acid (DNA) and ribonucleic acid (RNA) @mol-cell-bio[p. 102].  All nucleotides
+have a common structure: a phosphate group linked to a pentose #footnote[A
+five-carbon sugar.] which in turn is linked to a _base_. The common bases include
+_adenine_, _guanine_, and _cytosine_. _Thymine_ is exclusively found in DNA
+while _uracil_ is exclusive to RNA molecules. The pentose is deoxyribose in DNA
+and ribose in RNA.
 
-DNA molecules contain the information that dictates the sequences, and
+#figure(
+  image("img/DAMP_chemical_structure.svg", width: 80%), 
+  caption: "Deoxyadenosine monophosphate, a nucleotide present in DNA. The phosphate group (red) is linked to deoxyribose, which is in turn linked to an adenine base (blue). Original image sourced from Wikimedia Commons and edited.", 
+)
+
+DNA molecules contain the information that dictates the sequences and, 
 consequently, the structures of all proteins within a cell @mol-cell-bio[p.
-101].
+101]. During protein synthesis, DNA is transcribed into ribonucleic acid (RNA).
+
+#todo[Explain protein synthesis and types of RNA?]
 
 == Polysacharrides
 
@@ -170,8 +184,7 @@ this thesis.
 
 == Three-dimensional structure
 
-#todo[adjust this text to chapter]
-The composition of macromolecules is captured in computer-readable form (and
+Three-dimensional structures are captured in computer-readable form (and
 human-readable to some extent) using a chemical file format. These exist in the
 form of text files, which describe the locations of atoms in three-dimensional
 space. Metadata about the represented structure may also be included. In this

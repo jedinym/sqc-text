@@ -102,7 +102,7 @@ quality of a structure is paramount in creating inferences from experiments.
 
 This reality is reflected by the fact that every structure deposited into the
 _Protein Data Bank_ (the single global archive of three-dimensional structural
-models @pdb; see more in @pdb-section) is validated using community-developed
+models @pdb; see more in @section-pdb) is validated using community-developed
 tools @pdb-validation[p.  1917]. Based on the results of these tools, the
 validation pipeline generates a report @pdb-validation that can be used for
 further refining the coordinate models.
@@ -161,7 +161,7 @@ and ribose in RNA.
 
 #figure(
   image("img/DAMP_chemical_structure.svg", width: 80%), 
-  caption: "Deoxyadenosine monophosphate, a nucleotide present in DNA. The phosphate group (red) is linked to deoxyribose, which is in turn linked to an adenine base (blue). Original image sourced from Wikimedia Commons and edited.", 
+  caption: "Deoxyadenosine monophosphate, a nucleotide present in DNA. The phosphate group (blue) is linked to deoxyribose, which is in turn linked to an adenine base (red). Original image sourced from Wikimedia Commons and edited.", 
 )
 
 DNA molecules contain the information that dictates the sequences and, 
@@ -172,15 +172,89 @@ consequently, the structures of all proteins within a cell @mol-cell-bio[p.
 
 == Polysacharrides
 
+#todo[Fill in section]
+
 = Macromolecular Structural Data
-Macromolecules can be represented in computers in one, two or three dimensions.
-In this chapter we first introduce these representations, and then take a closer
-look at the three-dimensional representations, as they are the most relevant to
-this thesis.
+Macromolecules can be represented in computers in one, two or three dimensions
+@chemo-informatics.  In this chapter we first introduce these representations,
+and then take a closer look at the three-dimensional representations, as they
+are the most relevant to this thesis.
 
 == One-dimensional structure
+The simplest way of representing a molecule is by indicating the absolute counts
+of atoms present (i.e. molecular formulae). To illustrate, the molecular formula
+of _glucose_ is written as $C_6 H_12 O_6$, that is six carbon atoms, twelve
+hydrogen atoms, and six oxygen atoms. 
+
+However, this representation lacks information about the relative positions of
+atoms and bonds, making it unable to differentiate molecules with identical
+absolute atom counts.  For instance, molecules such as _fructose_ and
+_galactose_ share the same formula as _glucose_, despite having different
+structures.
+
+Therefore, the one-dimensional representation has limited usage for polymers
+containing thousands of atoms.
 
 == Two-dimensional structure
+A common way to represent structures in a two-dimensional manner is to use a
+_molecular graph_ @chemo-informatics[p. 2]. A graph is a pair $G = (V, E)$,
+where $V$ is a set of _vertices_ and $E$ is a set of pairs $E = {(v_1, v_2) |
+v_1,v_2 in V}$, whose elements are called _edges_. Using a graph, it is possible
+to capture the topology of a molecule. In a molecular graph, vertices represent
+atoms and edges represent bonds between them @chemo-informatics[p.2]. Both
+vertices and edges can hold additional information, such as bond orders for
+edges or atomic numbers for vertices @chemo-informatics[p.2].
+
+#todo[Add examples of graphs?]
+
+#todo[explain other formats a bit more]
+These molecular graphs can be encoded using various formats @chemical-formats,
+with _line notation_ being one of the simpler methods. A line notation
+represents a structure as a linear string of characters, making them relatively
+simple to read and understand. Multiple standards are utilized, such as SLN
+#footnote[Sybil Line Notation], WLN #footnote[Wiswesser Line Notation], and
+ROSDAL #footnote[Representation of structure diagram arranged linearly]. 
+
+One commonly used notation is SMILES #footnote[Simplified Molecular Input Line
+Entry Specification] @smiles. Specifically, the OpenSMILES standard is widely adopted
+and open-source @open-smiles.
+
+SMILES enables the representation of molecular graphs using ASCII strings with
+only a few rules. It works by doing a depth-first traversal of the graph and
+printing appropriate symbols for vertices (atoms) and edges (bonds). Initially,
+the graph is edited to remove hydrogen atoms and break cycles to create a
+spanning tree (i.e. a subgraph that is a tree #footnote[A graph in which any two
+vertices are connected by exactly one edge.] and contains all the original
+vertices). @smiles-table illustrates a few examples of the SMILES format.
+
+#figure(
+  table(
+    columns: (auto, auto, auto),
+    align: center + horizon,
+    table.header([*Molecule*], [*Chemical structure*], [*SMILES string*]),
+
+    "Methane",
+    $C H_4$,
+    raw("C"),
+
+    "Dinitrogen",
+    $N≡N$,
+    raw("N#N"),
+
+    "Adenine",
+    image("img/Adenine.svg", width: 60pt),
+    raw("Nc1c2ncNc2ncn1"),
+
+    "Glucose",
+    image("img/Beta-D-Glucose.svg", width: 100pt),
+    raw("OC[C@@H](O1)[C@@H](O)[C@H](O)[C@@H](O)[C@H](O)1"),
+
+    "Nicotine",
+    image("img/nicotine.svg", width: 60pt),
+    raw("CN1CCC[C@H]1c2cccnc2"),
+  ),
+  caption: "Examples of SMILES representations of chemical structures."
+) <smiles-table>
 
 == Three-dimensional structure
 
@@ -190,9 +264,10 @@ form of text files, which describe the locations of atoms in three-dimensional
 space. Metadata about the represented structure may also be included. In this
 chapter, the two formats relevant to this thesis are introduced.
 
-=== PDB Format
-The Protein Data Bank format is the original format used by the PDB. It was
-originally developed in 1976 as a simple human-readable format@pdb-history. 
+=== PDB Format 
+The Protein Data Bank format is the original format used by the Protein Data
+Bank @section-pdb. It was originally developed in 1976 as a simple
+human-readable format@pdb-history. 
 
 Each line of the file contains a _record_ - information about some aspect of the
 structure. The records can contain metadata (e.g. `AUTHOR`, `HEADER` or `TITLE`)
@@ -229,7 +304,7 @@ the legacy PDB format @mmcif[p. 571].
 
 = Tools and methods
 
-== Protein Data Bank <pdb-section>
+== Protein Data Bank <section-pdb>
 The Protein Data Bank (PDB) is the single global archive of three-dimensional
 macromolecular structures. Established in 1971, its purpose is to serve as a
 central repository for macromolecular data, ensuring their accessibility to all

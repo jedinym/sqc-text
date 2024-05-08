@@ -1,4 +1,42 @@
 ---
+chemo-informatics:
+  type: book
+  title: An Introduction to Chemoinformatics
+  url: https://doi.org/10.1007/978-1-4020-6291-9
+  author: [Andrew R. Leach, Valerie J. Gillet]
+  date: 2003
+  parent:
+    title: Springer Dordrecht
+
+chemical-formats:
+  type: article
+  title: Description of Several Chemical Structure File Formats Used by Computer Programs Developed at Molecular Design Limited
+  author: [Arthur Dalby, James G. Nourse, W. Douglas Hounshell, Ann K. I. Gushurst, David L. Grier, Burton A. Leland, and John Laufer]
+  date: 1992
+  url: https://doi.org/10.1021/ci00007a012
+  parent:
+    title: Journal of Chemical Information and Computer Sciences
+    volume: 32
+    issue: 3
+    page-range: 183-261
+
+smiles:
+  type: article
+  title: SMILES, a chemical language and information system. 1. Introduction to methodology and encoding rules
+  author: David Weininger
+  date: 1988
+  parent:
+    title: Journal of Chemical Information and Computer Sciences
+    volume: 28
+    page-range: 31-36
+
+open-smiles:
+  type: web
+  title: OpenSMILES
+  url:
+    value: http://opensmiles.org/
+    date: 2024-05-08
+
 iupac-glossary:
   type: article
   title: Glossary for chemists of terms used in biotechnology (IUPAC Recommendations 1992)

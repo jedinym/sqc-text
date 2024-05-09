@@ -20,6 +20,37 @@ chemical-formats:
     issue: 3
     page-range: 183-261
 
+mmcif-ecosystem:
+  type: article
+  title: "PDBx/mmCIF Ecosystem: Foundational Semantic Tools for Structural Biology"
+  url: https://doi.org/10.1016/j.jmb.2022.167599
+  date: 2022
+  parent:
+    title: Journal of Molecular Biology
+    volume: 434
+    issue: 11
+
+mmcif-approval:
+  type: article
+  title: "The mmCIF dictionary: community review and final approval"
+  date: 1996
+  url: https://10.1107/S0108767396076593
+  author: [P.M.D. Fitzgerald, H. Berman, P. Bourne, B. McMahon, K. Watenpaugh, J. Westbrook]
+  parent:
+    title: Acta Crystallographica
+    volume: 52
+    issue: a1
+
+crystallographic-data:
+  type: chapter
+  title: Definition and exchange of crystallographic data
+  author: [S.R. Hall, B. McMahon]
+  url: https://mmcif.wwpdb.org/docs/pubs/AUTHOR_ch3o6.pdf
+  parent:
+    title: Internation Tables for Crystallography
+    volume: G
+    page-range: 144-198
+
 smiles:
   type: article
   title: SMILES, a chemical language and information system. 1. Introduction to methodology and encoding rules

@@ -105,7 +105,7 @@ _Protein Data Bank_ (the single global archive of three-dimensional structural
 models @pdb; see more in @section-pdb) is validated using community-developed
 tools @pdb-validation[p.  1917]. Based on the results of these tools, the
 validation pipeline generates a report @pdb-validation that can be used for
-further refining the coordinate models.
+further refining of the coordinate models.
 
 However, the throughput of the validation pipeline provided by the _Protein Data
 Bank_ is too low for use in some research projects (e.g., iterative validation
@@ -168,11 +168,11 @@ DNA molecules contain the information that dictates the sequences and,
 consequently, the structures of all proteins within a cell @mol-cell-bio[p.
 101]. During protein synthesis, DNA is transcribed into ribonucleic acid (RNA).
 
-#todo[Explain protein synthesis and types of RNA?]
+#todo[Should I explain protein synthesis in short and types of RNA?]
 
 == Polysacharrides
 
-#todo[Fill in section]
+#todo[Fill in chapter. What is important?]
 
 = Macromolecular Structural Data
 Macromolecules can be represented in computers in one, two or three dimensions
@@ -205,9 +205,8 @@ atoms and edges represent bonds between them @chemo-informatics[p.2]. Both
 vertices and edges can hold additional information, such as bond orders for
 edges or atomic numbers for vertices @chemo-informatics[p.2].
 
-#todo[Add examples of graphs?]
+#todo[Add examples of molecular graphs?]
 
-#todo[explain other formats a bit more]
 These molecular graphs can be encoded using various formats @chemical-formats,
 with _line notation_ being one of the simpler methods. A line notation
 represents a structure as a linear string of characters, making them relatively
@@ -257,7 +256,6 @@ vertices). @smiles-table illustrates a few examples of the SMILES format.
 ) <smiles-table>
 
 == Three-dimensional structure
-
 Three-dimensional structures are captured in computer-readable form (and
 human-readable to some extent) using a chemical file format. These exist in the
 form of text files, which describe the locations of atoms in three-dimensional
@@ -276,8 +274,6 @@ Additionally, the wwPDB (worldwide Protein Data Bank) has used the `REMARK`
 record type to extend the format to support new details about the experimental
 methods used to obtain the macromolecular data @pdb-format-guides.
 
-#todo[explain what a residue is in PDB]
-// TODO: maybe mention that large structures can be split into several files
 Unfortunately, the lines of the file are fixed-width as the format is based on
 the original 80 column punched card @pdb-history. Because of this, limitations
 exist on the stored structure:
@@ -286,7 +282,10 @@ exist on the stored structure:
 - Maximum $num("10000")$ residues in one chain
 - Maximum $num("62")$ chains in structure
 
-This renders the format less suitable for handling very large structures.
+One way to address these limitations is by dividing the structure into multiple
+files. However, doing so may complicate tasks such as visualization or certain
+validations of the structure. As a result, this makes the format less suitable
+for handling very large structures.
 
 Some attempts have been made to improve these limitations over the years (e.g.
 the hybrid-36 counting system for atom and residue numbers @hybrid-36), but none
@@ -297,10 +296,31 @@ The PDB format has been deprecated by the Protein Data Bank in favor of the
 PDBx/mmCIF format in 2014 @pdb-formats.
 
 === PDBx/mmCIF Format
-The PDBx/mmCIF format was developed to address the limitations inherent in
-the legacy PDB format @mmcif[p. 571].
+The PDBx/mmCIF format was developed to address the limitations inherent in the
+legacy PDB format @mmcif[p. 571]. With ever-increasing sizes of structures it
+became clear that change was needed @mmcif-ecosystem[p. 3].
 
-#todo[Think about what is important here]
+The format is based on the Crystallographic Information Framework (CIF), which
+was adopted by the International Union of Crystallography (IUCr) in 1990. CIF
+operates under the idea that all values within an ASCII text file are assigned
+dictionary labels (keys). This concept was enabled by the use of a Dictionary
+Definition Language (DDL), which is a versatile language allowing for the
+description of dictionary data structures, controlled vocabularies, boundary  
+conditions, and relationships between values.
+
+Later, in 1997, the mmCIF dictionary was approved by the international Committee
+for the Maintenance of the CIF Standard (COMCIFS) @mmcif-approval. It featured
+expanded data types, which included support for protein and nucleic acid polymer
+types, polymer chains, ligands, binding sites, macromolecular assemblies, amino
+acid and nucleotide residues, atomic coordinates, and experimental data @mmcif-ecosystem[p. 3].
+
+While mmCIF already encompassed most of the structural and crystallographic
+concepts present in the PDB format, additional key categories prefixed with
+`pdbx_` were introduced to the dictionary and some existing categories have been
+extended. This expansion aimed to guarantee complete compatibility and semantic
+equivalence with the PDB format @crystallographic-data[p. 195].
+
+In 2014, the PDBx/mmCIF format became the main format of the PDB.
 
 = Tools and methods
 
@@ -324,13 +344,19 @@ percent by nuclear magnetic resonance @pdb-stats-summary.
 
 // TODO: mention OneDep
 #todo[mention OneDep]
+
+
 #todo[bridge to need for deposition validation]
 
 == PDB validation pipeline
 Describe what the pipeline is made of and its outputs.
 Describe how the standalone pipeline is used.
 
-== MolProbity <molprobity>
+
+== MolProbity <section-molprobity>
+
+=== Validations
+Describe the validations that molprobity validates.
 
 == Ansible
 

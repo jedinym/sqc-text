@@ -7,7 +7,7 @@ molprobity:
   url: https://doi.org/10.1107/S0907444909042073 
   date: 2010
   parent:
-    title: Acta Crystallographica
+    title: "Acta Crystallographica Section D: Biological Crystallography"
     volume: 66
 
 chemo-informatics:

@@ -1,4 +1,4 @@
-#import "@preview/unify:0.5.0": num
+#import "@preview/unify:0.5.0": num, unit
 #import "@preview/big-todo:0.2.0": *
 
 #set page(margin: 1.75in)
@@ -167,8 +167,6 @@ and ribose in RNA.
 DNA molecules contain the information that dictates the sequences and, 
 consequently, the structures of all proteins within a cell @mol-cell-bio[p.
 101]. During protein synthesis, DNA is transcribed into ribonucleic acid (RNA).
-
-#todo[Should I explain protein synthesis in short and types of RNA?]
 
 == Polysacharrides
 
@@ -363,13 +361,12 @@ recommendations for the validation pipeline @pdb-validation[p. 1917].  Based on
 these recommendations, the pipeline was integrated with the OneDep system
 @pdb-validation[p. 1917].
 
-// TODO: Think about explaining the categories a little bit.
 The VTFs recommended that deposited structures undergo validation against
 criteria falling into three categories. The first category encompasses criteria
-for validating the resulting atomic model. The second category involves analysis
-of the supplied experimental data. Lastly, the third category entails examining
-the fit between the supplied experimental data and the atomic model
-@pdb-validation[p. 1917].
+for validating the resulting atomic model; that is only the three-dimensional
+computer representation. The second category involves analysis of the supplied
+experimental data. Lastly, the third category entails examining the fit between
+the supplied experimental data and the atomic model @pdb-validation[p. 1917].
 
 The outcome of the validation pipeline is a validation report, which
 incorporates the parsed outputs of the validation tools employed on the
@@ -392,9 +389,50 @@ offers both a CLI #footnote[Command Line Interface] application and a small
 Python library.
 
 == MolProbity <section-molprobity>
+// TODO: explain why it was chosen
+_MolProbity_ is the single validation tool used in this thesis. It provides
+evaluation of atomic model quality for biomacromolecules @molprobity[p. 12]. The
+current maintainers are Richardson Laboratory of Duke University. Its source
+code can be found in their GitHub repository
+#footnote[https://github.com/rlabduke/MolProbity].
+
+The software package contains a web interface for simple use but also a command
+line interface for bulk validations.
 
 === Validations
-Describe the validations that molprobity validates.
+In this section, we briefly introduce the various validations that _MolProbity_
+performs on atomic models.
+
+==== All-atom contact analysis <section-clashes>
+This validation option checks for overlaps of van der Waals surfaces of
+nonbonded atoms. Overlaps over $0.4 angstrom$ #footnote[$1 angstrom = 0.1
+unit("nano meter")$] are reported as _clashes_ @molprobity[p. 14].
+
+==== Covalent-geometry analyses
+_MolProbity_ additionally assesses outliers in bond lengths #footnote[The
+average distance between nuclei of two bonded atoms.] and bond angles
+#footnote[The geometric angle between two adjacent bonds.] of backbones
+#footnote[The main chain of the polymer.] @molprobity[p. 15]. 
+
+Based on derived parameters @molprobity[p. 15], the instances where the bond
+lengths or bond angles deviate from the ideal value by at least four standard
+deviations are identified and listed as bond length and bond angle outliers,
+respectively @molprobity[p.  15].
+
+==== Ramachandran and rotamer analyses
+#todo[Not really understanding these right now.]
+
+=== Interface
+Multiple command-line programs can be used to run _MolProbity's_ validation
+suite on structures. They can be found in the `/cmdline` directory in the source
+tree. The two programs used in the implementation of this thesis are
+_residue-analysis_ and _clashscore_. 
+
+Firstly, _residue-analysis_ runs all available validations and outputs outliers
+in each residue in the CSV #footnote[Comma Separated Values] format.
+
+Secondly, the _clashscore_ program checks for clashes (@section-clashes) and
+outputs detected clashes in a one clash per line format.
 
 == Ansible
 

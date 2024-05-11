@@ -312,9 +312,10 @@ Later, in 1997, the mmCIF dictionary was approved by the international Committee
 for the Maintenance of the CIF Standard (COMCIFS) @mmcif-approval. It featured
 expanded data types, which included support for protein and nucleic acid polymer
 types, polymer chains, ligands, binding sites, macromolecular assemblies, amino
-acid and nucleotide residues, atomic coordinates, and experimental data @mmcif-ecosystem[p. 3].
+acid and nucleotide residues, atomic coordinates, and experimental data
+@mmcif-ecosystem[p. 3].
 
-While mmCIF already encompassed most of the structural and crystallographic
+While mmCIF already supported most of the structural and crystallographic
 concepts present in the PDB format, additional key categories prefixed with
 `pdbx_` were introduced to the dictionary and some existing categories have been
 extended. This expansion aimed to guarantee complete compatibility and semantic
@@ -342,16 +343,53 @@ structures @pdb-entry-stats. Eighty-four percent of this data was obtained using
 X-ray crystallography, nine percent using electron microscopy, and around six
 percent by nuclear magnetic resonance @pdb-stats-summary.
 
-// TODO: mention OneDep
-#todo[mention OneDep]
+As the number of large structures in the PDB continued to grow, the existing
+infrastructure proved inadequate. That is why the wwPDB initiated the
+development of OneDep, a novel system designed for deposition, biocuration, and
+validation @onedep[p. 536]. 
 
+During the deposition process, the deposited structure is validated using
+community-made tools in OneDep's _validation pipeline_ @onedep[p. 539]. 
+Additionally, a standalone server #footnote[https://validate.wwpdb.org] is
+accessible to depositors, providing them with a platform for refining the
+structure.
 
-#todo[bridge to need for deposition validation]
+#todo[Mention why standalone server is not enough?]
 
-== PDB validation pipeline
-Describe what the pipeline is made of and its outputs.
-Describe how the standalone pipeline is used.
+=== OneDep validation pipeline
+To implement the relevant validation tools, the wwPDB convened so-called
+Validation Task Forces (VTFs) for each experimental method, which compiled
+recommendations for the validation pipeline @pdb-validation[p. 1917].  Based on
+these recommendations, the pipeline was integrated with the OneDep system
+@pdb-validation[p. 1917].
 
+// TODO: Think about explaining the categories a little bit.
+The VTFs recommended that deposited structures undergo validation against
+criteria falling into three categories. The first category encompasses criteria
+for validating the resulting atomic model. The second category involves analysis
+of the supplied experimental data. Lastly, the third category entails examining
+the fit between the supplied experimental data and the atomic model
+@pdb-validation[p. 1917].
+
+The outcome of the validation pipeline is a validation report, which
+incorporates the parsed outputs of the validation tools employed on the
+structure. This report is presented in both a human-readable PDF format and a
+machine-readable XML format, complemented by an XSD schema
+#footnote[https://www.wwpdb.org/validation/schema/] @pdb-validation[p. 1917].
+
+The pipeline is composed of component software tools that validate certain
+aspects of the supplied data @pdb-validation[p. 1922]. Some of these tools are
+publicly available, but access to some was only provided to the wwPDB. One of
+the publicly available tools that was used in the implementation of this thesis
+is _MolProbity_ @molprobity, which we will explore further in
+@section-molprobity.
+
+There are three ways to access the validation pipeline: an anonymous web user
+interface, as part of the deposition and biocuration process, and as a web API
+@pdb-validation[p. 1921]. For the purposes of validations of large numbers of
+structures, the web API is most convenient, as it can be fully automated. It
+offers both a CLI #footnote[Command Line Interface] application and a small
+Python library.
 
 == MolProbity <section-molprobity>
 

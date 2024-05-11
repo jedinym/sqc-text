@@ -1,4 +1,15 @@
 ---
+
+molprobity:
+  type: article
+  title: "MolProbity: all-atom structure validation for macromolecular crystallography"
+  author: [ Vincent B. Chen, W. Bryan Arendall III, Jeffrey J. Headd, Daniel A. Keedy, Robert M. Immormino, Gary J. Kapral, Laura W. Murray, Jane S. Richardson and David C. Richardson]
+  url: https://doi.org/10.1107/S0907444909042073 
+  date: 2010
+  parent:
+    title: Acta Crystallographica
+    volume: 66
+
 chemo-informatics:
   type: book
   title: An Introduction to Chemoinformatics
@@ -40,6 +51,17 @@ mmcif-approval:
     title: Acta Crystallographica
     volume: 52
     issue: a1
+
+onedep:
+  type: article
+  title: "OneDep: Unified wwPDB System for Deposition, Biocuration, and Validation of Macromolecular Structures in the PDB Archive"
+  author: [Jasmine Y. Young]
+  url: https://doi.org/10.1016/j.str.2017.01.004
+  date: 2017
+  parent:
+    title: Structure
+    volume: 25
+    issue: 3
 
 crystallographic-data:
   type: chapter
@@ -151,7 +173,6 @@ pdb-formats:
 pdb-format-guides:
   type: web
   title: File Format Documentation
-
   url:
     value: https://www.wwpdb.org/documentation/file-format
     date: 2024-05-01

@@ -112,12 +112,12 @@ Bank_ is too low for use in some research projects (e.g., iterative validation
 of continuously optimized structures or batch validation of up to hundreds of
 millions of predicted simpler structures).
 
-As a solution, in this thesis, I implement a scalable service which incorporates
-the tools used by the Protein Data Bank validation pipeline and a Python library
-for simple access. Thanks to the implemented queueing system, it is possible to
-run batch validations of thousands of structures. The service is deployed via
-_Ansible_ to the _Kubernetes_ cluster provided by the _MetaCentrum_ virtual
-organization.
+As a solution, in this thesis, I implement _SQC_ (Structure Quality Control), a
+scalable service which incorporates the tools used by the Protein Data Bank
+validation pipeline and a Python library for simple access. Thanks to the
+implemented queueing system, it is possible to run batch validations of
+thousands of structures. The service is deployed via _Ansible_ to the
+_Kubernetes_ cluster provided by the _MetaCentrum_ virtual organization.
 
 #todo[Explain sections of thesis.]
 
@@ -126,7 +126,7 @@ organization.
 = Biomacromolecules
 The IUPAC #footnote[International Union of Pure and Applied Chemistry] defines a
 biopolymer or a biomacromolecule as a macromolecule #footnote[Large molecules 
-consisting of many repeating subunits.] produced by living organisms
+consisting of many repeating subunits (monomers).] produced by living organisms
 @iupac-glossary. These include proteins, nucleic acids and polysaccharrides
 @iupac-glossary. In this chapter, we briefly introduce these three basic
 biomacromolecules.
@@ -169,8 +169,15 @@ consequently, the structures of all proteins within a cell @mol-cell-bio[p.
 101]. During protein synthesis, DNA is transcribed into ribonucleic acid (RNA).
 
 == Polysacharrides
+Monosaccharides, or simple sugars, are the monomer units of polysaccharides
+@iupac-glossary-95[p. 1360]. Polysaccharides are formed by linking
+monosaccharides together through glycosidic linkages.
 
-#todo[Fill in chapter. What is important?]
+Some serve a storage function in a cell, preserving sugars for later use (e.g.
+starch in plants, glycogen in animals). Others function as building material for
+structures of cells @biology[p. 71].
+
+#todo[Should I mention something more?]
 
 = Macromolecular Structural Data
 Macromolecules can be represented in computers in one, two or three dimensions
@@ -203,7 +210,7 @@ atoms and edges represent bonds between them @chemo-informatics[p.2]. Both
 vertices and edges can hold additional information, such as bond orders for
 edges or atomic numbers for vertices @chemo-informatics[p.2].
 
-#todo[Add examples of molecular graphs?]
+#todo[Should I add examples of molecular graphs?]
 
 These molecular graphs can be encoded using various formats @chemical-formats,
 with _line notation_ being one of the simpler methods. A line notation
@@ -352,8 +359,6 @@ Additionally, a standalone server #footnote[https://validate.wwpdb.org] is
 accessible to depositors, providing them with a platform for refining the
 structure.
 
-#todo[Mention why standalone server is not enough?]
-
 === OneDep validation pipeline
 To implement the relevant validation tools, the wwPDB convened so-called
 Validation Task Forces (VTFs) for each experimental method, which compiled
@@ -434,24 +439,119 @@ in each residue in the CSV #footnote[Comma Separated Values] format.
 Secondly, the _clashscore_ program checks for clashes (@section-clashes) and
 outputs detected clashes in a one clash per line format.
 
-== Ansible
+#todo[Work on following subchapters when implementation chapters are done to see what needs to be mentioned.]
 
 == Kubernetes
+// Kubernetes, originally designed by Google, is an open-source system for
+// deployment automation. It enables simple execution of containerized workloads in
+// any compatible cloud environment.
 
-= Design
+// What is a Cluster
+// How does the k8s API work (objects)
+// 
 
-== Requirements
-Functional and non-functional requirements.
+== Ansible
+// TODO: Ansible is an open-source automation tool primarily maintained by Red Hat.
 
-== Architecture
-Describe how and why the architecture was chosen.
+== MetaCentrum
+
+== RabbitMQ <section-rabbitmq>
+
+== Minio <section-minio>
+
+= Requirements
+
+#todo[Think about these some more.]
+
+== Functional requirements
++ The service must support running validations on atomic models.
++ The service must support both the legacy PDB and PDBx/mmCIF formats as inputs.
++ The service must provide a machine-readable output containing results of validations.
++ The service must provide a schema for the output.
++ The service must support many concurrent validations using a queueing system.
++ The service must be easily deployable to the MetaCentrum Kubernetes cluster.
++ The service must be easily scalable to accommodate higher loads.
++ The service must provide a web-accessible API.
++ The service must provide a Python library for accessing the API.
+
+== Non-functional requirements
++ The service must be implemented using the Python programming language.
++ The service must be containerized using Docker.
++ The service must be deployed to the MetaCentrum Kubernetes cluster.
++ The service must use Ansible to automate deployment to the MetaCentrum cluster.
 
 = Implementation
+The result of this thesis is a service named SQC (Structure Quality Control)
+alongside a corresponding Python library, SQClib. This chapter begins with an
+introduction to SQC's high-level architecture and design decisions, followed by
+a closer examination of the implementation.
+
+== Architecture
+Since supporting many concurrent validations is crucial, we needed to devise a
+solution that can handle them effectively. To guarantee that even during high
+load, the system can accept new validation requests, we use a Producer Consumer
+system design pattern.
+
+=== Producer Consumer pattern
+#todo[Does this chapter belong to tools and methods?]
+
+In the Producer Consumer system design pattern, producers generate data or
+events and put them in a shared queue. Consumers then retrieve the data or
+events from the queue and process them (@figure-producer-consumer). The main
+benefit of using the pattern is the decoupling of producers and consumers.
+
+While a consumer is occupied processing prior data or events, producers can
+continue adding more data to the queue. This additional data awaits consumption
+and processing once at least one consumer completes all its tasks. Adding data
+to the queue is fast compared to processing, ensuring producers encounter no
+delays due to consumers.
+
+During periods of increased load, when the queue accumulates more data and
+consumers are slow in processing it, new consumers accessing the shared queue
+can be created.
+
+#figure(
+  caption: "Diagram of the producer consumer pattern. Producers produce new data in parallel and consumers consume and process data in parallel.",
+  image("img/producer_consumer.svg"),
+) <figure-producer-consumer>
+
+=== Producer Consumer pattern in SQC
+To implement the Producer Consumer pattern in SQC, we utilize RabbitMQ
+(@section-rabbitmq) and MinIO (@section-minio).
+
+When a user submits a validation request through SQClib (refer to
+@section-sqclib), the library code creates a new object in a MinIO bucket. This
+object contains the atomic model along with associated metadata. The library
+subsequently returns the pending request's ID to the user. The user uses this ID
+to invoke another SQClib function, which awaits the completion of the request.
+
+Upon the creation of the object, Minio publishes a bucket notification event to
+the `requests` exchange in RabbitMQ. This notification contains the identifier
+of the new request.
+
+The SQC server listens to the `requests` exchange. Upon receiving a notification
+from MinIO, it downloads the associated atomic model of the request to temporary
+storage and runs validations on it.
+
+Once the atomic model is validated, SQC uploads the results to another MinIO
+bucket. When the result is submitted, the library returns the results of the
+validation to the user.
+
+In our scenario, users submitting validation requests act as producers,
+RabbitMQ's exchange acts as a shared queue, and the SQC server acts as a
+consumer. During periods of high load, additional instances of the SQC server
+can be created, accessing the same shared queue. This approach boosts the
+system's throughput.
+
+#figure(
+  caption: "UML Sequence Diagram of an SQC validation request.", 
+  image("img/sequence.png"),
+)
 
 == Validation Service
 Describe dockerification. MolProbity output parsing.
 
-== Validation Client Library
+== Validation Client Library <section-sqclib>
 
 = Deployment
 Describe deployment architecture (in metacentrum k8s environment).

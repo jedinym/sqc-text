@@ -1,5 +1,21 @@
 ---
 
+kubernetes:
+  type: Web
+  url:
+    value: https://kubernetes.io/
+    date: 2024-05-12
+
+biology:
+  type: book
+  author: [Neil A. Campbell, Jane Reece]
+  title: Biology
+  edition: 8
+  date: 2008
+  serial-number:
+    isbn: 9781442502215 
+  publisher: Benjamin Cummings
+
 molprobity:
   type: article
   title: "MolProbity: all-atom structure validation for macromolecular crystallography"

@@ -1,0 +1,109 @@
+<svg version="1.1" baseProfile="full" width="576.0" height="232.0" viewBox="0 0 576 232" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events">
+	<desc >[Producer 1] -&gt; [Shared Queue]
+	[Producer 2] -&gt; [Shared Queue]
+	[Producer 3] -&gt; [Shared Queue]
+	[Producer 4] -&gt; [Shared Queue]
+	
+	[Shared Queue] -&gt; [Consumer 1]
+	[Shared Queue] -&gt; [Consumer 2]</desc>
+	<g stroke-width="1.0" text-align="left" font="12pt Helvetica, Arial, sans-serif" font-size="12pt" font-family="Helvetica" font-weight="bold" font-style="normal">
+		<g font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" stroke-width="3.0" stroke-linejoin="round" stroke-linecap="round" stroke="#33322E">
+			<g stroke="transparent" fill="transparent">
+				<rect x="0.0" y="0.0" height="232.0" width="576.0" stroke="none"></rect>
+			</g>
+			<g transform="translate(8, 8)" fill="#33322E">
+				<g transform="translate(20, 20)" fill="#33322E" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal">
+					<path d="M50.0 32.0 L50 52 L190.92918496791157 76.15928885164199 L190.9 76.2 " fill="none"></path>
+					<path d="M183.5 80.3 L190.9 76.2 L185.3 69.8 L197.5 77.3 Z"></path>
+					<path d="M190.0 32.0 L190 52 L222.96030354010125 68.95101324919493 L223.0 69.0 " fill="none"></path>
+					<path d="M214.6 70.6 L223.0 69.0 L219.5 61.2 L228.9 72.0 Z"></path>
+					<path d="M330.0 32.0 L330 52 L297.0396964598987 68.95101324919493 L297.0 69.0 " fill="none"></path>
+					<path d="M300.5 61.2 L297.0 69.0 L305.4 70.6 L291.1 72.0 Z"></path>
+					<path d="M470.0 32.0 L470 52 L329.07081503208843 76.15928885164199 L329.1 76.2 " fill="none"></path>
+					<path d="M334.7 69.8 L329.1 76.2 L336.5 80.3 L322.5 77.3 Z"></path>
+					<path d="M226.9 104.0 L185.5 124 L185.5 137.33333333333334 L185.5 137.3 " fill="none"></path>
+					<path d="M180.2 130.7 L185.5 137.3 L190.8 130.7 L185.5 144.0 Z"></path>
+					<path d="M293.1 104.0 L334.5 124 L334.5 137.33333333333334 L334.5 137.3 " fill="none"></path>
+					<path d="M329.2 130.7 L334.5 137.3 L339.8 130.7 L334.5 144.0 Z"></path>
+					<g data-name="Producer 1">
+						<g fill="#eee8d5" stroke="#33322E" data-name="Producer 1">
+							<rect x="0.0" y="0.0" height="32.0" width="100.0" data-name="Producer 1"></rect>
+						</g>
+						<g transform="translate(0, 0)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Producer 1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Producer 1">
+								<text x="42.0" y="14.1" stroke="none" text-anchor="middle" data-name="Producer 1">Producer 1</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="Shared Queue">
+						<g fill="#eee8d5" stroke="#33322E" data-name="Shared Queue">
+							<rect x="197.5" y="72.0" height="32.0" width="125.0" data-name="Shared Queue"></rect>
+						</g>
+						<g transform="translate(197.5, 72)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Shared Queue">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Shared Queue">
+								<text x="54.5" y="14.1" stroke="none" text-anchor="middle" data-name="Shared Queue">Shared Queue</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="Producer 2">
+						<g fill="#eee8d5" stroke="#33322E" data-name="Producer 2">
+							<rect x="140.0" y="0.0" height="32.0" width="100.0" data-name="Producer 2"></rect>
+						</g>
+						<g transform="translate(140, 0)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Producer 2">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Producer 2">
+								<text x="42.0" y="14.1" stroke="none" text-anchor="middle" data-name="Producer 2">Producer 2</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="Producer 3">
+						<g fill="#eee8d5" stroke="#33322E" data-name="Producer 3">
+							<rect x="280.0" y="0.0" height="32.0" width="100.0" data-name="Producer 3"></rect>
+						</g>
+						<g transform="translate(280, 0)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Producer 3">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Producer 3">
+								<text x="42.0" y="14.1" stroke="none" text-anchor="middle" data-name="Producer 3">Producer 3</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="Producer 4">
+						<g fill="#eee8d5" stroke="#33322E" data-name="Producer 4">
+							<rect x="420.0" y="0.0" height="32.0" width="100.0" data-name="Producer 4"></rect>
+						</g>
+						<g transform="translate(420, 0)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Producer 4">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Producer 4">
+								<text x="42.0" y="14.1" stroke="none" text-anchor="middle" data-name="Producer 4">Producer 4</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="Consumer 1">
+						<g fill="#eee8d5" stroke="#33322E" data-name="Consumer 1">
+							<rect x="131.0" y="144.0" height="32.0" width="109.0" data-name="Consumer 1"></rect>
+						</g>
+						<g transform="translate(131, 144)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Consumer 1">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Consumer 1">
+								<text x="46.5" y="14.1" stroke="none" text-anchor="middle" data-name="Consumer 1">Consumer 1</text>
+								
+							</g>
+						</g>
+					</g>
+					<g data-name="Consumer 2">
+						<g fill="#eee8d5" stroke="#33322E" data-name="Consumer 2">
+							<rect x="280.0" y="144.0" height="32.0" width="109.0" data-name="Consumer 2"></rect>
+						</g>
+						<g transform="translate(280, 144)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Consumer 2">
+							<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Consumer 2">
+								<text x="46.5" y="14.1" stroke="none" text-anchor="middle" data-name="Consumer 2">Consumer 2</text>
+								
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>

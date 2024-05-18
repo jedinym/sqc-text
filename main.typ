@@ -1,12 +1,33 @@
 #import "@preview/unify:0.5.0": num, unit
 #import "@preview/big-todo:0.2.0": *
+#import "@preview/codly:0.2.1": *
 
 #set page(margin: 1.75in)
 #set par(leading: 0.55em, justify: true)
 #set text(font: "New Computer Modern")
-#show raw: set text(font: "New Computer Modern Mono")
+#show raw: set text(font: "Noto Sans Mono")
 #show heading: set block(above: 1.4em, below: 1em, )
 #set heading(numbering: "1.1")
+#show figure: set block(breakable: true)
+
+#show: codly-init.with()
+
+#let icon(codepoint) = {
+  box(
+    height: 0.8em,
+    baseline: 0.05em,
+    image(codepoint)
+  )
+  h(0.1em)
+}
+
+#codly(
+  languages: (
+    python: (name: "Python", icon: icon("img/brand-python.svg"), color: rgb("#3380ff"))
+  ),
+  enable-numbers: true,
+)
+
 
 // TODO: remove
 #todo_outline
@@ -394,15 +415,18 @@ offers both a CLI #footnote[Command Line Interface] application and a small
 Python library.
 
 == MolProbity <section-molprobity>
-// TODO: explain why it was chosen
 _MolProbity_ is the single validation tool used in this thesis. It provides
 evaluation of atomic model quality for biomacromolecules @molprobity[p. 12]. The
 current maintainers are Richardson Laboratory of Duke University. Its source
 code can be found in their GitHub repository
 #footnote[https://github.com/rlabduke/MolProbity].
 
+_MolProbity_ was chosen because, unlike other tools in the PDB validation
+pipeline, it is freely available and provides multiple validations in a single
+package.
+
 The software package contains a web interface for simple use but also a command
-line interface for bulk validations.
+line interface for bulk validations, which is more useful for automated use.
 
 === Validations
 In this section, we briefly introduce the various validations that _MolProbity_
@@ -457,7 +481,7 @@ outputs detected clashes in a one clash per line format.
 
 == RabbitMQ <section-rabbitmq>
 
-== Minio <section-minio>
+== MinIO <section-minio>
 
 = Requirements
 
@@ -482,9 +506,14 @@ outputs detected clashes in a one clash per line format.
 
 = Implementation
 The result of this thesis is a service named SQC (Structure Quality Control)
-alongside a corresponding Python library, SQClib. This chapter begins with an
-introduction to SQC's high-level architecture and design decisions, followed by
-a closer examination of the implementation.
+alongside a corresponding Python library, SQClib. The source code is available
+in the _sb-ncbr_ (Structural bioinformatics research group at National Centre
+for Biomolecular Research) organization on GitHub for both SQC
+#footnote[https://github.com/sb-ncbr/sqc] and SQCLib
+#footnote[https://github.com/sb-ncbr/sqclib]. 
+
+This chapter begins with an introduction to SQC's high-level architecture and
+design decisions, followed by a closer examination of the implementation.
 
 == Architecture
 Since supporting many concurrent validations is crucial, we needed to devise a
@@ -549,14 +578,206 @@ system's throughput.
 )
 
 == Validation Service
-Describe dockerification. MolProbity output parsing.
+// TODO: running MolProbity and parsing outputs, worker model
+
+=== Source code overview
+In this chapter, we explore SQC's source code repository and provide an overview
+of its elements.
+
+The `ansible/` directory contains _Ansible_ playbooks and inventories, used to
+deploy SQC to _MetaCentrum_. @section-automation goes further into the
+deployment setup.
+
+The `compose.yaml` file contains the configuration file for _Docker Compose_
+#footnote[https://docs.docker.com/compose/]. Using it, developers can start a
+local instance of SQC for simpler development and testing. _Docker Compose_
+starts the RabbitMQ, MinIO and SQC containers, and exposes the default MinIO
+port `9000`. The local instance can then be accessed for testing using the
+SQCLib library.
+
+The `Dockerfile` contains instructions for _Docker_ to build SQC's image.
+See more in @section-containerization.
+
+The `pyproject.toml` contains definitions pertaining to the SQC Python project.
+It defines the required Python version to run the project and the project's
+production and development dependencies. To manage dependencies, we utilize
+_PDM_ #footnote[https://pdm-project.org/en/latest/], a modern python dependency
+manager. _PDM_ simplifies various development tasks, including dependency
+resolution and updates, virtual environment support, and management of user
+scripts.
+
+The `pdm.lock` file is created by _PDM_ and contains exact versions of packages
+required to run SQC. The advantage of using a lockfile is that during the Docker
+image building process, dependencies are not resolved again, but extracted from
+the lockfile, which guarantees the reproducibility of all builds.
+
+The `sqc/` directory contains the source code of the SQC validation service.
+
+=== Containerization <section-containerization>
+With each validation tool potentially having its own dependencies, a key
+challenge in implementing the validation service is ensuring its simple setup.
+
+We chose to simplify the setup by employing containerization, specifically
+Docker. Containerizing the validation service offers additional advantages,
+including straightforward deployment, isolation from the host system, and
+consistent results, as all the dependencies of the tools (both software
+dependencies and reference data) can be controlled.
+
+The _Dockerfile_ utilizes a multi-stage build, the first stage installs the
+necessary packages, fetches _MolProbity's_ reference data and source code from
+GitHub and builds _MolProbity's_ binaries. In the second stage, SQC's dependencies
+are installed. This method was selected to reduce the Docker image's build time.
+Building _MolProbity_ can be time-consuming, taking up to an hour on a recent
+laptop. Docker can cache unchanged layers between builds, improving build times.
+
+Since _MolProbity's_ results are dependent on reference data, the repositories
+containing it were forked into the _sb-ncbr_ organization on GitHub. These are
+then cloned during the image build.
+
+=== Running validations
+The core of the validation service is utilizing the _MolProbity_ suite to
+validate atomic models and parsing its outputs into a validation report.
+
+The SQC server listens on messages in the `requests` exchange in RabbitMQ. When
+a request arrives, the respective atomic model is fetched from _MinIO_ and
+stored in the `/tmp` directory.
+
+Since _MolProbity_ exclusively supports validating models stored in the legacy
+PDB format, it's necessary to initially convert the PDBx/mmCIF atomic models to
+this legacy format. This is done using the _Gemmi_
+#footnote[https://gemmi.readthedocs.io/en/latest/] library for structural
+biology. _Gemmi_ has multiple features useful in macromolecular biology, but
+supports format conversions using the `gemmi convert` subprogram. After the
+structure is fetched from _MinIO_, it is converted to the legacy format by _Gemmi_.
+
+Another constraint of _MolProbity_ is that it can only operate on PDB files
+containing only a single model. It is possible for PDB files to contain an
+ensemble of models, something that is typical for structures determined by
+nuclear magnetic resonance. We utilize the _BioPython_
+#footnote[https://biopython.org/] library to split the original PDB file into
+multiple single-model files. Once the files are prepared, MolProbity's programs
+are executed on each one. The results of the validations are then returned on a
+per-model basis.
+
+After the input files are preprocessed, _MolProbity's_ _residue-analysis_
+program is executed with the path to the structure as the first argument. The
+process is started and managed using the built-in _subprocess_ library. The
+output of the process is captured and then parsed using the _csv_ built-in
+library into the format of the validation report.
+
+The second program to be executed is _clashscore_. The output of _clashscore_ is
+not in the CSV format, and therefore requires quite intricate parsing. The
+output is parsed into the validation report as well.
+
+Before converting the validation report to JSON and sending it to _MinIO_, we
+add the versions of the reference data used for validation to the model. These
+versions are represented as URLs of the git repositories and commit hashes of
+the latest commits.
+
+=== Validation reports
+We decided to use the JSON format for the validation reports, as it's a simple
+human-readable format that is often used in the industry. To ensure that the
+reports are convenient to use, we utilize _JSON Schema_
+#footnote[https://json-schema.org/], a vocabulary used to annotate JSON
+documents. By providing a _JSON Schema_, we allow users to easily parse the
+validation reports.
+
+To facilitate the generation of _JSON Schema_, we use the _Pydantic_
+#footnote[https://docs.pydantic.dev/latest/] Python library. _Pydantic_ is
+primarily used for validation of external data, but can also be
+used to emit _JSON Schema_.
+
+With _Pydantic_ a _model_ of the output is created as a Python object. From this
+model, it is possible to generate a _JSON Schema_. Once populated with results
+from _MolProbity_, the model is converted into JSON and returned to the user in
+that format.
+
+This approach offers the advantage that as the model expands in the future, the
+schema is automatically adjusted accordingly.
+
+#todo[Is this multipage figure a typographic crime?]
+
+#figure(
+  grid(
+    rows: 2,
+    gutter: 2em,
+    ```python
+    import pydantic
+
+    class SubObject(pydantic.BaseModel):
+        integer: int
+        opt_string: str | None
+
+    class ExampleObject(pydantic.BaseModel):
+        fields: list[str]
+        sub: SubObject
+    ```,
+    ```JSON
+    {
+      "$defs": {
+        "SubObject": {
+          "properties": {
+            "integer": {
+              "title": "Integer",
+              "type": "integer"
+            },
+            "opt_string": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Opt String"
+            }
+          },
+          "required": [
+            "integer",
+            "opt_string"
+          ],
+          "title": "SubObject",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "fields": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Fields",
+          "type": "array"
+        },
+        "sub": {
+          "$ref": "#/$defs/SubObject"
+        }
+      },
+      "required": [
+        "fields",
+        "sub"
+      ],
+      "title": "ExampleObject",
+      "type": "object"
+    }
+    ```,
+  ),
+  caption: "An example of a small Pydantic model and its generated JSON Schema. The schema describes the types of every field of the model."
+)
 
 == Validation Client Library <section-sqclib>
+In order to send a validation request to the SQC server, it is necessary to use
+the SQCLib Python package. This package includes a library API for use in Python
+code and a small command-line application for uploading structures from the
+system shell.
+
+// TODO: describe API, documentation, release process, python package
+// maybe some examples of running, built-in script
 
 = Deployment
 Describe deployment architecture (in metacentrum k8s environment).
 
-== Automation
+== Automation <section-automation>
 Describe how to deploy SQC to a k8s namespace. 
 Describe ansible setup (vaults, inventories).
 Don't forget kubectl configuration.

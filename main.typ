@@ -472,10 +472,9 @@ outputs detected clashes in a one clash per line format.
 
 // What is a Cluster
 // How does the k8s API work (objects)
-// 
 
 == Ansible
-// TODO: Ansible is an open-source automation tool primarily maintained by Red Hat.
+// TODO: _Ansible_ is an open-source automation tool primarily maintained by Red Hat. 
 
 == MetaCentrum
 The _MetaCentrum_ virtual organization provides computing resources to all
@@ -719,6 +718,7 @@ schema is automatically adjusted accordingly.
 
 #todo[Is this multipage figure a typographic crime?]
 
+#show figure: set block(breakable: true)
 #figure(
   grid(
     rows: 2,
@@ -786,15 +786,121 @@ schema is automatically adjusted accordingly.
   ),
   caption: "An example of a small Pydantic model and its generated JSON Schema. The schema describes the types of every field of the model."
 )
+#show figure: set block(breakable: false)
 
 == Validation Client Library <section-sqclib>
 In order to send a validation request to the SQC server, it is necessary to use
 the SQCLib Python package. This package includes a library API for use in Python
 code and a small command-line application for uploading structures from the
-system shell.
+system shell. The library is easily installable and distributed as a Python
+package.
 
-// TODO: describe API, documentation, release process, python package
-// maybe some examples of running, built-in script
+The implementation wraps the Python API provided by _MinIO_
+#footnote[https://min.io/docs/minio/linux/developers/python/API.html], while
+providing a few additional validations.
+
+=== Python API
+The main part of the library consists of a simple Python API. Users utilise the
+`SQCClient` object to interact with SQC instances. To create the object, users
+must pass their credentials to the client, which will then use them to
+communicate with SQC. Optionally, the users can specify a different URL of the
+SQC server, which can be useful when running SQC locally or having a separately
+deployed instance. The client offers the following methods:
+
++ The `submit(path)` method submits a structure to an SQC instance and returns
+  an ID of the pending request. The structure is specified via a filesystem
+  path. This method can be useful when validating a lot of structures, as they
+  can be all uploaded first and all awaited later.
+
++ The `get_result(request_id, timeout_s)` method is used in combination with the
+  `submit(path)` method. It takes an ID of a pending request as an argument and
+  blocks until the SQC server returns a validation report.
+
++ The `validate(path, timeout_s)` is a combination of the `submit` and
+  `get_result` methods. It submits a request to the SQC server and blocks until a
+  report is returned. This method offers the simplest API and is useful when
+  validating a single structure.
+
+#figure(
+  ```python
+  from os import environ
+  from sqclib import SQCClient
+
+  client = SQCClient(
+    access_key=environ.get("SQC_ACCESS_KEY"),
+    secret_key=environ.get("SQC_SECRET_KEY"),
+  )
+
+  requests = []
+  for path in ["183d.pdb", "2pde.mmcif"]:
+    id = client.submit(path)
+    requests.append((path, id))
+
+  reports = []
+  for path, id in requests:
+    report = client.get_result(id)
+    reports.append((path, report))
+  ```,
+  caption: "An example Python script showing SQCLib usage. Once the client is initialized, two structures are submitted to the SQC instance and their reports awaited."
+)
+
+=== Shell API
+The library also contains the program `sqc` that can be used to submit
+structures for validation directly from the system shell. To use SQC, the
+`SQC_ACCESS_KEY` and `SQC_SECRET_KEY` environment variables must be set with
+before-provided credentials. 
+
+#figure(
+  ```sh
+  export SQC_ACCESS_KEY=access
+  export SQC_SECRET_KEY=secret
+
+  sqc structure.pdb
+  sqc structure.mmcif
+  ```,
+  caption: "An example of submitting a structure for validation using the sqc program. Credentials must be provided by the SQC administrators."
+)
+
+By default, the `sqc` program submits validations to the public SQC instance. To
+use a locally running instance of SQC, it is possible to use the `--url` and
+`--insecure` parameters.
+
+#figure(
+  ```sh
+  # "minioadmin" is the default key of the local instance
+  export SQC_ACCESS_KEY=minioadmin
+  export SQC_SECRET_KEY=minioadmin
+
+  # following two calls are equivalent
+  sqc --insecure --url localhost:9000 structure.mmcif
+  sqc -k -u localhost:9000 structure.mmcif
+  ```,
+  caption: "An example of submitting a structure for validation to a local instance of SQC. The local instance uses default \"minioadmin\" credentials."
+)
+
+=== Documentation
+Since the SQCLib library is the sole entry point to the SQC system, thorough
+documentation is essential. To generate documentation from the code, we use
+_Sphinx_, a documentation generator designed for Python that supports various
+output formats #footnote[https://www.sphinx-doc.org/en/master/].
+
+To automatically generate documentation from Python docstrings, we use the
+_autodoc_ extension to _Sphinx_. _Autodoc_ parses Google-style docstrings
+#footnote[https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings]
+and generates a reference for a Python module.
+
+Furthermore, it is important that the documentation is easily accessible. For
+this end, we use _GitHub Pages_ #footnote[https://pages.github.com/], a system
+that allows free hosting of websites directly from a GitHub repository.
+
+To automate the process, we utilize _GitHub Actions_
+#footnote[https://github.com/features/actions], a CI/CD solution from GitHub,
+that allows running automations on GitHub repository events. When a new commit
+is added to the `main` branch in the SQCLib GitHub repository, the documentation
+is built and uploaded to _GitHub Pages_. This process guarantees that the
+accessible documentation is always up to date. The documentation is then
+available in the `sb-ncbr` subdomain of the github.io domain
+#footnote[https://sb-ncbr.github.io/sqclib/].
 
 = Deployment
 Describe deployment architecture (in metacentrum k8s environment).

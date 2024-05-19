@@ -578,7 +578,10 @@ system's throughput.
 )
 
 == Validation Service
-// TODO: running MolProbity and parsing outputs, worker model
+In this chapter, we introduce the validation service and its key components.
+First, we discuss the service's source code. Next, we examine containerization.
+Then, we explore how the MolProbity suite is utilized. Finally, we inspect the
+service's output format.
 
 === Source code overview
 In this chapter, we explore SQC's source code repository and provide an overview

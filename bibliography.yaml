@@ -1,5 +1,11 @@
 ---
 
+metacentrum-k8s:
+  type: Web
+  url: 
+    value: https://docs.cerit.io/docs/rancher.html
+    date: 2024-05-19
+
 kubernetes:
   type: Web
   url:

@@ -478,8 +478,27 @@ outputs detected clashes in a one clash per line format.
 // TODO: Ansible is an open-source automation tool primarily maintained by Red Hat.
 
 == MetaCentrum
+The _MetaCentrum_ virtual organization provides computing resources to all
+students and employees of academic institutions in the Czech Republic.
+Membership is free, with the requirement that members acknowledge _MetaCentrum_
+in their publications.
+
+It offers many different platforms for computation across the Czech Republic,
+but crucially for this thesis, also offers a Kubernetes cluster @metacentrum-k8s
+via a _Rancher_ #footnote[https://www.rancher.com/] instance.
 
 == RabbitMQ <section-rabbitmq>
+_RabbitMQ_ is a messaging and streaming broker, that supports several standard
+messsaging protocols. It is used as a mediator between producers and
+consumers of messages.
+
+Publishers (producers) publish a message to an exchange #footnote[When the AMQP
+0-9-1 protocol is used, other protocols may use other destinations.]. The
+messesage is then routed to a queue. If the queue has any active consumers, the
+message is delivered to them. If no consumers are active, the message is cached
+on disk and delivered at next opportunity.
+
+#todo[Types of exchanges?]
 
 == MinIO <section-minio>
 

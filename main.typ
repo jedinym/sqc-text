@@ -76,8 +76,13 @@
 Hereby I declare that this paper is my original authorial work, which I have
 worked out on my own. All sources, references, and literature used or excerpted
 during elaboration of this work are properly cited and listed in complete
-reference to the due source.  
+reference to the due source. 
 
+During the preparation of this thesis, I used the following AI tools:
+- Grammarly for checking grammar,
+- ChatGPT to improve my writing style.
+I declare that I used these tools in accordance with the principles of academic
+integrity. I checked the content and take full responsibility for it.
 
 #align(right)[
   Martin Jediný 
@@ -96,6 +101,21 @@ reference to the due source.
   Computational resources were provided by the e-INFRA CZ project (ID:90254),
   supported by the Ministry of Education, Youth and Sports of the Czech Republic.
 ]
+
+#pagebreak()
+
+#heading(numbering: none, outlined: false)[
+  Abstract
+]
+
+#align(bottom)[
+  #heading(numbering: none, outlined: false)[
+    Keywords
+  ]
+
+  Protein Data Bank, PDB, biomacromolecules,
+]
+
 
 #pagebreak()
 
@@ -800,7 +820,7 @@ The implementation wraps the Python API provided by _MinIO_
 providing a few additional validations.
 
 === Python API
-The main part of the library consists of a simple Python API. Users utilise the
+The main part of the library consists of a simple Python API. Users utilize the
 `SQCClient` object to interact with SQC instances. To create the object, users
 must pass their credentials to the client, which will then use them to
 communicate with SQC. Optionally, the users can specify a different URL of the
@@ -903,13 +923,71 @@ available in the `sb-ncbr` subdomain of the github.io domain
 #footnote[https://sb-ncbr.github.io/sqclib/].
 
 = Deployment
-Describe deployment architecture (in metacentrum k8s environment).
+To deploy the main instance of SQC, we chose the Rancher _Kubernetes_
+distribution provided by _MetaCentrum_
+#footnote[https://rancher.cloud.e-infra.cz]. Since we had already decided to
+utilize containerization and needed simple scaling, _Kubernetes_ was the obvious
+choice. 
+
+In this chapter we first explore the array of objects used to deploy SQC
+to _Kubernetes_ and then we describe how the process of deployment is automated
+using _Ansible_.
+
+== Kubernetes project setup
+To deploy SQC to a _Kubernetes_ project, we take advantage of various
+_Kubernetes_ objects.
+
+The credentials for the _MinIO_ administrator account and _RabbitMQ_ user are
+stored using a Secret. These secrets are then copied to an environment variable
+when creating respective Deployments.
+
+The _MinIO_ object store requires storage for objects, so we create a Persistent
+Volume Claim (PVC), that is later mounted into a _MinIO_ Deployment. This
+guarantees that the data stored by _MinIO_ are persistent even across Pod
+restarts. Similarly, _RabbitMQ_ requires some storage for buffering of messages
+in queues. Again, we create a PVC and later mount it into the _RabbitMQ_
+Deployment.
+
+To deploy _MinIO_, _RabbitMQ_ and SQC, we create three Deployments. The SQC
+Deployment is unique in the fact that the number replicas in the ReplicaSet is
+configurable. By specifying a higher number of replicas, the throughput of the
+service will be increased.
+
+Exposing _MinIO_, _RabbitMQ_, and SQC is achieved by utilizing a _Kubernetes_
+Service. Each of the three Deployments is exposed by a Service, allowing Pods to
+communicate over the network.
+
+Lastly, we create two Ingresses, exposing the main _MinIO_ and the _MinIO_
+management ports. We utilize special annotations provided by MetaCentrum
+#footnote[https://docs.cerit.io/docs/kubectl-expose.html], which create a
+subdomain under the `dyn.cloud.e-infra.cz` domain and automatically enable TLS
+to use HTTPS.
 
 == Automation <section-automation>
-Describe how to deploy SQC to a k8s namespace. 
-Describe ansible setup (vaults, inventories).
-Don't forget kubectl configuration.
-Don't forget docker image build and push.
+To automate the deployment of SQC, we use two _Ansible_ playbooks:
+`deploy-sqc.yaml`, which creates all _Kubernetes_ objects required for a minimal
+setup of SQC and `teardown-sqc.yaml`, which deletes all objects pertaining to
+SQC.
+
+Both playbooks utilize an _Ansible_ vault, which contains secrets needed to
+deploy SQC, like the token to _MetaCentrum's_ _Kubernetes_ API. When running the
+playbooks, a vault password is entered, which then decrypts the vault and makes
+the secrets available to _Ansible_ as inventory variables.
+
+The inventory only contains one host: `metacentrum`, because it is the only
+deployment target as of now. However, new deployment targets can be easily added
+in the future.
+
+The inventory for the host `metacentrum`, contains some important values for the
+deployment:
++ `k8s_sqc_namespace` specifies the _Kubernetes_ project that SQC will be
+  deployed to.
++ `k8s_sqc_replicas` specifies the base number of replicas of SQC pods.
++ `k8s_sqc_image` specifies the repository, name and tag of the SQC Docker image.
+
+When deploying a new version of SQC, it is necessary to rebuild the image and
+push it to a docker repository, so _Kubernetes_ can then pull it during the
+deployment.
 
 = Evaluation
 Compare aspects of the service to the PDB standalone validation server.
@@ -931,3 +1009,7 @@ Describe stuff that's missing or can be improved.
 #pagebreak()
   
 #bibliography("bibliography.yaml", style: "ieee") 
+
+#pagebreak()
+
+= Appendix

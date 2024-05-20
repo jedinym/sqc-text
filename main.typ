@@ -483,18 +483,80 @@ in each residue in the CSV #footnote[Comma Separated Values] format.
 Secondly, the _clashscore_ program checks for clashes (@section-clashes) and
 outputs detected clashes in a one clash per line format.
 
-#todo[Work on following subchapters when implementation chapters are done to see what needs to be mentioned.]
-
 == Kubernetes
-// Kubernetes, originally designed by Google, is an open-source system for
-// deployment automation. It enables simple execution of containerized workloads in
-// any compatible cloud environment.
+_Kubernetes_ is an open-source platform designed for automating the deployment,
+scaling, and operation of containerized applications. It organizes these
+applications into clusters, which are sets of nodes (machines) that run
+containerized applications. A Kubernetes cluster typically includes a control
+plane, which manages the overall state and lifecycle of the applications, and
+worker nodes, which run the containers.
 
-// What is a Cluster
-// How does the k8s API work (objects)
+Central to _Kubernetes_ is its API, which serves as the primary interface for
+interaction with the cluster. Users and automated systems communicate with the
+API to deploy, manage, and monitor applications. The API accepts requests in a
+declarative manner, meaning users specify the desired state of the system, and
+Kubernetes takes the necessary actions to achieve and maintain that state.
+
+_Kubernetes_ objects are persistent entities within the system that represent
+the state and configuration of various cluster components. Key objects for this
+thesis include:
+
++ *Pods*: The smallest deployable unit that can be created, managed, and
+  run. It encapsulates one or more containers that share the same network
+  namespace and storage. Pods are designed to host a single instance of
+  a running process in a cluster, making them the basic building blocks of a
+  Kubernetes application.
+
++ *Replicas*: Refer to multiple instances of a Pod running concurrently to ensure
+  high availability and reliability. Kubernetes uses ReplicaSets, often defined
+  within Deployments, to manage the desired number of replicas. This ensures that
+  the specified number of pod replicas are always running, allowing for automatic
+  scaling, self-healing, and load balancing across the cluster.
+
++ *Deployments*: Manage the deployment and scaling of application replicas. They
+  ensure that the desired number of pod replicas are running and can update pods
+  in a controlled manner.
+
++ *Persistent Volume Claims (PVCs)*: Abstract the storage resources that a pod can
+  use. A PVC requests storage resources from the cluster, which are then
+  provisioned by Persistent Volumes (PVs).
+
++ *Ingresses*: Manage external access to the services in a cluster, typically HTTP.
+  An Ingress controller watches the Ingress resources and manages the routing of
+  external traffic to the appropriate services.
+
++ *Services*: Define a logical set of pods and a policy by which to access them.
+  Services enable communication within the cluster and provide stable IP addresses
+  and DNS names for pods, meaning pods can communicate easily.
+
++ *Secrets*: Store sensitive information such as passwords, tokens, and keys.
+  Secrets allow sensitive data to be used in pods without exposing it directly in
+  pod specifications.
+
+These objects are defined in YAML or JSON format and submitted to the
+_Kubernetes_ API, which manages their lifecycle.
 
 == Ansible
-// TODO: _Ansible_ is an open-source automation tool primarily maintained by Red Hat. 
+_Ansible_ is an open-source automation tool widely used for IT orchestration,
+configuration management, and application deployment. It operates through
+playbooks, which are scripts written in the YAML format that define a series of
+tasks to be executed on managed nodes. Each task specifies an action, such as
+installing software or configuring network settings, and is applied to hosts
+listed in an inventory. Inventories categorize hosts into groups, allowing for
+targeted management and execution of tasks across different subsets of
+infrastructure.
+
+A fundamental aspect of _Ansible_ is its focus on idempotency. This ensures that
+tasks, when executed, bring the system to a desired state without causing
+additional changes if the system is already in that state. This property is
+crucial for maintaining consistency and preventing unintended side effects
+during repeated executions.
+
+_Ansible_ also supports the integration of custom modules to extend its
+capabilities. These custom modules allow for the automation of specialized
+tasks. In this thesis, we utilize the `kubernetes.core.k8s` module
+#footnote[https://docs.ansible.com/ansible/latest/collections/kubernetes/core/k8s_module.html],
+for deployment automation.
 
 == MetaCentrum
 The _MetaCentrum_ virtual organization provides computing resources to all
@@ -519,7 +581,31 @@ on disk and delivered at next opportunity.
 
 #todo[Types of exchanges?]
 
-== MinIO <section-minio>
+== MinIO Object Store <section-minio>
+// TODO: Why MinIO and not a traditional database?
+// To store atomic structures and validation reports, a storage solution is required. 
+
+_MinIO_ is an object store inspired by and compatible with Amazon's S3 service
+#footnote[https://aws.amazon.com/s3/]. _MinIO_ is simple to deploy, as it's
+intended for use in the cloud, including using _Kubernetes_.
+
+_MinIO_ offers high-performance storage of data by storing them as objects in
+_buckets_. A bucket is simply a container for objects, where each object has a
+key that uniquely identifies it in a _bucket_. Each object can also contain
+additional text metadata.
+
+Access to _MinIO_ is mediated via an HTTP API originally designed for Amazon's
+S3 service. However, _MinIO_ also offers software development kits (SDKs) for
+multiple programming languages, including Python.
+
+Crucially, for this thesis, _MinIO_ can monitor events _bucket_ and publish
+notifications via multiple protocols
+#footnote[https://min.io/docs/minio/kubernetes/upstream/administration/monitoring.html].
+One of the supported protocols is _AMQP 0-9-1_, which is the protocol used by
+_RabbitMQ_. A few examples of such events are:
+- `s3:ObjectCreated:Put` which occurs when a new object is added to a bucket.
+- `s3:ObjectRemoved:Delete` which occurs when an object is deleted from a bucket.
+- `s3:ObjectCreated:CompleteMultipartUpload` which occurs when an object larger than 5MiB is added to a bucket. 
 
 = Requirements
 

@@ -217,8 +217,7 @@ Some serve a storage function in a cell, preserving sugars for later use (e.g.
 starch in plants, glycogen in animals). Others function as building material for
 structures of cells @biology[p. 71].
 
-#todo[Should I mention something more?]
-
+#pagebreak()
 = Macromolecular Structural Data
 Macromolecules can be represented in computers in one, two or three dimensions
 @chemo-informatics.  In this chapter we first introduce these representations,
@@ -1139,7 +1138,7 @@ Cry about different results and inaccessible reference data.
 
 = Conclusion
 
-== Future plans 
+== Future plans
 // TODO: higher project quota, automatic scaling, REST API
 Describe stuff that's missing or can be improved.
 

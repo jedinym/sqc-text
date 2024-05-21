@@ -44,9 +44,6 @@
     // color logo
     #image("img/fi-mu-logo-color.png", width: 40%)
 
-    // BW logo
-    // #image("img/FI-MU-logo-75-mm-1200-DPI-RGB.png", width: 40%)
-
     #linebreak()
     #linebreak()
     #linebreak()
@@ -98,6 +95,8 @@ integrity. I checked the content and take full responsibility for it.
   #heading(numbering: none, outlined: false)[
     Acknowledgements 
   ]
+  //I would like to thank my advisor, Vladimír for his huge support.
+
   Computational resources were provided by the e-INFRA CZ project (ID:90254),
   supported by the Ministry of Education, Youth and Sports of the Czech Republic.
 ]
@@ -113,7 +112,7 @@ integrity. I checked the content and take full responsibility for it.
     Keywords
   ]
 
-  Protein Data Bank, PDB, biomacromolecules,
+  Protein Data Bank, PDB, biomacromolecules, MolProbity
 ]
 
 
@@ -579,8 +578,6 @@ messesage is then routed to a queue. If the queue has any active consumers, the
 message is delivered to them. If no consumers are active, the message is cached
 on disk and delivered at next opportunity.
 
-#todo[Types of exchanges?]
-
 == MinIO Object Store <section-minio>
 // TODO: Why MinIO and not a traditional database?
 // To store atomic structures and validation reports, a storage solution is required. 
@@ -608,8 +605,8 @@ _RabbitMQ_. A few examples of such events are:
 - `s3:ObjectCreated:CompleteMultipartUpload` which occurs when an object larger than 5MiB is added to a bucket. 
 
 = Requirements
-
-#todo[Think about these some more.]
+In this chapter, we outline the functional and non-functional requirements of
+the SQC system.
 
 == Functional requirements
 + The service must support running validations on atomic models.
@@ -1062,7 +1059,7 @@ the secrets available to _Ansible_ as inventory variables.
 
 The inventory only contains one host: `metacentrum`, because it is the only
 deployment target as of now. However, new deployment targets can be easily added
-in the future.
+in the future. Another _Kubernetes_ cluster can be added with minimal effort.
 
 The inventory for the host `metacentrum`, contains some important values for the
 deployment:
@@ -1070,16 +1067,69 @@ deployment:
   deployed to.
 + `k8s_sqc_replicas` specifies the base number of replicas of SQC pods.
 + `k8s_sqc_image` specifies the repository, name and tag of the SQC Docker image.
++ `k8s_sqc_request_cpu` and `k8s_sqc_request_mem` specify the requested memory
+  for the SQC container.
 
 When deploying a new version of SQC, it is necessary to rebuild the image and
 push it to a docker repository, so _Kubernetes_ can then pull it during the
 deployment.
 
+One important aspect of the deployment is fitting SQC's replicas, CPU and memory
+requests to the _Kubernetes_ project quota. The default project quota in the
+_MetaCentrum_ cluster is 20 CPUs request, 32 CPUs limit, 40GB memory requests,
+and 64GB memory limits. Adjusting the requested CPUs, memory, and the number of
+replicas is important to get the highest performance. If validating many small
+structures, it is faster to have more replicas with fewer requested CPUs. When
+validating larger structures, it might be more beneficial to have fewer replicas
+with more requested CPU and memory. @figure-resources shows the default
+configuration of resources.
+
+#[
+  #set par(justify: false)
+
+  #figure(
+    table(
+      columns: (auto, auto, auto, auto, auto),
+      align: center + horizon,
+      table.header([*Deployment*], [*Replicas*], [*CPU Requests*], [*Memory Requests*], [*Memory Limits*]),
+
+      "SQC",
+      "20",
+      "0.9",
+      "1.5GiB",
+      "3Gi",
+
+      "RabbitMQ",
+      "1",
+      "1",
+      "512MiB",
+      "512MiB",
+
+      "MinIO",
+      "1",
+      "1",
+      "512MiB",
+      "512MiB",
+     ),
+    caption: "Default resource requests and limits of the SQC Deployments."
+  ) <figure-resources>
+]
+
 = Evaluation
 Compare aspects of the service to the PDB standalone validation server.
 
-== Throughput
-Test throughput of variable-size structures against PDB with maximum k8s scaling.
+== Scaling
+To test SQC's scaling capabilities, we validated thirty structures with an
+increasing number of replicas. We chose thirty structures because it is the
+highest number of replicas that can be provisioned in the _Kubernetes_ project,
+while fitting into quota memory limits. @figure-scaling shows that with the
+increasing number of replicas, the time spent on multiple structure validations
+drops rapidly.
+
+#figure(
+  image("img/replica-perf.png"),
+  caption: "Time spent on validating 30 183d structures plotted against the number of SQC validation service replicas."
+) <figure-scaling>
 
 == API 
 Compare API access to PDB methods.
@@ -1090,6 +1140,7 @@ Cry about different results and inaccessible reference data.
 = Conclusion
 
 == Future plans 
+// TODO: higher project quota, automatic scaling, REST API
 Describe stuff that's missing or can be improved.
 
 #pagebreak()

@@ -18,7 +18,7 @@ metacentrum:
   type: article
   title: "Metacentrum, the czech virtualized ngi"
   date: 2009
-  author: [Šustr Z., Sitera J., Mulač M., Ruda M., Antoš D., Hejtmánek L., Holub P., Salvet Z.; Matyska L.]
+  author: [Šustr Z., Sitera J., Mulač M., Ruda M., Antoš D., Hejtmánek L., Holub P., Salvet Z., Matyska L.]
   url: 
     value: https://www.researchgate.net/profile/Petr-Holub-5/publication/242734286_austr_Z_Sitera_J_Mula_c_M_Ruda_M_Antoo_D_Hejtmanek_L/links/53d75f880cf228d363eaf8c2/aeustr-Z-Sitera-J-Mula-c-M-Ruda-M-Antooe-D-Hejtmanek-L.pdf
     date: 2024-05-22
@@ -39,7 +39,7 @@ kubernetes:
 
 biology:
   type: book
-  author: [Neil A. Campbell, Jane Reece]
+  author: [N. A. Campbell, J. Reece]
   title: Biology
   edition: 8
   date: 2008
@@ -50,7 +50,7 @@ biology:
 molprobity:
   type: article
   title: "MolProbity: all-atom structure validation for macromolecular crystallography"
-  author: [ Vincent B. Chen, W. Bryan Arendall III, Jeffrey J. Headd, Daniel A. Keedy, Robert M. Immormino, Gary J. Kapral, Laura W. Murray, Jane S. Richardson and David C. Richardson]
+  author: [ V. B. Chen, W. B. Arendall III, J. J. Headd, D. A. Keedy, R. M. Immormino, G. J. Kapral, L. W. Murray, J. S. Richardson, D. C. Richardson]
   url: https://doi.org/10.1107/S0907444909042073 
   date: 2010
   parent:
@@ -61,7 +61,7 @@ molprobity-more-data:
   type: article
   title: "MolProbity: More and better reference data for improved all-atom structure validation"
   date: 2017
-  author: [Christopher J. Williams, Jeffrey J. Headd, Nigel W. Moriarty, Michael G. Prisant, Lizbeth L. Videau, Lindsay N. Deis, Vishal Verma, Daniel A. Keedy, Bradley J. Hintze, Vincent B. Chen, Swati Jain, Steven M. Lewis, W. Bryan Arendall III, Jack Snoeyink, Paul D. Adams, Simon C. Lovell, Jane S. Richardson, David C. Richardson]
+  author: [C. J. Williams, J. J. Headd, N. W. Moriarty, M. G. Prisant, L. L. Videau, L. N. Deis, V. Verma, D. A. Keedy, B. J. Hintze, V. B. Chen, S. Jain, S. M. Lewis, W. Bryan Arendall III, Jack Snoeyink, Paul D. Adams, Simon C. Lovell, Jane S. Richardson, David C. Richardson]
   url:  https://doi.org/10.1002/pro.3330
   parent:
     title: Protein Science
@@ -86,7 +86,7 @@ struct-quality-data:
 backbone-conformation:
   type: article
   title: Conformation Dependence of Backbone Geometry in Proteins
-  author: [Donald S. Berkholz, Maxim V. Shapovalov, Roland L. Dunbrack, P. Andrew Karplus]
+  author: [D. S. Berkholz, M. V. Shapovalov, R. L. Dunbrack, P. Andrew Karplus]
   url: https://doi.org/10.1016/j.str.2009.08.012
   date: 2009
   parent:
@@ -119,7 +119,7 @@ chemo-informatics:
   type: book
   title: An Introduction to Chemoinformatics
   url: https://doi.org/10.1007/978-1-4020-6291-9
-  author: [Andrew R. Leach, Valerie J. Gillet]
+  author: [A. R. Leach, V. J. Gillet]
   date: 2003
   parent:
     title: Springer Dordrecht
@@ -127,7 +127,7 @@ chemo-informatics:
 chemical-formats:
   type: article
   title: Description of Several Chemical Structure File Formats Used by Computer Programs Developed at Molecular Design Limited
-  author: [Arthur Dalby, James G. Nourse, W. Douglas Hounshell, Ann K. I. Gushurst, David L. Grier, Burton A. Leland, and John Laufer]
+  author: [A. Dalby, J. G. Nourse, W. D. Hounshell, A. K. I. Gushurst, D. L. Grier, B. A. Leland, J. Laufer]
   date: 1992
   url: https://doi.org/10.1021/ci00007a012
   parent:
@@ -139,6 +139,7 @@ chemical-formats:
 mmcif-ecosystem:
   type: article
   title: "PDBx/mmCIF Ecosystem: Foundational Semantic Tools for Structural Biology"
+  author: [J. D. Westbrook, J. Y. Young, C. Shao, Z. Feng, V. Guranovic, C. L. Lawson, Brinda Vallat, Paul D. Adams, John M Berrisford, Gerard Bricogne, Kay Diederichs, Robbie P. Joosten, Peter Keller, Nigel W. Moriarty, Oleg V. Sobolev, Sameer Velankar, Clemens Vonrhein, David G. Waterman, Genji Kurisu, Helen M. Berman, Stephen K. Burley, Ezra Peisach]
   url: https://doi.org/10.1016/j.jmb.2022.167599
   date: 2022
   parent:
@@ -160,7 +161,7 @@ mmcif-approval:
 onedep:
   type: article
   title: "OneDep: Unified wwPDB System for Deposition, Biocuration, and Validation of Macromolecular Structures in the PDB Archive"
-  author: [Jasmine Y. Young]
+  author: [J. Y. Young]
   url: https://doi.org/10.1016/j.str.2017.01.004
   date: 2017
   parent:
@@ -181,7 +182,7 @@ crystallographic-data:
 smiles:
   type: article
   title: SMILES, a chemical language and information system. 1. Introduction to methodology and encoding rules
-  author: David Weininger
+  author: D. Weininger
   date: 1988
   parent:
     title: Journal of Chemical Information and Computer Sciences
@@ -216,7 +217,7 @@ iupac-glossary-95:
 mol-cell-bio:
   type: book
   title: Molecular Cell Biology
-  author: [Harvey Lodish, Arnold Berk, Paul Matsudaira, Chris A. Kaiser, Monty Krieger, Matthew P. Scott, Lawrence Zipursky, James Darnell]
+  author: [H. Lodish, A. Berk, P. Matsudaira, C. A. Kaiser, M. Krieger, M. P. Scott, L. Zipursky, J. Darnell]
   date: 2008
   publisher: W. H. Freeman
   serial-number:
@@ -225,7 +226,7 @@ mol-cell-bio:
 amino-acids:
   type: article
   title: Selenocysteine, Pyrrolysine, and the Unique Energy Metabolism of Methanogenic Archaea
-  author: [Michal Rother, Joseph A. Krzycki]
+  author: [M. Rother, J. A. Krzycki]
   date: 2019
   url: https://doi.org/10.1155%2F2010%2F453642
   parent:
@@ -258,7 +259,7 @@ emdb:
 
 pdb-history:
   type: article
-  author: Helen M Berman
+  author: H. M. Berman
   title: "The Protein Data Bank: a historical perspective"
   page-range: 88-95
   issued:
@@ -296,7 +297,7 @@ mmcif:
   type: article
   title: Macromolecular crystallographic information file
   url: https://doi.org/10.1016/S0076-6879(97)77032-0
-  author: [Philip E. Bourne, Helen M. Berman, Brian McMahon, Keith D. Watenpaugh, John D. Westbrook, Paula M.D. Fitzgerald]
+  author: [P. E. Bourne, H. M. Berman, B. McMahon, K. D. Watenpaugh, J. D. Westbrook, P. M. D. Fitzgerald]
   parent: 
     type: Periodical
     title: Methods in Enzymology
@@ -321,7 +322,7 @@ wwpdb:
   type: article
   title: Announcing the worldwide Protein Data Bank
   date: 2003
-  author: [Helen Berman, Kim Henrick, Haruki Nakamura]
+  author: [H. Berman, K. Henrick, H. Nakamura]
   parent:
     type: Periodical
     title: Nature Structural & Molecular Biology 
@@ -332,11 +333,11 @@ wwpdb:
 pdb-validation:
   type: Article
   title: "Validation of Structures in the Protein Data Bank"
-  doi: 10.1016/j.str.2017.10.009
+  url: https://doi.org/10.1016/j.str.2017.10.009
   page-range: 1916-1927
   author:
     [
-      Swanand Gore,
+      S. Gore,
       Eduardo Sanz Garcia,
       Hendrickx,
       Pieter MS,

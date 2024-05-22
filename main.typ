@@ -70,9 +70,9 @@
 #heading(numbering: none, outlined: false)[
   Declaration 
 ]
-Hereby I declare that this thesis is my original authorial work, which I have
+Hereby, I declare that this thesis is my original authorial work, which I have
 worked out on my own. All sources, references, and literature used or excerpted
-during elaboration of this work are properly cited and listed in complete
+during the elaboration of this work are properly cited and listed in complete
 reference to the due source. 
 
 During the preparation of this thesis, I used the following AI tools:
@@ -112,7 +112,8 @@ integrity. I checked the content and take full responsibility for it.
     Keywords
   ]
 
-  Protein Data Bank, PDB, biomacromolecules, MolProbity
+  Protein Data Bank, PDB, biomacromolecules, MolProbity, proteins, nucleic
+  acids, Kubernetes, chemoinformatics
 ]
 
 
@@ -152,7 +153,7 @@ Bank_ is too low for use in some research projects (e.g., iterative validation
 of continuously optimized structures or batch validation of up to hundreds of
 millions of predicted simpler structures).
 
-As a solution, in this thesis, I implement _SQC_ (Structure Quality Control), a
+As a solution, in this thesis, we implement _SQC_ (Structure Quality Control), a
 scalable service allowing for mass validation of macromolecular structures that 
 incorporates the tools used by the _Protein Data Bank_ validation pipeline and a
 Python library for simple access. Thanks to the implemented queueing system, it
@@ -166,12 +167,12 @@ virtual organization.
 The IUPAC #footnote[International Union of Pure and Applied Chemistry] defines a
 biopolymer or a biomacromolecule as a macromolecule #footnote[Large molecules 
 consisting of many repeating subunits (monomers).] produced by living organisms
-@iupac-glossary. These include proteins, nucleic acids and polysaccharrides
+@iupac-glossary. These include proteins, nucleic acids, and polysaccharides
 @iupac-glossary. In this chapter, we briefly introduce these three basic
 biomacromolecules.
 
 == Proteins
-Proteins are chains of aminoacids with a molecular mass of around 10,000 or more
+Proteins are chains of amino acids with a molecular mass of around 10,000 or more
 @iupac-glossary-95[p. 1361]. They comprise one or more chains of amino acids
 #footnote[There are over 500 different amino acids, but only 22 are incorporated
 into proteins @amino-acids.] linked by peptide bonds $dash.en$ covalent bonds
@@ -193,47 +194,48 @@ three-dimensional structure, which then dictates its function @mol-cell-bio[p. 6
 Nucleic acids are polymers comprised of monomers (subunits) known as nucleotides
 @mol-cell-bio[p. 40]. They are categorized into two classes: deoxyribonucleic
 acid (DNA) and ribonucleic acid (RNA) @mol-cell-bio[p. 102].  All nucleotides
-have a common structure: a phosphate group linked to a pentose #footnote[A
-five-carbon sugar.] which in turn is linked to a _base_. The common bases include
-_adenine_, _guanine_, and _cytosine_. _Thymine_ is exclusively found in DNA
-while _uracil_ is exclusive to RNA molecules. The pentose is deoxyribose in DNA
-and ribose in RNA.
+have a common structure: a phosphate group linked to a pentose, #footnote[A
+five-carbon sugar.] which in turn is linked to a _base_. The common bases
+include _adenine_, _guanine_, and _cytosine_. _Thymine_ is exclusively found in
+DNA, while _uracil_ is exclusive to RNA molecules. The pentose is deoxyribose in
+DNA and ribose in RNA.
 
 #figure(
   image("img/DAMP_chemical_structure.svg", width: 80%), 
-  caption: "Deoxyadenosine monophosphate, a nucleotide present in DNA. The phosphate group (blue) is linked to deoxyribose, which is in turn linked to an adenine base (red). Original image sourced from Wikimedia Commons and edited.", 
+  caption: "Deoxyadenosine monophosphate, a nucleotide present in DNA. The phosphate group (blue) is linked to deoxyribose (black), which is in turn linked to an adenine base (red). Original image sourced from Wikimedia Commons and edited.", 
 )
 
 DNA molecules contain the information that dictates the sequences and, 
 consequently, the structures of all proteins within a cell @mol-cell-bio[p.
-101]. During protein synthesis, DNA is transcribed into ribonucleic acid (RNA).
+101]. During protein synthesis, DNA is transcribed into ribonucleic acid (RNA),
+which is then translated into a protein @mol-cell-bio[p. 101].
 
-== Polysacharrides
+== Polysacharides
 Monosaccharides, or simple sugars, are the monomer units of polysaccharides
 @iupac-glossary-95[p. 1360]. Polysaccharides are formed by linking
 monosaccharides together through glycosidic linkages.
 
-Some serve a storage function in a cell, preserving sugars for later use (e.g.
+Some serve a storage function in a cell, preserving sugars for later use (e.g.,
 starch in plants, glycogen in animals). Others function as building material for
 structures of cells @biology[p. 71].
 
 #pagebreak()
 = Macromolecular structural data
 Macromolecules can be represented in computers in one, two or three dimensions
-@chemo-informatics.  In this chapter we first introduce these representations,
-and then take a closer look at the three-dimensional representations, as they
+@chemo-informatics.  In this chapter, we first introduce these representations,
+and then take a closer look at the three-dimensional representations as they
 are the most relevant to this thesis.
 
 == One-dimensional structure
-The simplest way of representing a molecule is by indicating the total counts
+The simplest way of representing a molecule is by indicating the total number 
 of atoms present (using a molecular formula). To illustrate, the molecular formula
-of _glucose_ is written as $C_6 H_12 O_6$, that is six carbon atoms, twelve
+of _glucose_ is written as $C_6 H_12 O_6$, that is, six carbon atoms, twelve
 hydrogen atoms, and six oxygen atoms. 
 
 However, this representation lacks information about the relative positions of
 atoms and bonds, making it unable to differentiate molecules with identical
 total atom counts.  For instance, molecules such as _fructose_ and
-_galactose_ share the same formula as _glucose_, despite having different
+_galactose_ share the same formula as _glucose_ despite having different
 structures.
 
 Therefore, the one-dimensional representation has limited usage for polymers
@@ -242,17 +244,17 @@ containing thousands of atoms.
 == Two-dimensional structure
 A common way to represent structures in a two-dimensional manner is to use a
 _molecular graph_ @chemo-informatics[p. 2]. A graph is a pair $G = (V, E)$,
-where $V$ is a set of _vertices_ and $E$ is a set of pairs $E = {(v_1, v_2) |
-v_1,v_2 in V}$, elements of which are called _edges_. Using a graph, it is
+where $V$ is a set of _vertices_, and $E$ is a set of pairs $E = {(v_1, v_2) |
+v_1,v_2 in V}$, elements called _edges_. Using a graph, it is
 possible to capture the topology of a molecule. In a molecular graph, vertices
-represent atoms and edges represent bonds between them @chemo-informatics[p.2].
+represent atoms, and edges represent bonds between them @chemo-informatics[p.2].
 Both vertices and edges can hold additional information, such as bond orders for
 edges or atomic numbers for vertices @chemo-informatics[p.2].
 
 These molecular graphs can be encoded using various formats @chemical-formats,
-with _line notation_ being one of the simpler methods. A line notation
-represents a structure as a linear string of characters, making them relatively
-simple to read and understand.
+with _line notation_ one of the simpler methods. A line notation represents a
+structure as a linear string of characters, making them relatively simple to
+read and understand.
 
 One commonly used notation is SMILES #footnote[Simplified Molecular Input Line
 Entry Specification] @smiles. Specifically, the OpenSMILES standard is widely
@@ -309,14 +311,14 @@ Bank. It was originally developed in 1976 as a simple
 human-readable format @pdb-history. 
 
 Each line of the file contains a _record_ - information about some aspect of the
-structure. The records can contain metadata (e.g. `AUTHOR`, `HEADER` or `TITLE`)
-or data about the chemical structure of the molecule (e.g. `SEQRES` or `ATOM`).
+structure. The records can contain metadata (e.g., `AUTHOR`, `HEADER` or `TITLE`)
+or data about the molecule's chemical structure (e.g. `SEQRES` or `ATOM`).
 Additionally, the `REMARK` record type has been used to extend the format to
 support new details about the experimental methods used to obtain the
 macromolecular data @pdb-format-guides.
 
 Unfortunately, the lines of the file are fixed-width as the format is based on
-the original 80 column punched card @pdb-history. Because of this, limitations
+the original 80-column punched card @pdb-history. Because of this, limitations
 exist on the stored structure:
 
 - Maximum $num("100000")$ atoms in structure
@@ -325,10 +327,10 @@ exist on the stored structure:
 
 One way to address these limitations is by dividing the structure into multiple
 files. However, doing so may complicate tasks such as visualization or certain
-validations of the structure. As a result, this makes the format less suitable
+structure validations. As a result, this makes the format less suitable
 for handling very large structures.
 
-Some attempts have been made to improve these limitations over the years (e.g.
+Some attempts have been made to improve these limitations over the years (e.g.,
 the hybrid-36 counting system for atom and residue numbers @hybrid-36), but none
 of them have been particularly prevalent, as it would be difficult to adapt
 existing tools.
@@ -340,13 +342,13 @@ format.
 
 === PDBx/mmCIF Format
 The PDBx/mmCIF format was developed to address the limitations inherent in the
-legacy PDB format @mmcif[p. 571]. With ever-increasing sizes of structures it
+legacy PDB format @mmcif[p. 571]. With ever-increasing sizes of structures, it
 became clear that change was needed @mmcif-ecosystem[p. 3].
 
 The format is based on the Crystallographic Information Framework (CIF), which
 was adopted by the International Union of Crystallography (IUCr) in 1990. CIF
 operates under the idea that all values within an ASCII text file are assigned
-dictionary labels (keys). This concept was enabled by the use of a Dictionary
+dictionary labels (keys). This concept was enabled using a Dictionary
 Definition Language (DDL), which is a versatile language allowing for the
 description of dictionary data structures, controlled vocabularies, boundary  
 conditions, and relationships between values @mmcif-ecosystem[p. 2].
@@ -360,11 +362,11 @@ acid and nucleotide residues, atomic coordinates, and experimental data
 
 While mmCIF already supported most of the structural and crystallographic
 concepts present in the PDB format, additional key categories prefixed with
-`pdbx_` were introduced to the dictionary and some existing categories have been
+`pdbx_` were introduced to the dictionary, and some existing categories have been
 extended. This expansion aimed to guarantee complete compatibility and semantic
 equivalence with the PDB format @crystallographic-data[p. 195].
 
-In 2014, the PDBx/mmCIF format became the main format of the PDB
+In 2014, the PDBx/mmCIF format became the primary format of the PDB
 @mmcif-ecosystem[p. 3].
 
 #pagebreak()
@@ -388,7 +390,7 @@ Since 2003, it is managed by the wwPDB consortium @wwpdb, consisting of:
   University @pdb[p. D520]
 - Electron Microscopy Data Bank (EMDB) @emdb
 
-As of now (May 2024), it stores over two hundred and nineteen thousand
+Currently (May 2024), it stores over two hundred and nineteen thousand
 structures @pdb-entry-stats. Eighty-four percent of this data was obtained using
 X-ray crystallography, nine percent using electron microscopy, and around six
 percent by nuclear magnetic resonance @pdb-stats-summary.
@@ -398,7 +400,7 @@ existing deposition and validation infrastructure proved inadequate. That is why
 the wwPDB initiated the development of OneDep, a novel system designed for
 deposition, biocuration, and validation @onedep[p. 536]. 
 
-During the deposition process, the deposited structure is validated using
+During deposition, the deposited structure is validated using
 community-made tools in OneDep's _validation pipeline_ @onedep[p. 539]. 
 Additionally, a standalone server #footnote[https://validate.wwpdb.org] is
 accessible to depositors, providing them with a platform for refining the
@@ -413,9 +415,9 @@ these recommendations, the pipeline was integrated with the OneDep system
 
 The VTFs recommended that deposited structures undergo validation against
 criteria falling into three categories. The first category encompasses criteria
-for validating the resulting atomic model, i.e. is only the three-dimensional
+for validating the resulting atomic model, i.e., is only the three-dimensional
 computer representation. The second category involves analysis of the supplied
-experimental data. Lastly, the third category entails examining the fit between
+experimental data. Lastly, the third category examines the fit between
 the supplied experimental data and the atomic model @pdb-validation[p. 1917].
 
 The outcome of the validation pipeline is a validation report, which
@@ -431,12 +433,11 @@ the publicly available tools that was used in the implementation of this thesis
 is _MolProbity_ @molprobity, which we will explore further in
 @section-molprobity.
 
-There are three ways to access the validation pipeline, via anonymous web user
-interface, as part of the deposition and biocuration process, and through a web
-API @pdb-validation[p. 1921]. For the purposes of validations of large numbers
-of structures, the web API is most convenient, as it can be fully automated. It
-offers both a CLI #footnote[Command Line Interface] application and a small
-Python library.
+There are three ways to access the validation pipeline: via an anonymous web
+user interface, as part of the deposition and biocuration process, and through a
+web API @pdb-validation[p. 1921]. The web API is most convenient for validating
+large numbers of structures, as it can be fully automated. It offers both a CLI
+#footnote[Command Line Interface] application and a small Python library.
 
 == MolProbity <section-molprobity>
 _MolProbity_ is the single validation tool used in this thesis. It provides
@@ -444,8 +445,9 @@ evaluation of atomic model quality for biomacromolecules @molprobity[p. 12]. The
 current maintainers are the Richardson Laboratory of Duke University. Its source
 code can be found in their GitHub repository
 #footnote[https://github.com/rlabduke/MolProbity]. The repository also contains
-a short guide on how to install _MolProbity_, however the guide and installation
-scripts are outdated and require some refactoring for use on a modern system.
+a short guide on how to install _MolProbity_, however, the guide and
+installation scripts are rather outdated and require some refactoring for use on
+a modern system.
 
 _MolProbity_ was chosen because, unlike other tools in the PDB validation
 pipeline, it is freely available and provides multiple validations in a single
@@ -472,7 +474,7 @@ average distance between nuclei of two bonded atoms.] and bond angles
 Based on ideal parameters derived ahead of time @molprobity[p. 15]
 @struct-quality-data @backbone-conformation, the instances where the bond
 lengths or bond angles deviate from the ideal value by at least four standard
-deviations are identified and listed as bond length and bond angle outliers,
+deviations are identified and listed as bond length and angle outliers,
 respectively @molprobity[p. 15].
 
 ==== Ramachandran and rotamer analyses
@@ -488,10 +490,10 @@ Firstly, _residue-analysis_ runs all available validations and outputs outliers
 in each residue in the CSV #footnote[Comma Separated Values] format.
 
 Secondly, the _clashscore_ program checks for clashes (@section-clashes) and
-outputs detected clashes in a one clash per line format.
+outputs detected clashes in a one-clash-per-line format.
 
 == Kubernetes
-_Kubernetes_ is an open-source platform designed for automating the deployment,
+_Kubernetes_ is an open-source platform designed to automate the deployment,
 scaling, and operation of containerized applications. It organizes these
 applications into clusters, which are sets of nodes (machines) that run
 containerized applications. A Kubernetes cluster typically includes a control
@@ -573,18 +575,18 @@ Membership is free, with the requirement that members acknowledge _MetaCentrum_
 in their publications.
 
 It offers many different platforms for computation across the Czech Republic,
-but crucially for this thesis, also offers a Kubernetes cluster @metacentrum-k8s
+but crucially for this thesis, it also offers a Kubernetes cluster @metacentrum-k8s
 via a _Rancher_ #footnote[https://www.rancher.com/] instance.
 
 == RabbitMQ <section-rabbitmq>
-_RabbitMQ_ is a messaging and streaming broker, that supports several standard
-messsaging protocols @rabbitmq. It is used as a mediator between producers and
+_RabbitMQ_ is a messaging and streaming broker that supports several standard
+messaging protocols @rabbitmq. It is used as a mediator between producers and
 consumers of messages.
 
-Publishers (producers) publish a message to an exchange. The messesage is then
+Publishers (producers) publish a message to an exchange. The message is then
 routed to a queue. If the queue has any active consumers, the message is
 delivered to them. If no consumers are active, the message is cached on disk and
-delivered at next opportunity.
+delivered at the next opportunity.
 
 == MinIO Object Store <section-minio>
 // TODO: Why MinIO and not a traditional database?
@@ -599,7 +601,7 @@ _buckets_. A bucket is simply a container for objects, where each object has a
 key that uniquely identifies it in a _bucket_. Each object can also contain
 additional text metadata.
 
-Access to _MinIO_ is mediated via an HTTP API originally designed for Amazon's
+Access to _MinIO_ is mediated via an HTTP API designed initially for Amazon's
 S3 service. However, _MinIO_ also offers software development kits (SDKs) for
 multiple programming languages, including Python. Another part of the _MinIO_
 deployment is the managment server $dash.en$ a web application used for
@@ -651,7 +653,7 @@ the SQC system.
 
 == Architecture
 Since supporting many concurrent validations is crucial, we needed to devise a
-solution that can handle them effectively. To guarantee that even during high
+solution that could handle them effectively. To guarantee that even during high
 load, the system can accept new validation requests, we use a Producer Consumer
 system design pattern.
 
@@ -666,11 +668,11 @@ benefit of using the pattern is the decoupling of producers and consumers.
 While a consumer is occupied processing prior data or events, producers can
 continue adding more data to the queue. This additional data awaits consumption
 and processing once at least one consumer completes all its tasks. Adding data
-to the queue is fast compared to processing, ensuring producers encounter no
+to the queue is faster than processing, ensuring producers encounter no
 delays due to consumers.
 
 During periods of increased load, when the queue accumulates more data and
-consumers are slow in processing it, new consumers accessing the shared queue
+consumers are slow in processing it; new consumers accessing the shared queue
 can be created.
 
 #figure(
@@ -685,8 +687,9 @@ To implement the Producer Consumer pattern in SQC, we utilize RabbitMQ
 When a user submits a validation request through SQClib (refer to
 @section-sqclib), the library code creates a new object in a MinIO bucket. This
 object contains the atomic model along with associated metadata. The library
-subsequently returns the pending request's ID to the user. The user uses this ID
-to invoke another SQClib function, which awaits the completion of the request.
+subsequently returns the ID of the pending request to the user. The user uses
+this ID to invoke another SQClib function, which awaits the completion of the
+request.
 
 Upon the creation of the object, Minio publishes a bucket notification event to
 the `requests` exchange in RabbitMQ. This notification contains the identifier
@@ -745,7 +748,7 @@ scripts.
 
 The `pdm.lock` file is created by _PDM_ and contains exact versions of packages
 required to run SQC. The advantage of using a lockfile is that during the Docker
-image building process, dependencies are not resolved again, but extracted from
+image-building process, dependencies are not resolved again, but extracted from
 the lockfile, which guarantees the reproducibility of all builds.
 
 The `sqc/` directory contains the source code of the SQC validation service.
@@ -783,9 +786,9 @@ Since _MolProbity_ exclusively supports validating models stored in the legacy
 PDB format, it's necessary to initially convert the PDBx/mmCIF atomic models to
 this legacy format. This is done using the _Gemmi_
 #footnote[https://gemmi.readthedocs.io/en/latest/] library for structural
-biology. _Gemmi_ has multiple features useful in macromolecular biology, but
+biology. _Gemmi_ has multiple features useful in macromolecular biology but
 supports format conversions using the `gemmi convert` subprogram. After the
-structure is fetched from _MinIO_, it is converted to the legacy format by _Gemmi_.
+structure is fetched from _MinIO_, _Gemmi_ converts it to the legacy format.
 
 Another constraint of _MolProbity_ is that it can only operate on PDB files
 containing only a single model. It is possible for PDB files to contain an
@@ -803,7 +806,7 @@ output of the process is captured and then parsed using the _csv_ built-in
 library into the format of the validation report.
 
 The second program to be executed is _clashscore_. The output of _clashscore_ is
-not in the CSV format, and therefore requires quite intricate parsing. The
+not in the CSV format and therefore requires quite intricate parsing. The
 output is parsed into the validation report as well.
 
 Before converting the validation report to JSON and sending it to _MinIO_, we
@@ -1011,7 +1014,7 @@ that allows free hosting of websites directly from a GitHub repository.
 
 To automate the process, we utilize _GitHub Actions_
 #footnote[https://github.com/features/actions], a CI/CD solution from GitHub,
-that allows running automations on GitHub repository events. When a new commit
+that allows automation to run on GitHub repository events. When a new commit
 is added to the `main` branch in the SQCLib GitHub repository, the documentation
 is built and uploaded to _GitHub Pages_. This process guarantees that the
 accessible documentation is always up to date. The documentation is then
@@ -1027,7 +1030,7 @@ utilize containerization and needed simple scaling, _Kubernetes_ was the obvious
 choice. 
 
 In this chapter we first explore the array of objects used to deploy SQC
-to _Kubernetes_ and then we describe how the process of deployment is automated
+to _Kubernetes_, and then we describe how the process of deployment is automated
 using _Ansible_.
 
 == Kubernetes project setup
@@ -1039,13 +1042,13 @@ stored using a Secret. These secrets are then copied to an environment variable
 when creating respective Deployments.
 
 The _MinIO_ object store requires storage for objects, so we create a Persistent
-Volume Claim (PVC), that is later mounted into a _MinIO_ Deployment. This
+Volume Claim (PVC) that is later mounted into a _MinIO_ Deployment. This
 guarantees that the data stored by _MinIO_ are persistent even across Pod
 restarts. Similarly, _RabbitMQ_ requires some storage for buffering of messages
 in queues. Again, we create a PVC and later mount it into the _RabbitMQ_
 Deployment.
 
-To deploy _MinIO_, _RabbitMQ_ and SQC, we create three Deployments. The SQC
+To deploy _MinIO_, _RabbitMQ_, and SQC, we create three Deployments. The SQC
 Deployment is unique in the fact that the number replicas in the ReplicaSet is
 configurable. By specifying a higher number of replicas, the throughput of the
 service will be increased.
@@ -1072,7 +1075,7 @@ playbooks, a vault password is entered, which then decrypts the vault and makes
 the secrets available to _Ansible_ as inventory variables.
 
 The inventory only contains one host: `metacentrum`, because it is the only
-deployment target as of now. However, new deployment targets can be easily added
+deployment target at the moment. However, new deployment targets can be easily added
 in the future. Another _Kubernetes_ cluster can be added with minimal effort.
 
 The inventory for the host `metacentrum`, contains some important values for the
@@ -1131,15 +1134,13 @@ configuration of resources.
 
 #pagebreak()
 = Evaluation
-Compare aspects of the service to the PDB standalone validation server.
-
 == Scaling
 To test SQC's scaling capabilities, we validated thirty structures with an
 increasing number of replicas. We chose thirty structures because it is the
-highest number of replicas that can be provisioned in the _Kubernetes_ project,
+highest number of replicas that can be provisioned in the _Kubernetes_ project
 while fitting into quota memory limits. @figure-scaling shows that with the
 increasing number of replicas, the time spent on multiple structure validations
-drops rapidly. Scaling replicas further is possible, the limiting factor is the
+drops rapidly. Scaling replicas further is possible; the limiting factor is the
 resource quota in the _Kubernetes_ cluster.
 
 #figure(
@@ -1161,8 +1162,8 @@ discrepancies.
 #pagebreak()
 = Conclusion
 In this thesis, we aimed to reimplement parts of the PDB validation pipeline to
-improve the throughput of structure validation and allow local deployment. By
-utilizing modern cloud technologies, we developed an easily scalable solution
+improve the throughput of structure validation and allow local deployment.
+Utilizing modern cloud technologies, we developed an easily scalable solution
 hosted in the _MetaCentrum_ virtual organization, that can be simply accessed
 using a Python library. Additionally, the service defines an output schema,
 facilitating its use. The deployment is fully automated and can be easily
@@ -1183,3 +1184,5 @@ significantly enhance the replicability of validations.
 #pagebreak()
 
 = Appendix
+
+#todo[]

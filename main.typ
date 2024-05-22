@@ -34,10 +34,6 @@
 #show "RabbitMQ": emph
 #show "MinIO": emph
 
-// TODO: remove
-#todo_outline
-#pagebreak()
-
 #align(center)[
   #text(size: 15pt)[
     Masaryk University
@@ -100,7 +96,7 @@ integrity. I checked the content and take full responsibility for it.
   #heading(numbering: none, outlined: false)[
     Acknowledgements 
   ]
-  //I would like to thank my advisor, Vladimír for his huge support.
+  //Firstly, I would like to thank my advisor, Vladimír for his huge support .
 
   Computational resources were provided by the e-INFRA CZ project (ID:90254),
   supported by the Ministry of Education, Youth and Sports of the Czech Republic.
@@ -1193,5 +1189,6 @@ significantly enhance the replicability of validations.
 #pagebreak()
 
 = Appendix
-
-#todo[]
+The attached zip file contains the source code of _SQC_ and _SQCLib_ in two
+directories.  Please refer to the `README.md` files in both directories for
+instructions on running and using the SQC validation service.

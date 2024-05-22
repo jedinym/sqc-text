@@ -56,7 +56,7 @@
 
     #text(size: 17pt, font: "Noto Sans", hyphenate: false)[
       #set par(justify: false)
-      *Replication of PDB validation server functionality in the MetaCentrum environment*
+      *Replication of PDB validation server functionality in the _MetaCentrum_ environment*
     ]
 
     #linebreak()
@@ -96,8 +96,11 @@ integrity. I checked the content and take full responsibility for it.
 #align(bottom)[
   #heading(numbering: none, outlined: false)[
     Acknowledgements 
-  ]
-  //Firstly, I would like to thank my advisor, Vladimír for his huge support .
+  ] 
+  
+  I would like to thank my advisor, Vladimír for his huge support and time
+  investment. I also thank my dearest friends for showing me what's possible.
+  Lastly, I must thank my family for making sure I don't starve.
 
   Computational resources were provided by the e-INFRA CZ project (ID:90254),
   supported by the Ministry of Education, Youth and Sports of the Czech Republic.
@@ -109,9 +112,9 @@ integrity. I checked the content and take full responsibility for it.
   Abstract
 ]
 
-Assessing the quality of biomacromolecular structural models (models of proteins, nucleic acids, and polysaccharides) acquired using experimental methods such as X-ray crystallography, nuclear magnetic resonance, and electron microscopy is a vital step in making inferences in structural biology.  That is also why the validation of structures is an obligatory step in the _Protein Data Bank's_ (PDB) deposition process. To allow structural biologists to refine their structures, the PDB provides a standalone validation service.  However, the throughput of this service is too low for research projects that need to validate thousands of structures. In this thesis, we implement _Structure Quality Control_ (SQC), a scalable and easily deployable service, that incorporates community-made validation tools. The implemented tool allows for easy-to-use structure validations via both a Python and a shell API.
+Assessing the quality of biomacromolecular structural models (models of proteins, nucleic acids, and polysaccharides) acquired using experimental methods is a vital step in making inferences in structural biology.  That is also why the validation of structures is an obligatory step in the Protein Data Bank's (PDB) deposition process. To allow structural biologists to refine their structures, the PDB provides a standalone validation service.  However, the throughput of this service is too low for research projects that need to validate millions of structures. In this thesis, we implement Structure Quality Control (SQC), a scalable, containerized, and easily deployable service, that incorporates community-made validation tools. The implemented tool allows for easy-to-use structure validations via both a Python and a shell API. Deployed in the MetaCentrum virtual organization, the service is now ready for use in research.
 
-// Kontrola kvality biomakromolekulárnych štruktúr (modely bielkovín, nukleových kyselín a polysacharidov) získaných použitím experimentálnych metód ako rentgenová kryštalografia, spektroskopia nukleárnej magnetickej rezonancie a elektrónová mikroskopia je dôležitým krokom pri vyvodzovaní záverov v štrukturálnej biológii. Je to tiež jedným z dôvodov prečo validácia štruktúr je nutnou súčasťou depozičného procesu _Protein Data Bank_ (PDB). PDB poskytuje aj validačnú službu, ktorá je využívaná na iteratívnu kontrolu štruktúr. Priepustnosť tejto služby je však príliš nízka na využitie v niektorých projektoch. V tejto práci implementujeme _Structure Quality Control_ (SQC), škáľovateľnú a jednoducho nasaditeľnú službu, ktorá používa validačné nástroje vyvinuté komunitou štrukturálnych biológov. Implementovaný nástroj sprístupňuje validácie štruktúr pomocou Python rozhrania alebo rozhrania systémovej príkazovej riadky.
+// Kontrola kvality biomakromolekulárnych štruktúr (modely bielkovín, nukleových kyselín a polysacharidov) získaných použitím experimentálnych metód je dôležitým krokom pri vyvodzovaní záverov v štrukturálnej biológii. Je to tiež jedným z dôvodov prečo validácia štruktúr je nutnou súčasťou depozičného procesu _Protein Data Bank_ (PDB). PDB poskytuje aj validačnú službu, ktorá je využívaná na iteratívnu kontrolu štruktúr. Priepustnosť tejto služby je však príliš nízka na využitie v niektorých projektoch. V tejto práci implementujeme _Structure Quality Control_ (SQC), škáľovateľnú, kontajnerizovanú a jednoducho nasaditeľnú službu, ktorá používa validačné nástroje vyvinuté komunitou štrukturálnych biológov. Implementovaný nástroj sprístupňuje validácie štruktúr pomocou Python rozhrania alebo rozhrania systémovej príkazovej riadky. Finálne riešenie je nasadené pomocou virtuálnej organizácie MetaCentrum a je pripravené na použitie vo výskume.
 
 #align(bottom)[
   #heading(numbering: none, outlined: false)[
@@ -119,7 +122,7 @@ Assessing the quality of biomacromolecular structural models (models of proteins
   ]
 
   Protein Data Bank, PDB, biomacromolecules, MolProbity, proteins, nucleic
-  acids, Kubernetes, chemoinformatics, polysaccharides
+  acids, _Kubernetes_, bioinformatics, validation, _MetaCentrum_
 ]
 
 
@@ -136,36 +139,35 @@ Assessing the quality of biomacromolecular structural models (models of proteins
   Introduction
 ]
 
-Validating biomacromolecular structural data is a critical step in ensuring the
-accuracy and reliability of structural data in biological research.
+Understanding the structure of biomacromolecules is fundamental to structural
+biology research. The data acquired using experimental methods are used to
+assemble structures, i.e., computer models of large biomolecules. These models
+are crucial in understanding the molecular basis of biological processes,
+leading to advances in drug discovery or disease treatment.
 
-The data acquired using experimental methods (such as X-ray crystallography,
-nuclear magnetic resonance, and electron microscopy) are supplied with atomic
-coordinates $dash.en$ electronic records containing the relative positions of
-atoms in the structure. Because of the experimental nature of the methods, these
-structural models can contain a wide range of errors. Therefore, determining the
-quality of a structure is of prime importance in creating inferences from
-experiments. 
+Because of the experimental nature of the methods used, these structural models
+can contain a wide range of errors.  Therefore, validating biomacromolecular
+structural data is a critical step in ensuring their accuracy and reliability in
+biological research. 
 
 This reality is reflected by the fact that every structure deposited into the
 _Protein Data Bank_ (the single global archive of three-dimensional structural
-models @pdb) is validated using community-developed
-tools @pdb-validation[p.  1917]. Based on the results of these tools, the
-validation pipeline generates a report @pdb-validation that can be used for
-further refining of the coordinate models.
+models @pdb) is validated using community-developed tools @pdb-validation[p.
+1917]. Based on the results of these tools, the validation pipeline generates a
+report @pdb-validation that can be used by structure authors for further
+refining of the coordinate models, as well as by users when searching for the
+best structure possible for their research.
 
 However, the throughput of the validation pipeline provided by the _Protein Data
 Bank_ is too low for use in some research projects (e.g., iterative validation
 of continuously optimized structures or batch validation of up to hundreds of
-millions of predicted simpler structures).
+millions of simpler structures predicted using neural networks @alphafoldDB).
 
-As a solution, in this thesis, we implement SQC (_Structure Quality Control_), a
-scalable service allowing for mass validation of macromolecular structures that 
-incorporates the tools used by the _Protein Data Bank_ validation pipeline and a
-Python library for simple access. Thanks to the implemented queueing system, it
-is possible to run batch validations of thousands of structures. The service is
-deployed via _Ansible_ to the Kubernetes cluster provided by the MetaCentrum
-virtual organization.
+As a solution, a new service will be implemented that incorporates the tools
+used by the Protein Data Bank validation pipeline. Additionally, the service
+will include a queueing system, enabling batch validations of large numbers of
+structures. The service will utilize the computing resources of the
+_MetaCentrum_ virtual organization.
 
 #pagebreak()
 
@@ -457,34 +459,36 @@ a modern system.
 
 MolProbity was chosen because, unlike other tools in the PDB validation
 pipeline, it is freely available and provides multiple validations in a single
-package.
+package. The main focus of the validations is the geometry of the structure.
+Validations such as too-close contacts, bond lenghts and angles and torsion
+angles.
 
 The software package contains a web interface for simple use but also a command
 line interface for bulk validations, which is more useful for automated use.
 
-=== Validations
-In this section, we briefly introduce the various validations that MolProbity
-performs on atomic models.
-
-==== All-atom contact analysis <section-clashes>
-This validation option checks for overlaps of van der Waals surfaces of
-nonbonded atoms. Overlaps over $0.4 angstrom$ #footnote[$1 angstrom = 0.1
-unit("nano meter")$] are reported as _clashes_ @molprobity[p. 14].
-
-==== Covalent-geometry analyses
-MolProbity additionally assesses outliers in bond lengths #footnote[The
-average distance between nuclei of two bonded atoms.] and bond angles
-#footnote[The geometric angle between two adjacent bonds.] of backbones
-#footnote[The main chain of the polymer.] @molprobity[p. 15]. 
-
-Based on ideal parameters derived ahead of time @molprobity[p. 15]
-@struct-quality-data @backbone-conformation, the instances where the bond
-lengths or bond angles deviate from the ideal value by at least four standard
-deviations are identified and listed as bond length and angle outliers,
-respectively @molprobity[p. 15].
-
-==== Ramachandran and rotamer analyses
-#todo[Not really understanding these right now.]
+// === Validations
+// In this section, we briefly introduce the various validations that MolProbity
+// performs on atomic models.
+// 
+// ==== All-atom contact analysis <section-clashes>
+// This validation option checks for overlaps of van der Waals surfaces of
+// nonbonded atoms. Overlaps over $0.4 angstrom$ #footnote[$1 angstrom = 0.1
+// unit("nano meter")$] are reported as _clashes_ @molprobity[p. 14].
+// 
+// ==== Covalent-geometry analyses
+// MolProbity additionally assesses outliers in bond lengths #footnote[The
+// average distance between nuclei of two bonded atoms.] and bond angles
+// #footnote[The geometric angle between two adjacent bonds.] of backbones
+// #footnote[The main chain of the polymer.] @molprobity[p. 15]. 
+// 
+// Based on ideal parameters derived ahead of time @molprobity[p. 15]
+// @struct-quality-data @backbone-conformation, the instances where the bond
+// lengths or bond angles deviate from the ideal value by at least four standard
+// deviations are identified and listed as bond length and angle outliers,
+// respectively @molprobity[p. 15].
+// 
+// ==== Ramachandran and rotamer analyses
+// #todo[Not really understanding these right now.]
 
 === Interface
 Multiple command-line programs can be used to run _MolProbity's_ validation
@@ -495,8 +499,8 @@ _residue-analysis_ and _clashscore_.
 Firstly, _residue-analysis_ runs all available validations and outputs outliers
 in each residue in the CSV #footnote[Comma Separated Values] format.
 
-Secondly, the _clashscore_ program checks for clashes (@section-clashes) and
-outputs detected clashes in a one-clash-per-line format.
+Secondly, the _clashscore_ program checks for too-close contacts and outputs
+detected clashes in a one-clash-per-line format.
 
 == _Kubernetes_
 Kubernetes is an open-source platform designed to automate the deployment,
@@ -574,7 +578,7 @@ tasks. In this thesis, we utilize the `kubernetes.core.k8s` module
 #footnote[https://docs.ansible.com/ansible/latest/collections/kubernetes/core/k8s_module.html],
 for deployment automation.
 
-== MetaCentrum
+== _MetaCentrum_
 The MetaCentrum virtual organization provides computing resources to all
 students and employees of academic institutions in the Czech Republic @metacentrum.
 Membership is free, with the requirement that members acknowledge MetaCentrum
@@ -594,7 +598,7 @@ routed to a queue. If the queue has any active consumers, the message is
 delivered to them. If no consumers are active, the message is cached on disk and
 delivered at the next opportunity.
 
-== MinIO Object Store <section-minio>
+== _MinIO_ Object Store <section-minio>
 // TODO: Why MinIO and not a traditional database?
 // To store atomic structures and validation reports, a storage solution is required. 
 
@@ -624,18 +628,17 @@ RabbitMQ. A few examples of such events are:
 - `s3:ObjectCreated:CompleteMultipartUpload` which occurs when an object larger
   than 5MiB is added to a bucket. 
 
-== Miscellaneous
-In this section, we introduce the tools and libraries that are not the core of
-the solution.
-
-
+// == Miscellaneous
+// In this section, we introduce the tools and libraries that are not the core of
+// the solution.
+// 
 
 #pagebreak()
 = Implementation
-The result of this thesis is a validation service (SQC) alongside a
-corresponding Python library, SQCLib. The source code is available in the
-_sb-ncbr_ (Structural bioinformatics research group at National Centre for
-Biomolecular Research) organization on GitHub for both SQC
+The result of this thesis is a validation service called _Structure Quality
+Control_ (SQC) alongside a corresponding Python library, SQCLib. The source code
+is available in the _sb-ncbr_ (Structural bioinformatics research group at
+National Centre for Biomolecular Research) organization on GitHub for both SQC
 #footnote[https://github.com/sb-ncbr/sqc] and SQCLib
 #footnote[https://github.com/sb-ncbr/sqclib]. 
 
@@ -960,6 +963,8 @@ deployed instance. The client offers the following methods:
   report is returned. This method offers the simplest API and is useful when
   validating a single structure.
 
+An example script utilizing the Python API can be seen in @figure-sqclib-python.
+
 #figure(
   ```python
   from os import environ
@@ -981,13 +986,14 @@ deployed instance. The client offers the following methods:
     reports.append((path, report))
   ```,
   caption: "An example Python script showing SQCLib usage. Once the client is initialized, two structures are submitted to the SQC instance and their reports awaited."
-)
+) <figure-sqclib-python>
 
 === Shell API
 The library also contains the program `sqc` that can be used to submit
 structures for validation directly from the system shell. To use SQC, the
 `SQC_ACCESS_KEY` and `SQC_SECRET_KEY` environment variables must be set with
-before-provided credentials. 
+before-provided credentials. @figure-sqclib-shell shows how to upload a
+structure to the main instance of SQC in the _bash_ shell.
 
 #figure(
   ```sh
@@ -998,11 +1004,12 @@ before-provided credentials.
   sqc structure.mmcif
   ```,
   caption: "An example of submitting a structure for validation using the sqc program. Credentials must be provided by the SQC administrators."
-)
+) <figure-sqclib-shell>
 
 By default, the `sqc` program submits validations to the public SQC instance. To
 use a locally running instance of SQC, it is possible to use the `--url` and
-`--insecure` parameters.
+`--insecure` parameters. @figure-sqclib-local shows how to utilize these
+parameters.
 
 #figure(
   ```sh
@@ -1015,7 +1022,7 @@ use a locally running instance of SQC, it is possible to use the `--url` and
   sqc -k -u localhost:9000 structure.mmcif
   ```,
   caption: "An example of submitting a structure for validation to a local instance of SQC. The local instance uses default \"minioadmin\" credentials."
-)
+) <figure-sqclib-local>
 
 === Documentation
 Since the SQCLib library is the sole entry point to the SQC system, thorough
@@ -1100,11 +1107,11 @@ in the future. Another Kubernetes cluster can be added with minimal effort.
 
 The inventory for the host `metacentrum`, contains some important values for the
 deployment:
-+ `k8sSQCnamespace` specifies the Kubernetes project that SQC will be
++ `k8s_sqc_namespace` specifies the Kubernetes project that SQC will be
   deployed to.
-+ `k8sSQCreplicas` specifies the base number of replicas of SQC pods.
-+ `k8sSQCimage` specifies the repository, name and tag of the SQC Docker image.
-+ `k8sSQCrequest_cpu` and `k8sSQCrequest_mem` specify the requested memory
++ `k8s_sqc_replicas` specifies the base number of replicas of SQC pods.
++ `k8s_sqc_image` specifies the repository, name and tag of the SQC Docker image.
++ `k8s_sqc_request_cpu` and `k8s_sqc_request_mem` specify the requested memory
   for the SQC container.
 
 When deploying a new version of SQC, it is necessary to rebuild the image and
@@ -1154,7 +1161,10 @@ configuration of resources.
 
 #pagebreak()
 = Evaluation
-#todo[] 
+In this section, we address two aspects of the newly implemented solution.
+First, we examine SQC's scaling performance, and second, we review the
+validation results.
+
 == Scaling
 To test SQC's scaling capabilities, we validated thirty structures with an
 increasing number of replicas. We chose thirty structures because it is the
@@ -1169,7 +1179,7 @@ resource quota in the Kubernetes cluster.
   caption: "Time spent on validating 30 183d structures (PDB id 183d) plotted against the number of SQC validation service replicas."
 ) <figure-scaling>
 
-== Validation Results
+== Validation results
 Certain validations performed by MolProbity (namely bond lengths, bond angles,
 and torsion angles) are heavily influenced by reference data. Unfortunately, the
 datasets used by PDB are not publicly available. After an email inquiry, PDB
@@ -1183,23 +1193,30 @@ the cause of these discrepancies.
 #pagebreak()
 = Conclusion
 In this thesis, we aimed to reimplement parts of the PDB validation pipeline to
-improve the throughput of structure validation and allow local deployment.
-Utilizing modern cloud technologies, we developed an easily scalable solution
-hosted in the MetaCentrum virtual organization, that can be simply accessed
-using a Python library. Additionally, the service defines an output schema,
-facilitating its use. The deployment is fully automated and can be easily
-extended to other Kubernetes clusters. The implementation is ready for upcoming
-projects in the Structural bioinformatics research group at the National Centre
-for Biomolecular Research such as validations of hundreds of millions of
-predicted structures from _AlphaFoldDB_ or fast iterative validations.
+improve the throughput of structure validation and allow local deployment. We
+developed a solution that can be simply accessed using a Python library or a
+commandline program. According to performed tests, the implementation scales
+well with increasing computational resources. Additionally, the service defines
+an output schema, facilitating its use. 
+
+The implementation leverages Kubernetes for deployment and scaling, and Ansible
+for deployment automation. Other cloud-native technologies were also used in the
+implementation, such as RabbitMQ and the MinIO object store.
+
+The final solution is ready for upcoming projects in the Structural
+bioinformatics research group at the National Centre for Biomolecular Research
+such as validations of hundreds of millions of predicted structures from
+_AlphaFoldDB_ @alphafoldDB or fast iterative validations during the process of structure
+optimization by means of computational chemistry.
 
 == Future plans
 Even though the implemented solution offers practical validation of structures,
-there are several ares that could be improved in the future.  Notably, the
+there are several ares that could be improved in the future. Notably, the
 service only utilizes one validation tool. Adding more validation tools has the
-potential to make the tool the one-stop shop for high throughput validations.
-Additionally, allowing users to specify versions of reference data to use would
-significantly enhance the replicability of validations. 
+potential to make the tool the one-stop shop for high throughput validations,
+even though they would have to be implemented from scratch, as they are not
+available.  Additionally, allowing users to specify versions of reference data
+to use would significantly enhance the replicability of validations. 
 
 #pagebreak()
   

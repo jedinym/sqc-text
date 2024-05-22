@@ -1,5 +1,17 @@
 ---
 
+alphafoldDB:
+  type: article
+  title: "AlphaFold Protein Structure Database in 2024: providing structure coverage for over 214 million protein sequences" 
+  date: 2024
+  url: https://doi.org/10.1093/nar/gkad1011
+  author: [M. Varadi, D. Bertoni, P. Magana, U. Paramval, I. Pidruchna, M. Radhakrishnan, M. Tsenkov, S. Nair]
+  parent:
+    title: Nucleic Acids Research
+    page-range: D368-D375
+    volume: 52
+    issue: D1
+
 rabbitmq:
   type: web
   title: RabbitMQ

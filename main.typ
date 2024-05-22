@@ -28,6 +28,11 @@
   enable-numbers: true,
 )
 
+#show "SQC": emph 
+#show "SQCLib": emph 
+#show "Kubernetes": emph 
+#show "RabbitMQ": emph
+#show "MinIO": emph
 
 // TODO: remove
 #todo_outline
@@ -107,13 +112,17 @@ integrity. I checked the content and take full responsibility for it.
   Abstract
 ]
 
+Assessing the quality of biomacromolecular structural models (models of proteins, nucleic acids, and polysaccharides) acquired using experimental methods such as X-ray crystallography, nuclear magnetic resonance, and electron microscopy is a vital step in making inferences in structural biology.  That is also why the validation of structures is an obligatory step in the _Protein Data Bank's_ (PDB) deposition process. To allow structural biologists to refine their structures, the PDB provides a standalone validation service.  However, the throughput of this service is too low for research projects that need to validate thousands of structures. In this thesis, we implement _Structure Quality Control_ (SQC), a scalable and easily deployable service, that incorporates community-made validation tools. The implemented tool allows for easy-to-use structure validations via both a Python and a shell API.
+
+// Kontrola kvality biomakromolekulárnych štruktúr (modely bielkovín, nukleových kyselín a polysacharidov) získaných použitím experimentálnych metód ako rentgenová kryštalografia, spektroskopia nukleárnej magnetickej rezonancie a elektrónová mikroskopia je dôležitým krokom pri vyvodzovaní záverov v štrukturálnej biológii. Je to tiež jedným z dôvodov prečo validácia štruktúr je nutnou súčasťou depozičného procesu _Protein Data Bank_ (PDB). PDB poskytuje aj validačnú službu, ktorá je využívaná na iteratívnu kontrolu štruktúr. Priepustnosť tejto služby je však príliš nízka na využitie v niektorých projektoch. V tejto práci implementujeme _Structure Quality Control_ (SQC), škáľovateľnú a jednoducho nasaditeľnú službu, ktorá používa validačné nástroje vyvinuté komunitou štrukturálnych biológov. Implementovaný nástroj sprístupňuje validácie štruktúr pomocou Python rozhrania alebo rozhrania systémovej príkazovej riadky.
+
 #align(bottom)[
   #heading(numbering: none, outlined: false)[
     Keywords
   ]
 
   Protein Data Bank, PDB, biomacromolecules, MolProbity, proteins, nucleic
-  acids, Kubernetes, chemoinformatics
+  acids, Kubernetes, chemoinformatics, polysaccharides
 ]
 
 
@@ -130,8 +139,8 @@ integrity. I checked the content and take full responsibility for it.
   Introduction
 ]
 
-Validating biomacromolecules is a critical step in ensuring the accuracy and
-reliability of structural data in biological research.
+Validating biomacromolecular structural data is a critical step in ensuring the
+accuracy and reliability of structural data in biological research.
 
 The data acquired using experimental methods (such as X-ray crystallography,
 nuclear magnetic resonance, and electron microscopy) are supplied with atomic
@@ -153,12 +162,12 @@ Bank_ is too low for use in some research projects (e.g., iterative validation
 of continuously optimized structures or batch validation of up to hundreds of
 millions of predicted simpler structures).
 
-As a solution, in this thesis, we implement _SQC_ (Structure Quality Control), a
+As a solution, in this thesis, we implement SQC (_Structure Quality Control_), a
 scalable service allowing for mass validation of macromolecular structures that 
 incorporates the tools used by the _Protein Data Bank_ validation pipeline and a
 Python library for simple access. Thanks to the implemented queueing system, it
 is possible to run batch validations of thousands of structures. The service is
-deployed via _Ansible_ to the _Kubernetes_ cluster provided by the _MetaCentrum_
+deployed via _Ansible_ to the Kubernetes cluster provided by the _MetaCentrum_
 virtual organization.
 
 #pagebreak()
@@ -493,20 +502,20 @@ Secondly, the _clashscore_ program checks for clashes (@section-clashes) and
 outputs detected clashes in a one-clash-per-line format.
 
 == Kubernetes
-_Kubernetes_ is an open-source platform designed to automate the deployment,
+Kubernetes is an open-source platform designed to automate the deployment,
 scaling, and operation of containerized applications. It organizes these
 applications into clusters, which are sets of nodes (machines) that run
 containerized applications. A Kubernetes cluster typically includes a control
 plane, which manages the overall state and lifecycle of the applications, and
 worker nodes, which run the containers.
 
-Central to _Kubernetes_ is its API, which serves as the primary interface for
+Central to Kubernetes is its API, which serves as the primary interface for
 interaction with the cluster. Users and automated systems communicate with the
 API to deploy, manage, and monitor applications. The API accepts requests in a
 declarative manner, meaning users specify the desired state of the system, and
 Kubernetes takes the necessary actions to achieve and maintain that state.
 
-_Kubernetes_ objects are persistent entities within the system that represent
+Kubernetes objects are persistent entities within the system that represent
 the state and configuration of various cluster components. Key objects for this
 thesis include:
 
@@ -543,7 +552,7 @@ thesis include:
   pod specifications.
 
 These objects are defined in YAML #footnote[YAML Ain't Markup Language] or JSON
-#footnote[JavaScript Object Notation] format and submitted to the _Kubernetes_
+#footnote[JavaScript Object Notation] format and submitted to the Kubernetes
 API, which manages their lifecycle.
 
 == Ansible
@@ -579,7 +588,7 @@ but crucially for this thesis, it also offers a Kubernetes cluster @metacentrum-
 via a _Rancher_ #footnote[https://www.rancher.com/] instance.
 
 == RabbitMQ <section-rabbitmq>
-_RabbitMQ_ is a messaging and streaming broker that supports several standard
+RabbitMQ is a messaging and streaming broker that supports several standard
 messaging protocols @rabbitmq. It is used as a mediator between producers and
 consumers of messages.
 
@@ -592,26 +601,26 @@ delivered at the next opportunity.
 // TODO: Why MinIO and not a traditional database?
 // To store atomic structures and validation reports, a storage solution is required. 
 
-_MinIO_ is an object store inspired by and compatible with Amazon's S3 service
-#footnote[https://aws.amazon.com/s3/] @minio. _MinIO_ is simple to deploy, as
-it's intended for use in the cloud, including using _Kubernetes_.
+MinIO is an object store inspired by and compatible with Amazon's S3 service
+#footnote[https://aws.amazon.com/s3/] @minio. MinIO is simple to deploy, as
+it's intended for use in the cloud, including using Kubernetes.
 
-_MinIO_ offers high-performance storage of data by storing them as objects in
+MinIO offers high-performance storage of data by storing them as objects in
 _buckets_. A bucket is simply a container for objects, where each object has a
 key that uniquely identifies it in a _bucket_. Each object can also contain
 additional text metadata.
 
-Access to _MinIO_ is mediated via an HTTP API designed initially for Amazon's
-S3 service. However, _MinIO_ also offers software development kits (SDKs) for
-multiple programming languages, including Python. Another part of the _MinIO_
+Access to MinIO is mediated via an HTTP API designed initially for Amazon's
+S3 service. However, MinIO also offers software development kits (SDKs) for
+multiple programming languages, including Python. Another part of the MinIO
 deployment is the managment server $dash.en$ a web application used for
 configuration and management.
 
-Crucially, for this thesis, _MinIO_ can monitor events associated with a
+Crucially, for this thesis, MinIO can monitor events associated with a
 _bucket_ and publish notifications via multiple protocols
 #footnote[https://min.io/docs/minio/kubernetes/upstream/administration/monitoring.html].
 One of the supported protocols is _AMQP 0-9-1_, which is the protocol used by
-_RabbitMQ_. A few examples of such events are: 
+RabbitMQ. A few examples of such events are: 
 - `s3:ObjectCreated:Put` which occurs when a new object is added to a bucket.  
 - `s3:ObjectRemoved:Delete` which occurs when an object is deleted from a
   bucket.  
@@ -620,14 +629,14 @@ _RabbitMQ_. A few examples of such events are:
 
 #pagebreak()
 = Implementation
-The result of this thesis is a service named SQC (Structure Quality Control)
-alongside a corresponding Python library, SQClib. The source code is available
-in the _sb-ncbr_ (Structural bioinformatics research group at National Centre
-for Biomolecular Research) organization on GitHub for both SQC
+The result of this thesis is a validation service (SQC) alongside a
+corresponding Python library, SQCLib. The source code is available in the
+_sb-ncbr_ (Structural bioinformatics research group at National Centre for
+Biomolecular Research) organization on GitHub for both SQC
 #footnote[https://github.com/sb-ncbr/sqc] and SQCLib
 #footnote[https://github.com/sb-ncbr/sqclib]. 
 
-This chapter begins with an introduction to SQC's high-level architecture and
+This chapter begins with an introduction to _SQC's_ high-level architecture and
 design decisions, followed by a closer examination of the implementation.
 
 == Requirements
@@ -684,11 +693,11 @@ can be created.
 To implement the Producer Consumer pattern in SQC, we utilize RabbitMQ
 (@section-rabbitmq) and MinIO (@section-minio).
 
-When a user submits a validation request through SQClib (refer to
+When a user submits a validation request through SQCLib (refer to
 @section-sqclib), the library code creates a new object in a MinIO bucket. This
 object contains the atomic model along with associated metadata. The library
 subsequently returns the ID of the pending request to the user. The user uses
-this ID to invoke another SQClib function, which awaits the completion of the
+this ID to invoke another SQCLib function, which awaits the completion of the
 request.
 
 Upon the creation of the object, Minio publishes a bucket notification event to
@@ -704,7 +713,7 @@ bucket. When the result is submitted, the library returns the results of the
 validation to the user.
 
 In our scenario, users submitting validation requests act as producers,
-RabbitMQ's exchange acts as a shared queue, and the SQC server acts as a
+_RabbitMQ's_ exchange acts as a shared queue, and the SQC server acts as a
 consumer. During periods of high load, additional instances of the SQC server
 can be created, accessing the same shared queue. This approach boosts the
 system's throughput.
@@ -721,7 +730,7 @@ Then, we explore how the MolProbity suite is utilized. Finally, we inspect the
 service's output format.
 
 === Source code overview
-In this chapter, we explore SQC's source code repository and provide an overview
+In this chapter, we explore _SQC's_ source code repository and provide an overview
 of its elements.
 
 The `ansible/` directory contains _Ansible_ playbooks and inventories, used to
@@ -735,7 +744,7 @@ starts the RabbitMQ, MinIO and SQC containers, and exposes the default MinIO
 port `9000`. The local instance can then be accessed for testing using the
 SQCLib library.
 
-The `Dockerfile` contains instructions for _Docker_ to build SQC's image.
+The `Dockerfile` contains instructions for _Docker_ to build _SQC's_ image.
 See more in @section-containerization.
 
 The `pyproject.toml` contains definitions pertaining to the SQC Python project.
@@ -779,7 +788,7 @@ The core of the validation service is utilizing the _MolProbity_ suite to
 validate atomic models and parsing its outputs into a validation report.
 
 The SQC server listens on messages in the `requests` exchange in RabbitMQ. When
-a request arrives, the respective atomic model is fetched from _MinIO_ and
+a request arrives, the respective atomic model is fetched from MinIO and
 stored in the `/tmp` directory.
 
 Since _MolProbity_ exclusively supports validating models stored in the legacy
@@ -788,7 +797,7 @@ this legacy format. This is done using the _Gemmi_
 #footnote[https://gemmi.readthedocs.io/en/latest/] library for structural
 biology. _Gemmi_ has multiple features useful in macromolecular biology but
 supports format conversions using the `gemmi convert` subprogram. After the
-structure is fetched from _MinIO_, _Gemmi_ converts it to the legacy format.
+structure is fetched from MinIO, _Gemmi_ converts it to the legacy format.
 
 Another constraint of _MolProbity_ is that it can only operate on PDB files
 containing only a single model. It is possible for PDB files to contain an
@@ -809,7 +818,7 @@ The second program to be executed is _clashscore_. The output of _clashscore_ is
 not in the CSV format and therefore requires quite intricate parsing. The
 output is parsed into the validation report as well.
 
-Before converting the validation report to JSON and sending it to _MinIO_, we
+Before converting the validation report to JSON and sending it to MinIO, we
 add the versions of the reference data used for validation to the model. These
 versions are represented as URLs of the git repositories and commit hashes of
 the latest commits.
@@ -914,7 +923,7 @@ code and a small command-line application for uploading structures from the
 system shell. The library is easily installable and distributed as a Python
 package.
 
-The implementation wraps the Python API provided by _MinIO_
+The implementation wraps the Python API provided by MinIO
 #footnote[https://min.io/docs/minio/linux/developers/python/API.html], while
 providing a few additional validations.
 
@@ -1023,41 +1032,41 @@ available in the `sb-ncbr` subdomain of the github.io domain
 
 #pagebreak()
 = Deployment
-To deploy the main instance of SQC, we chose the Rancher _Kubernetes_
+To deploy the main instance of SQC, we chose the Rancher Kubernetes
 distribution provided by _MetaCentrum_
 #footnote[https://rancher.cloud.e-infra.cz]. Since we had already decided to
-utilize containerization and needed simple scaling, _Kubernetes_ was the obvious
+utilize containerization and needed simple scaling, Kubernetes was the obvious
 choice. 
 
 In this chapter we first explore the array of objects used to deploy SQC
-to _Kubernetes_, and then we describe how the process of deployment is automated
+to Kubernetes, and then we describe how the process of deployment is automated
 using _Ansible_.
 
 == Kubernetes project setup
-To deploy SQC to a _Kubernetes_ project, we take advantage of various
-_Kubernetes_ objects.
+To deploy SQC to a Kubernetes project, we take advantage of various
+Kubernetes objects.
 
-The credentials for the _MinIO_ administrator account and _RabbitMQ_ user are
+The credentials for the MinIO administrator account and RabbitMQ user are
 stored using a Secret. These secrets are then copied to an environment variable
 when creating respective Deployments.
 
-The _MinIO_ object store requires storage for objects, so we create a Persistent
-Volume Claim (PVC) that is later mounted into a _MinIO_ Deployment. This
-guarantees that the data stored by _MinIO_ are persistent even across Pod
-restarts. Similarly, _RabbitMQ_ requires some storage for buffering of messages
-in queues. Again, we create a PVC and later mount it into the _RabbitMQ_
+The MinIO object store requires storage for objects, so we create a Persistent
+Volume Claim (PVC) that is later mounted into a MinIO Deployment. This
+guarantees that the data stored by MinIO are persistent even across Pod
+restarts. Similarly, RabbitMQ requires some storage for buffering of messages
+in queues. Again, we create a PVC and later mount it into the RabbitMQ
 Deployment.
 
-To deploy _MinIO_, _RabbitMQ_, and SQC, we create three Deployments. The SQC
+To deploy MinIO, RabbitMQ, and SQC, we create three Deployments. The SQC
 Deployment is unique in the fact that the number replicas in the ReplicaSet is
 configurable. By specifying a higher number of replicas, the throughput of the
 service will be increased.
 
-Exposing _MinIO_, _RabbitMQ_, and SQC is achieved by utilizing a _Kubernetes_
+Exposing MinIO, RabbitMQ, and SQC is achieved by utilizing a Kubernetes
 Service. Each of the three Deployments is exposed by a Service, allowing Pods to
 communicate over the network.
 
-Lastly, we create two Ingresses, exposing the main _MinIO_ and the _MinIO_
+Lastly, we create two Ingresses, exposing the main MinIO and the MinIO
 management ports. We utilize special annotations provided by MetaCentrum
 #footnote[https://docs.cerit.io/docs/kubectl-expose.html], which create a
 subdomain under the `dyn.cloud.e-infra.cz` domain and automatically enable TLS
@@ -1065,34 +1074,34 @@ to use HTTPS.
 
 == Automation <section-automation>
 To automate the deployment of SQC, we use two _Ansible_ playbooks:
-`deploy-sqc.yaml`, which creates all _Kubernetes_ objects required for a minimal
+`deploy-sqc.yaml`, which creates all Kubernetes objects required for a minimal
 setup of SQC and `teardown-sqc.yaml`, which deletes all objects pertaining to
 SQC.
 
 Both playbooks utilize an _Ansible_ vault, which contains secrets needed to
-deploy SQC, like the token to _MetaCentrum's_ _Kubernetes_ API. When running the
+deploy SQC, like the token to _MetaCentrum's_ Kubernetes API. When running the
 playbooks, a vault password is entered, which then decrypts the vault and makes
 the secrets available to _Ansible_ as inventory variables.
 
 The inventory only contains one host: `metacentrum`, because it is the only
 deployment target at the moment. However, new deployment targets can be easily added
-in the future. Another _Kubernetes_ cluster can be added with minimal effort.
+in the future. Another Kubernetes cluster can be added with minimal effort.
 
 The inventory for the host `metacentrum`, contains some important values for the
 deployment:
-+ `k8s_sqc_namespace` specifies the _Kubernetes_ project that SQC will be
++ `k8sSQCnamespace` specifies the Kubernetes project that SQC will be
   deployed to.
-+ `k8s_sqc_replicas` specifies the base number of replicas of SQC pods.
-+ `k8s_sqc_image` specifies the repository, name and tag of the SQC Docker image.
-+ `k8s_sqc_request_cpu` and `k8s_sqc_request_mem` specify the requested memory
++ `k8sSQCreplicas` specifies the base number of replicas of SQC pods.
++ `k8sSQCimage` specifies the repository, name and tag of the SQC Docker image.
++ `k8sSQCrequest_cpu` and `k8sSQCrequest_mem` specify the requested memory
   for the SQC container.
 
 When deploying a new version of SQC, it is necessary to rebuild the image and
-push it to a docker repository, so _Kubernetes_ can then pull it during the
+push it to a docker repository, so Kubernetes can then pull it during the
 deployment.
 
 One important aspect of the deployment is fitting SQC's replicas, CPU and memory
-requests to the _Kubernetes_ project quota. The default project quota in the
+requests to the Kubernetes project quota. The default project quota in the
 _MetaCentrum_ cluster is 20 CPUs request, 32 CPUs limit, 40GB memory requests,
 and 64GB memory limits. Adjusting the requested CPUs, memory, and the number of
 replicas is important to get the highest performance. If validating many small
@@ -1137,11 +1146,11 @@ configuration of resources.
 == Scaling
 To test SQC's scaling capabilities, we validated thirty structures with an
 increasing number of replicas. We chose thirty structures because it is the
-highest number of replicas that can be provisioned in the _Kubernetes_ project
+highest number of replicas that can be provisioned in the Kubernetes project
 while fitting into quota memory limits. @figure-scaling shows that with the
 increasing number of replicas, the time spent on multiple structure validations
 drops rapidly. Scaling replicas further is possible; the limiting factor is the
-resource quota in the _Kubernetes_ cluster.
+resource quota in the Kubernetes cluster.
 
 #figure(
   image("img/replica-perf.png"),
@@ -1167,7 +1176,7 @@ Utilizing modern cloud technologies, we developed an easily scalable solution
 hosted in the _MetaCentrum_ virtual organization, that can be simply accessed
 using a Python library. Additionally, the service defines an output schema,
 facilitating its use. The deployment is fully automated and can be easily
-extended to other _Kubernetes_ clusters.
+extended to other Kubernetes clusters.
 
 == Future plans
 Even though the implemented solution offers practical validation of structures,

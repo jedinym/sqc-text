@@ -142,7 +142,7 @@ experiments.
 
 This reality is reflected by the fact that every structure deposited into the
 _Protein Data Bank_ (the single global archive of three-dimensional structural
-models @pdb; see more in @section-pdb) is validated using community-developed
+models @pdb) is validated using community-developed
 tools @pdb-validation[p.  1917]. Based on the results of these tools, the
 validation pipeline generates a report @pdb-validation that can be used for
 further refining of the coordinate models.
@@ -153,7 +153,7 @@ of continuously optimized structures or batch validation of up to hundreds of
 millions of predicted simpler structures).
 
 As a solution, in this thesis, I implement _SQC_ (Structure Quality Control), a
-scalable service allowing for mass validation of macromolecular structures which
+scalable service allowing for mass validation of macromolecular structures that 
 incorporates the tools used by the _Protein Data Bank_ validation pipeline and a
 Python library for simple access. Thanks to the implemented queueing system, it
 is possible to run batch validations of thousands of structures. The service is
@@ -225,14 +225,14 @@ and then take a closer look at the three-dimensional representations, as they
 are the most relevant to this thesis.
 
 == One-dimensional structure
-The simplest way of representing a molecule is by indicating the absolute counts
-of atoms present (i.e. molecular formulae). To illustrate, the molecular formula
+The simplest way of representing a molecule is by indicating the total counts
+of atoms present (using a molecular formula). To illustrate, the molecular formula
 of _glucose_ is written as $C_6 H_12 O_6$, that is six carbon atoms, twelve
 hydrogen atoms, and six oxygen atoms. 
 
 However, this representation lacks information about the relative positions of
 atoms and bonds, making it unable to differentiate molecules with identical
-absolute atom counts.  For instance, molecules such as _fructose_ and
+total atom counts.  For instance, molecules such as _fructose_ and
 _galactose_ share the same formula as _glucose_, despite having different
 structures.
 
@@ -243,22 +243,20 @@ containing thousands of atoms.
 A common way to represent structures in a two-dimensional manner is to use a
 _molecular graph_ @chemo-informatics[p. 2]. A graph is a pair $G = (V, E)$,
 where $V$ is a set of _vertices_ and $E$ is a set of pairs $E = {(v_1, v_2) |
-v_1,v_2 in V}$, whose elements are called _edges_. Using a graph, it is possible
-to capture the topology of a molecule. In a molecular graph, vertices represent
-atoms and edges represent bonds between them @chemo-informatics[p.2]. Both
-vertices and edges can hold additional information, such as bond orders for
+v_1,v_2 in V}$, elements of which are called _edges_. Using a graph, it is
+possible to capture the topology of a molecule. In a molecular graph, vertices
+represent atoms and edges represent bonds between them @chemo-informatics[p.2].
+Both vertices and edges can hold additional information, such as bond orders for
 edges or atomic numbers for vertices @chemo-informatics[p.2].
 
 These molecular graphs can be encoded using various formats @chemical-formats,
 with _line notation_ being one of the simpler methods. A line notation
 represents a structure as a linear string of characters, making them relatively
-simple to read and understand. Multiple standards are utilized, such as SLN
-#footnote[Sybil Line Notation], WLN #footnote[Wiswesser Line Notation], and
-ROSDAL #footnote[Representation of structure diagram arranged linearly]. 
+simple to read and understand.
 
 One commonly used notation is SMILES #footnote[Simplified Molecular Input Line
-Entry Specification] @smiles. Specifically, the OpenSMILES standard is widely adopted
-and open-source @open-smiles.
+Entry Specification] @smiles. Specifically, the OpenSMILES standard is widely
+adopted and open-source @open-smiles.
 
 SMILES enables the representation of molecular graphs using ASCII strings with
 only a few rules. It works by doing a depth-first traversal of the graph and
@@ -266,13 +264,14 @@ printing appropriate symbols for vertices (atoms) and edges (bonds). Initially,
 the graph is edited to remove hydrogen atoms and break cycles to create a
 spanning tree (i.e. a subgraph that is a tree #footnote[A graph in which any two
 vertices are connected by exactly one edge.] and contains all the original
-vertices). @smiles-table illustrates a few examples of the SMILES format.
+vertices) @smiles-algorithm. @smiles-table illustrates a few examples of the
+SMILES format.
 
 #figure(
   table(
     columns: (auto, auto, auto),
     align: center + horizon,
-    table.header([*Molecule*], [*Chemical structure*], [*SMILES string*]),
+    table.header([*Molecule*], [*Chemical formula*], [*SMILES string*]),
 
     "Methane",
     $C H_4$,
@@ -294,11 +293,11 @@ vertices). @smiles-table illustrates a few examples of the SMILES format.
     image("img/nicotine.svg", width: 60pt),
     raw("CN1CCC[C@H]1c2cccnc2"),
   ),
-  caption: "Examples of SMILES representations of chemical structures."
+  caption: "Examples of SMILES representations of chemical molecules."
 ) <smiles-table>
 
 == Three-dimensional structure
-Three-dimensional structures are captured in computer-readable form (and
+Three-dimensional structures are represented in computer-readable form (and
 human-readable to some extent) using a chemical file format. These exist in the
 form of text files, which describe the locations of atoms in three-dimensional
 space. Metadata about the represented structure may also be included. In this
@@ -306,15 +305,15 @@ chapter, the two formats relevant to this thesis are introduced.
 
 === PDB format
 The Protein Data Bank format is the original format used by the Protein Data
-Bank @section-pdb. It was originally developed in 1976 as a simple
-human-readable format@pdb-history. 
+Bank. It was originally developed in 1976 as a simple
+human-readable format @pdb-history. 
 
 Each line of the file contains a _record_ - information about some aspect of the
 structure. The records can contain metadata (e.g. `AUTHOR`, `HEADER` or `TITLE`)
-or data about the chemical strucutre of the molecule (e.g. `SEQRES` or `ATOM`).
-Additionally, the wwPDB (worldwide Protein Data Bank) has used the `REMARK`
-record type to extend the format to support new details about the experimental
-methods used to obtain the macromolecular data @pdb-format-guides.
+or data about the chemical structure of the molecule (e.g. `SEQRES` or `ATOM`).
+Additionally, the `REMARK` record type has been used to extend the format to
+support new details about the experimental methods used to obtain the
+macromolecular data @pdb-format-guides.
 
 Unfortunately, the lines of the file are fixed-width as the format is based on
 the original 80 column punched card @pdb-history. Because of this, limitations
@@ -334,8 +333,10 @@ the hybrid-36 counting system for atom and residue numbers @hybrid-36), but none
 of them have been particularly prevalent, as it would be difficult to adapt
 existing tools.
  
-The PDB format has been deprecated by the Protein Data Bank in favor of the
-PDBx/mmCIF format in 2014 @pdb-formats.
+The PDB format has been deprecated by the _Protein Data Bank_ in favor of the
+PDBx/mmCIF format in 2014 @pdb-formats. However, the PDB still offers structures
+in the PDB format; these are only best-effort conversions of the PDBx/mmCIF
+format.
 
 === PDBx/mmCIF Format
 The PDBx/mmCIF format was developed to address the limitations inherent in the
@@ -348,7 +349,7 @@ operates under the idea that all values within an ASCII text file are assigned
 dictionary labels (keys). This concept was enabled by the use of a Dictionary
 Definition Language (DDL), which is a versatile language allowing for the
 description of dictionary data structures, controlled vocabularies, boundary  
-conditions, and relationships between values.
+conditions, and relationships between values @mmcif-ecosystem[p. 2].
 
 Later, in 1997, the mmCIF dictionary was approved by the international Committee
 for the Maintenance of the CIF Standard (COMCIFS) @mmcif-approval. It featured
@@ -363,10 +364,15 @@ concepts present in the PDB format, additional key categories prefixed with
 extended. This expansion aimed to guarantee complete compatibility and semantic
 equivalence with the PDB format @crystallographic-data[p. 195].
 
-In 2014, the PDBx/mmCIF format became the main format of the PDB.
+In 2014, the PDBx/mmCIF format became the main format of the PDB
+@mmcif-ecosystem[p. 3].
 
 #pagebreak()
 = Tools and methods
+In this chapter, we introduce the tools employed in the implementation. First,
+we discuss the _Protein Data Bank_ and its validation pipeline. Next, we examine
+_MolProbity_, a validation tool used in the implementation. Finally, we explore
+the components of the new system.
 
 == Protein Data Bank <section-pdb>
 The Protein Data Bank (PDB) is the single global archive of three-dimensional
@@ -437,7 +443,9 @@ _MolProbity_ is the single validation tool used in this thesis. It provides
 evaluation of atomic model quality for biomacromolecules @molprobity[p. 12]. The
 current maintainers are the Richardson Laboratory of Duke University. Its source
 code can be found in their GitHub repository
-#footnote[https://github.com/rlabduke/MolProbity].
+#footnote[https://github.com/rlabduke/MolProbity]. The repository also contains
+a short guide on how to install _MolProbity_, however the guide and installation
+scripts are outdated and require some refactoring for use on a modern system.
 
 _MolProbity_ was chosen because, unlike other tools in the PDB validation
 pipeline, it is freely available and provides multiple validations in a single
@@ -461,10 +469,11 @@ average distance between nuclei of two bonded atoms.] and bond angles
 #footnote[The geometric angle between two adjacent bonds.] of backbones
 #footnote[The main chain of the polymer.] @molprobity[p. 15]. 
 
-Based on derived parameters @molprobity[p. 15], the instances where the bond
+Based on ideal parameters derived ahead of time @molprobity[p. 15]
+@struct-quality-data @backbone-conformation, the instances where the bond
 lengths or bond angles deviate from the ideal value by at least four standard
 deviations are identified and listed as bond length and bond angle outliers,
-respectively @molprobity[p.  15].
+respectively @molprobity[p. 15].
 
 ==== Ramachandran and rotamer analyses
 #todo[Not really understanding these right now.]
@@ -592,17 +601,20 @@ additional text metadata.
 
 Access to _MinIO_ is mediated via an HTTP API originally designed for Amazon's
 S3 service. However, _MinIO_ also offers software development kits (SDKs) for
-multiple programming languages, including Python.
+multiple programming languages, including Python. Another part of the _MinIO_
+deployment is the managment server $dash.en$ a web application used for
+configuration and management.
 
-Crucially, for this thesis, _MinIO_ can monitor events in a _bucket_ and publish
-notifications via multiple protocols
+Crucially, for this thesis, _MinIO_ can monitor events associated with a
+_bucket_ and publish notifications via multiple protocols
 #footnote[https://min.io/docs/minio/kubernetes/upstream/administration/monitoring.html].
 One of the supported protocols is _AMQP 0-9-1_, which is the protocol used by
-_RabbitMQ_. A few examples of such events are: - `s3:ObjectCreated:Put` which
-occurs when a new object is added to a bucket.  - `s3:ObjectRemoved:Delete`
-which occurs when an object is deleted from a bucket.  -
-`s3:ObjectCreated:CompleteMultipartUpload` which occurs when an object larger
-than 5MiB is added to a bucket. 
+_RabbitMQ_. A few examples of such events are: 
+- `s3:ObjectCreated:Put` which occurs when a new object is added to a bucket.  
+- `s3:ObjectRemoved:Delete` which occurs when an object is deleted from a
+  bucket.  
+- `s3:ObjectCreated:CompleteMultipartUpload` which occurs when an object larger
+  than 5MiB is added to a bucket. 
 
 #pagebreak()
 = Implementation
@@ -1149,15 +1161,20 @@ discrepancies.
 #pagebreak()
 = Conclusion
 In this thesis, we aimed to reimplement parts of the PDB validation pipeline to
-improve the throughput of structure validation. By utilizing modern cloud
-technologies, we developed an easily scalable solution hosted in the
-_MetaCentrum_ virtual organization, that can be simply accessed using a Python
-library. Additionally, the service defines an output schema, which makes it easy
-to take advantage of. The deployment is fully automated and 
+improve the throughput of structure validation and allow local deployment. By
+utilizing modern cloud technologies, we developed an easily scalable solution
+hosted in the _MetaCentrum_ virtual organization, that can be simply accessed
+using a Python library. Additionally, the service defines an output schema,
+facilitating its use. The deployment is fully automated and can be easily
+extended to other _Kubernetes_ clusters.
 
 == Future plans
-// TODO: higher project quota, automatic scaling, REST API
-Describe stuff that's missing or can be improved.
+Even though the implemented solution offers practical validation of structures,
+there are several ares that could be improved in the future.  Notably, the
+service only utilizes one validation tool. Adding more validation tools has the
+potential to make the tool the one-stop shop for high throughput validations.
+Additionally, allowing users to specify versions of reference data to use would
+significantly enhance the replicability of validations.
 
 #pagebreak()
   

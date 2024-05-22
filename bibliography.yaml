@@ -62,11 +62,51 @@ molprobity-more-data:
   title: "MolProbity: More and better reference data for improved all-atom structure validation"
   date: 2017
   author: [Christopher J. Williams, Jeffrey J. Headd, Nigel W. Moriarty, Michael G. Prisant, Lizbeth L. Videau, Lindsay N. Deis, Vishal Verma, Daniel A. Keedy, Bradley J. Hintze, Vincent B. Chen, Swati Jain, Steven M. Lewis, W. Bryan Arendall III, Jack Snoeyink, Paul D. Adams, Simon C. Lovell, Jane S. Richardson, David C. Richardson]
+  url:  https://doi.org/10.1002/pro.3330
   parent:
     title: Protein Science
     volume: 27
     issue: 1
     page-range: 293-315
+
+struct-quality-data:
+  type: article
+  title: Structure quality and target parameters
+  author: [R. A. Engh, R. Huber]
+  date: 2012
+  url: https://doi.org/10.1107/97809553602060000857
+  parent:
+    type: periodical
+    date: 2012
+    title: International Tables for Crystallography
+    volume: F
+    page-range: 474-484
+    chapter: 18.3
+
+backbone-conformation:
+  type: article
+  title: Conformation Dependence of Backbone Geometry in Proteins
+  author: [Donald S. Berkholz, Maxim V. Shapovalov, Roland L. Dunbrack, P. Andrew Karplus]
+  url: https://doi.org/10.1016/j.str.2009.08.012
+  date: 2009
+  parent:
+    type: periodical
+    title: Structure
+    volume: 17
+    issue: 10
+    page-range: 1316-1325
+
+smiles-algorithm:
+  type: article
+  title: SMILES. 2. Algorithm for generation of unique SMILES notation
+  author: [D. Weininger, A. Weininger, J. L. Weininger]
+  date: 1989
+  parent:
+    title: Journal of Chemical Information and Computer Sciences
+    volume: 29
+    issue: 2
+    page-range: 45-136
+
 
 ansible:
   type: web

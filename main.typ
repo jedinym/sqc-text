@@ -33,6 +33,7 @@
 #show "Kubernetes": emph 
 #show "RabbitMQ": emph
 #show "MinIO": emph
+#show "MetaCentrum": emph
 
 #align(center)[
   #text(size: 15pt)[
@@ -163,7 +164,7 @@ scalable service allowing for mass validation of macromolecular structures that
 incorporates the tools used by the _Protein Data Bank_ validation pipeline and a
 Python library for simple access. Thanks to the implemented queueing system, it
 is possible to run batch validations of thousands of structures. The service is
-deployed via _Ansible_ to the Kubernetes cluster provided by the _MetaCentrum_
+deployed via _Ansible_ to the Kubernetes cluster provided by the MetaCentrum
 virtual organization.
 
 #pagebreak()
@@ -173,7 +174,7 @@ The IUPAC #footnote[International Union of Pure and Applied Chemistry] defines a
 biopolymer or a biomacromolecule as a macromolecule #footnote[Large molecules 
 consisting of many repeating subunits (monomers).] produced by living organisms
 @iupac-glossary. These include proteins, nucleic acids, and polysaccharides
-@iupac-glossary. In this chapter, we briefly introduce these three basic
+@iupac-glossary. In this section, we briefly introduce these three basic
 biomacromolecules.
 
 == Proteins
@@ -227,7 +228,7 @@ structures of cells @biology[p. 71].
 #pagebreak()
 = Macromolecular structural data
 Macromolecules can be represented in computers in one, two or three dimensions
-@chemo-informatics.  In this chapter, we first introduce these representations,
+@chemo-informatics.  In this section, we first introduce these representations,
 and then take a closer look at the three-dimensional representations as they
 are the most relevant to this thesis.
 
@@ -308,7 +309,7 @@ Three-dimensional structures are represented in computer-readable form (and
 human-readable to some extent) using a chemical file format. These exist in the
 form of text files, which describe the locations of atoms in three-dimensional
 space. Metadata about the represented structure may also be included. In this
-chapter, the two formats relevant to this thesis are introduced.
+section, the two formats relevant to this thesis are introduced.
 
 === PDB format
 The Protein Data Bank format is the original format used by the Protein Data
@@ -376,9 +377,9 @@ In 2014, the PDBx/mmCIF format became the primary format of the PDB
 
 #pagebreak()
 = Tools and methods
-In this chapter, we introduce the tools employed in the implementation. First,
+In this section, we introduce the tools employed in the implementation. First,
 we discuss the _Protein Data Bank_ and its validation pipeline. Next, we examine
-_MolProbity_, a validation tool used in the implementation. Finally, we explore
+MolProbity, a validation tool used in the implementation. Finally, we explore
 the components of the new system.
 
 == Protein Data Bank <section-pdb>
@@ -435,7 +436,7 @@ The pipeline is composed of component software tools that validate certain
 aspects of the supplied data @pdb-validation[p. 1922]. Some of these tools are
 publicly available, but access to some was only provided to the wwPDB. One of
 the publicly available tools that was used in the implementation of this thesis
-is _MolProbity_ @molprobity, which we will explore further in
+is MolProbity @molprobity, which we will explore further in
 @section-molprobity.
 
 There are three ways to access the validation pipeline: via an anonymous web
@@ -445,16 +446,16 @@ large numbers of structures, as it can be fully automated. It offers both a CLI
 #footnote[Command Line Interface] application and a small Python library.
 
 == MolProbity <section-molprobity>
-_MolProbity_ is the single validation tool used in this thesis. It provides
+MolProbity is the single validation tool used in this thesis. It provides
 evaluation of atomic model quality for biomacromolecules @molprobity[p. 12]. The
 current maintainers are the Richardson Laboratory of Duke University. Its source
 code can be found in their GitHub repository
 #footnote[https://github.com/rlabduke/MolProbity]. The repository also contains
-a short guide on how to install _MolProbity_, however, the guide and
+a short guide on how to install MolProbity, however, the guide and
 installation scripts are rather outdated and require some refactoring for use on
 a modern system.
 
-_MolProbity_ was chosen because, unlike other tools in the PDB validation
+MolProbity was chosen because, unlike other tools in the PDB validation
 pipeline, it is freely available and provides multiple validations in a single
 package.
 
@@ -462,7 +463,7 @@ The software package contains a web interface for simple use but also a command
 line interface for bulk validations, which is more useful for automated use.
 
 === Validations
-In this section, we briefly introduce the various validations that _MolProbity_
+In this section, we briefly introduce the various validations that MolProbity
 performs on atomic models.
 
 ==== All-atom contact analysis <section-clashes>
@@ -471,7 +472,7 @@ nonbonded atoms. Overlaps over $0.4 angstrom$ #footnote[$1 angstrom = 0.1
 unit("nano meter")$] are reported as _clashes_ @molprobity[p. 14].
 
 ==== Covalent-geometry analyses
-_MolProbity_ additionally assesses outliers in bond lengths #footnote[The
+MolProbity additionally assesses outliers in bond lengths #footnote[The
 average distance between nuclei of two bonded atoms.] and bond angles
 #footnote[The geometric angle between two adjacent bonds.] of backbones
 #footnote[The main chain of the polymer.] @molprobity[p. 15]. 
@@ -497,7 +498,7 @@ in each residue in the CSV #footnote[Comma Separated Values] format.
 Secondly, the _clashscore_ program checks for clashes (@section-clashes) and
 outputs detected clashes in a one-clash-per-line format.
 
-== Kubernetes
+== _Kubernetes_
 Kubernetes is an open-source platform designed to automate the deployment,
 scaling, and operation of containerized applications. It organizes these
 applications into clusters, which are sets of nodes (machines) that run
@@ -574,16 +575,16 @@ tasks. In this thesis, we utilize the `kubernetes.core.k8s` module
 for deployment automation.
 
 == MetaCentrum
-The _MetaCentrum_ virtual organization provides computing resources to all
+The MetaCentrum virtual organization provides computing resources to all
 students and employees of academic institutions in the Czech Republic @metacentrum.
-Membership is free, with the requirement that members acknowledge _MetaCentrum_
+Membership is free, with the requirement that members acknowledge MetaCentrum
 in their publications.
 
 It offers many different platforms for computation across the Czech Republic,
 but crucially for this thesis, it also offers a Kubernetes cluster @metacentrum-k8s
 via a _Rancher_ #footnote[https://www.rancher.com/] instance.
 
-== RabbitMQ <section-rabbitmq>
+== _RabbitMQ_ <section-rabbitmq>
 RabbitMQ is a messaging and streaming broker that supports several standard
 messaging protocols @rabbitmq. It is used as a mediator between producers and
 consumers of messages.
@@ -623,6 +624,12 @@ RabbitMQ. A few examples of such events are:
 - `s3:ObjectCreated:CompleteMultipartUpload` which occurs when an object larger
   than 5MiB is added to a bucket. 
 
+== Miscellaneous
+In this section, we introduce the tools and libraries that are not the core of
+the solution.
+
+
+
 #pagebreak()
 = Implementation
 The result of this thesis is a validation service (SQC) alongside a
@@ -632,7 +639,7 @@ Biomolecular Research) organization on GitHub for both SQC
 #footnote[https://github.com/sb-ncbr/sqc] and SQCLib
 #footnote[https://github.com/sb-ncbr/sqclib]. 
 
-This chapter begins with an introduction to _SQC's_ high-level architecture and
+This section begins with an introduction to _SQC's_ high-level architecture and
 design decisions, followed by a closer examination of the implementation.
 
 == Requirements
@@ -663,8 +670,6 @@ load, the system can accept new validation requests, we use a Producer Consumer
 system design pattern.
 
 === Producer Consumer pattern
-#todo[Does this chapter belong to tools and methods?]
-
 In the Producer Consumer system design pattern, producers generate data or
 events and put them in a shared queue. Consumers then retrieve the data or
 events from the queue and process them (@figure-producer-consumer). The main
@@ -681,7 +686,7 @@ consumers are slow in processing it; new consumers accessing the shared queue
 can be created.
 
 #figure(
-  caption: "Diagram of the producer consumer pattern. Producers produce new data in parallel and consumers consume and process data in parallel.",
+  caption: "Diagram of the Producer Consumer pattern. Producers produce new data in parallel and consumers consume and process data in parallel.",
   image("img/producer_consumer.svg"),
 ) <figure-producer-consumer>
 
@@ -696,7 +701,7 @@ subsequently returns the ID of the pending request to the user. The user uses
 this ID to invoke another SQCLib function, which awaits the completion of the
 request.
 
-Upon the creation of the object, Minio publishes a bucket notification event to
+Upon the creation of the object, MinIO publishes a bucket notification event to
 the `requests` exchange in RabbitMQ. This notification contains the identifier
 of the new request.
 
@@ -714,29 +719,32 @@ consumer. During periods of high load, additional instances of the SQC server
 can be created, accessing the same shared queue. This approach boosts the
 system's throughput.
 
+A sequence diagram showing a user's interaction with the system when validating
+a single structure can be seen in @figure-sequence.
+
 #figure(
   caption: "UML Sequence Diagram of an SQC validation request.", 
   image("img/sequence.png"),
-)
+) <figure-sequence>
 
-== Validation Service
-In this chapter, we introduce the validation service and its key components.
+== Validation service
+In this section, we introduce the validation service and its key components.
 First, we discuss the service's source code. Next, we examine containerization.
 Then, we explore how the MolProbity suite is utilized. Finally, we inspect the
 service's output format.
 
 === Source code overview
-In this chapter, we explore _SQC's_ source code repository and provide an overview
+In this section, we explore _SQC's_ source code repository and provide an overview
 of its elements.
 
 The `ansible/` directory contains _Ansible_ playbooks and inventories, used to
-deploy SQC to _MetaCentrum_. @section-automation goes further into the
+deploy SQC to MetaCentrum. @section-automation goes further into the
 deployment setup.
 
 The `compose.yaml` file contains the configuration file for _Docker Compose_
 #footnote[https://docs.docker.com/compose/]. Using it, developers can start a
 local instance of SQC for simpler development and testing. _Docker Compose_
-starts the RabbitMQ, MinIO and SQC containers, and exposes the default MinIO
+starts the RabbitMQ, MinIO, and SQC containers, and exposes the default MinIO
 port `9000`. The local instance can then be accessed for testing using the
 SQCLib library.
 
@@ -768,26 +776,34 @@ including straightforward deployment, isolation from the host system, and
 consistent results, as all the dependencies of the tools (both software
 dependencies and reference data) can be controlled.
 
-The _Dockerfile_ utilizes a multi-stage build, the first stage installs the
+The _Dockerfile_ utilizes a multi-stage build. The first stage installs the
 necessary packages, fetches _MolProbity's_ reference data and source code from
-GitHub and builds _MolProbity's_ binaries. In the second stage, SQC's dependencies
-are installed. This method was selected to reduce the Docker image's build time.
-Building _MolProbity_ can be time-consuming, taking up to an hour on a recent
-laptop. Docker can cache unchanged layers between builds, improving build times.
+GitHub and builds _MolProbity's_ binaries. In the second stage, SQC's
+dependencies are installed. This method was selected to reduce the Docker
+image's build time.  Building MolProbity can be time-consuming, taking up to
+an hour on a recent laptop. Docker can cache unchanged parts of the image
+between builds, improving build times.
 
 Since _MolProbity's_ results are dependent on reference data, the repositories
 containing it were forked into the _sb-ncbr_ organization on GitHub. These are
 then cloned during the image build.
 
+== Authentication
+In order to restrict access to the service, we utilize MinIO's built-in
+authentication mechanism. To access resources in a MinIO bucket, the user must
+provide an access key and a secret key. These two values are generated by the
+administrator using the MinIO management service and then provided to a new
+user.
+
 === Running validations
-The core of the validation service is utilizing the _MolProbity_ suite to
+The core of the validation service is utilizing the MolProbity suite to
 validate atomic models and parsing its outputs into a validation report.
 
-The SQC server listens on messages in the `requests` exchange in RabbitMQ. When
+The SQC server listens for messages in the `requests` exchange in RabbitMQ. When
 a request arrives, the respective atomic model is fetched from MinIO and
 stored in the `/tmp` directory.
 
-Since _MolProbity_ exclusively supports validating models stored in the legacy
+Since MolProbity exclusively supports validating models stored in the legacy
 PDB format, it's necessary to initially convert the PDBx/mmCIF atomic models to
 this legacy format. This is done using the _Gemmi_
 #footnote[https://gemmi.readthedocs.io/en/latest/] library for structural
@@ -795,7 +811,7 @@ biology. _Gemmi_ has multiple features useful in macromolecular biology but
 supports format conversions using the `gemmi convert` subprogram. After the
 structure is fetched from MinIO, _Gemmi_ converts it to the legacy format.
 
-Another constraint of _MolProbity_ is that it can only operate on PDB files
+Another constraint of MolProbity is that it can only operate on PDB files
 containing only a single model. It is possible for PDB files to contain an
 ensemble of models, something that is typical for structures determined by
 nuclear magnetic resonance. We utilize the _BioPython_
@@ -815,7 +831,7 @@ not in the CSV format and therefore requires quite intricate parsing. The
 output is parsed into the validation report as well.
 
 Before converting the validation report to JSON and sending it to MinIO, we
-add the versions of the reference data used for validation to the model. These
+add the versions of the reference data used for validation of the model. These
 versions are represented as URLs of the git repositories and commit hashes of
 the latest commits.
 
@@ -834,13 +850,12 @@ used to emit _JSON Schema_.
 
 With _Pydantic_ a _model_ of the output is created as a Python object. From this
 model, it is possible to generate a _JSON Schema_. Once populated with results
-from _MolProbity_, the model is converted into JSON and returned to the user in
+from MolProbity, the model is converted into JSON and returned to the user in
 that format.
 
 This approach offers the advantage that as the model expands in the future, the
-schema is automatically adjusted accordingly.
-
-#todo[Is this multipage figure a typographic crime?]
+schema is automatically adjusted accordingly. @figure-pydantic shows an example
+Python object with its associated _JSON Schema_.
 
 #show figure: set block(breakable: true)
 #figure(
@@ -908,11 +923,11 @@ schema is automatically adjusted accordingly.
     }
     ```,
   ),
-  caption: "An example of a small Pydantic model and its generated JSON Schema. The schema describes the types of every field of the model."
-)
+  caption: figure.caption(position: bottom)[An example of a small Pydantic model and its generated JSON Schema. The schema describes the types of every field of the model.] 
+) <figure-pydantic>
 #show figure: set block(breakable: false)
 
-== Validation Client Library <section-sqclib>
+== Validation client library <section-sqclib>
 In order to send a validation request to the SQC server, it is necessary to use
 the SQCLib Python package. This package includes a library API for use in Python
 code and a small command-line application for uploading structures from the
@@ -957,12 +972,12 @@ deployed instance. The client offers the following methods:
 
   requests = []
   for path in ["183d.pdb", "2pde.mmcif"]:
-    id = client.submit(path)
-    requests.append((path, id))
+    request_id = client.submit(path)
+    requests.append((path, request_id))
 
   reports = []
-  for path, id in requests:
-    report = client.get_result(id)
+  for path, request_id in requests:
+    report = client.get_result(request_id)
     reports.append((path, report))
   ```,
   caption: "An example Python script showing SQCLib usage. Once the client is initialized, two structures are submitted to the SQC instance and their reports awaited."
@@ -1029,16 +1044,16 @@ available in the `sb-ncbr` subdomain of the github.io domain
 #pagebreak()
 = Deployment
 To deploy the main instance of SQC, we chose the Rancher Kubernetes
-distribution provided by _MetaCentrum_
+distribution provided by MetaCentrum
 #footnote[https://rancher.cloud.e-infra.cz]. Since we had already decided to
 utilize containerization and needed simple scaling, Kubernetes was the obvious
 choice. 
 
-In this chapter we first explore the array of objects used to deploy SQC
+In this section we first explore the array of objects used to deploy SQC
 to Kubernetes, and then we describe how the process of deployment is automated
 using _Ansible_.
 
-== Kubernetes project setup
+== _Kubernetes_ project setup
 To deploy SQC to a Kubernetes project, we take advantage of various
 Kubernetes objects.
 
@@ -1062,8 +1077,8 @@ Exposing MinIO, RabbitMQ, and SQC is achieved by utilizing a Kubernetes
 Service. Each of the three Deployments is exposed by a Service, allowing Pods to
 communicate over the network.
 
-Lastly, we create two Ingresses, exposing the main MinIO and the MinIO
-management ports. We utilize special annotations provided by MetaCentrum
+Lastly, we create two Ingresses, exposing the main MinIO port and the MinIO
+management port. We utilize special annotations provided by MetaCentrum
 #footnote[https://docs.cerit.io/docs/kubectl-expose.html], which create a
 subdomain under the `dyn.cloud.e-infra.cz` domain and automatically enable TLS
 to use HTTPS.
@@ -1098,7 +1113,7 @@ deployment.
 
 One important aspect of the deployment is fitting SQC's replicas, CPU and memory
 requests to the Kubernetes project quota. The default project quota in the
-_MetaCentrum_ cluster is 20 CPUs request, 32 CPUs limit, 40GB memory requests,
+MetaCentrum cluster is 20 CPUs request, 32 CPUs limit, 40GB memory requests,
 and 64GB memory limits. Adjusting the requested CPUs, memory, and the number of
 replicas is important to get the highest performance. If validating many small
 structures, it is faster to have more replicas with fewer requested CPUs. When
@@ -1118,20 +1133,20 @@ configuration of resources.
       "SQC",
       "20",
       "0.9",
-      "1.5GiB",
-      "3Gi",
+      [$1.5$ GiB], 
+      [$3$ GiB],
 
       "RabbitMQ",
       "1",
       "1",
-      "512MiB",
-      "512MiB",
+      [$512$ MiB],
+      [$512$ MiB],
 
       "MinIO",
       "1",
       "1",
-      "512MiB",
-      "512MiB",
+      [$512$ MiB],
+      [$512$ MiB],
      ),
     caption: "Default resource requests and limits of the SQC Deployments."
   ) <figure-resources>
@@ -1139,10 +1154,11 @@ configuration of resources.
 
 #pagebreak()
 = Evaluation
+#todo[] 
 == Scaling
 To test SQC's scaling capabilities, we validated thirty structures with an
 increasing number of replicas. We chose thirty structures because it is the
-highest number of replicas that can be provisioned in the Kubernetes project
+highest number of replicas that can be provisioned in the Kubernetes project 
 while fitting into quota memory limits. @figure-scaling shows that with the
 increasing number of replicas, the time spent on multiple structure validations
 drops rapidly. Scaling replicas further is possible; the limiting factor is the
@@ -1154,25 +1170,28 @@ resource quota in the Kubernetes cluster.
 ) <figure-scaling>
 
 == Validation Results
-Certain validations performed by MolProbity are heavily influenced by reference
-data. Unfortunately, the datasets used by PDB are not publicly available. After
-an email inquiry, PDB referred us to the MolProbity paper from 2017
-@molprobity-more-data. According to this paper, MolProbity in the PDB pipeline
-should be using the data provided by the Richardson Laboratory at Duke
-University. However, even after using their datasets from GitHub, some
-validations produced slightly different results. Without access to the specific
-files used by PDB, it is difficult to determine the cause of these
-discrepancies.
+Certain validations performed by MolProbity (namely bond lengths, bond angles,
+and torsion angles) are heavily influenced by reference data. Unfortunately, the
+datasets used by PDB are not publicly available. After an email inquiry, PDB
+referred us to the MolProbity paper from 2017 @molprobity-more-data. According
+to this paper, MolProbity in the PDB pipeline should be using the data provided
+by the Richardson Laboratory at Duke University. However, even after using their
+datasets from GitHub, some validations produced slightly different results.
+Without access to the specific files used by PDB, it is difficult to determine
+the cause of these discrepancies.
 
 #pagebreak()
 = Conclusion
 In this thesis, we aimed to reimplement parts of the PDB validation pipeline to
 improve the throughput of structure validation and allow local deployment.
 Utilizing modern cloud technologies, we developed an easily scalable solution
-hosted in the _MetaCentrum_ virtual organization, that can be simply accessed
+hosted in the MetaCentrum virtual organization, that can be simply accessed
 using a Python library. Additionally, the service defines an output schema,
 facilitating its use. The deployment is fully automated and can be easily
-extended to other Kubernetes clusters.
+extended to other Kubernetes clusters. The implementation is ready for upcoming
+projects in the Structural bioinformatics research group at the National Centre
+for Biomolecular Research such as validations of hundreds of millions of
+predicted structures from _AlphaFoldDB_ or fast iterative validations.
 
 == Future plans
 Even though the implemented solution offers practical validation of structures,
@@ -1180,7 +1199,7 @@ there are several ares that could be improved in the future.  Notably, the
 service only utilizes one validation tool. Adding more validation tools has the
 potential to make the tool the one-stop shop for high throughput validations.
 Additionally, allowing users to specify versions of reference data to use would
-significantly enhance the replicability of validations.
+significantly enhance the replicability of validations. 
 
 #pagebreak()
   

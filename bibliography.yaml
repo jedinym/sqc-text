@@ -81,7 +81,7 @@ struct-quality-data:
     title: International Tables for Crystallography
     volume: F
     page-range: 474-484
-    chapter: 18.3
+    section: 18.3
 
 backbone-conformation:
   type: article

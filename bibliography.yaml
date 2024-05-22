@@ -1,5 +1,30 @@
 ---
 
+rabbitmq:
+  type: web
+  title: RabbitMQ
+  url:
+    value: https://www.rabbitmq.com/
+    date: 2024-05-22
+
+minio:
+  type: web
+  title: "MinIO | S3 & Kubernetes Native Object Storage"
+  url:
+    value: https://min.io/
+    date: 2024-05-22
+
+metacentrum:
+  type: article
+  title: "Metacentrum, the czech virtualized ngi"
+  date: 2009
+  author: [Šustr Z., Sitera J., Mulač M., Ruda M., Antoš D., Hejtmánek L., Holub P., Salvet Z.; Matyska L.]
+  url: 
+    value: https://www.researchgate.net/profile/Petr-Holub-5/publication/242734286_austr_Z_Sitera_J_Mula_c_M_Ruda_M_Antoo_D_Hejtmanek_L/links/53d75f880cf228d363eaf8c2/aeustr-Z-Sitera-J-Mula-c-M-Ruda-M-Antooe-D-Hejtmanek-L.pdf
+    date: 2024-05-22
+  parent:
+    title: EGEE Technical Forum
+
 metacentrum-k8s:
   type: Web
   url: 
@@ -31,6 +56,24 @@ molprobity:
   parent:
     title: "Acta Crystallographica Section D: Biological Crystallography"
     volume: 66
+
+molprobity-more-data:
+  type: article
+  title: "MolProbity: More and better reference data for improved all-atom structure validation"
+  date: 2017
+  author: [Christopher J. Williams, Jeffrey J. Headd, Nigel W. Moriarty, Michael G. Prisant, Lizbeth L. Videau, Lindsay N. Deis, Vishal Verma, Daniel A. Keedy, Bradley J. Hintze, Vincent B. Chen, Swati Jain, Steven M. Lewis, W. Bryan Arendall III, Jack Snoeyink, Paul D. Adams, Simon C. Lovell, Jane S. Richardson, David C. Richardson]
+  parent:
+    title: Protein Science
+    volume: 27
+    issue: 1
+    page-range: 293-315
+
+ansible:
+  type: web
+  title: "Ansible Documentation"
+  url:
+    value: https://docs.ansible.com/ansible/latest/index.html
+    date: 2024-05-22
 
 chemo-informatics:
   type: book
@@ -152,9 +195,9 @@ pdb:
   type: Article
   title: "Protein Data Bank: the single global archive for 3D macromolecular structure data"
   doi: "10.1093/nar/gky949"
-  author: "wwPDB consortium"
+  author: "The wwPDB Consortium"
   issn: "0305-1048"
-  page-range: 1-1
+  page-range: 1
   url: https://doi.org/10.1093/nar/gky949
   date: 2019
   parent: 
@@ -162,6 +205,16 @@ pdb:
     title: Nucleic Acids Research
     volume: 47
     page-range: 520-528
+
+emdb:
+  type: article
+  title: EMDB—the Electron Microscopy Data Bank
+  date: 2024
+  author: The wwPDB Consortium
+  parent:
+    volume: 52
+    issue: D1
+    page-range: 456-465
 
 pdb-history:
   type: article

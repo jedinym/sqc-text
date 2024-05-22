@@ -70,7 +70,7 @@
 #heading(numbering: none, outlined: false)[
   Declaration 
 ]
-Hereby I declare that this paper is my original authorial work, which I have
+Hereby I declare that this thesis is my original authorial work, which I have
 worked out on my own. All sources, references, and literature used or excerpted
 during elaboration of this work are properly cited and listed in complete
 reference to the due source. 
@@ -129,16 +129,16 @@ integrity. I checked the content and take full responsibility for it.
   Introduction
 ]
 
-The quality of macromolecular structures has been the focus of biomolecular
-chemists for as long as the methods determining the structure of these molecules
-have been used.
+Validating biomacromolecules is a critical step in ensuring the accuracy and
+reliability of structural data in biological research.
 
-The data from these experimental methods (X-ray crystallography, nuclear
-magnetic resonance, and electron microscopy) are supplied with atomic
-coordinates - electronic records containing the relative positions of atoms in
-the structure. Because of the experimental nature of the methods, these
+The data acquired using experimental methods (such as X-ray crystallography,
+nuclear magnetic resonance, and electron microscopy) are supplied with atomic
+coordinates $dash.en$ electronic records containing the relative positions of
+atoms in the structure. Because of the experimental nature of the methods, these
 structural models can contain a wide range of errors. Therefore, determining the
-quality of a structure is paramount in creating inferences from experiments. 
+quality of a structure is of prime importance in creating inferences from
+experiments. 
 
 This reality is reflected by the fact that every structure deposited into the
 _Protein Data Bank_ (the single global archive of three-dimensional structural
@@ -153,13 +153,12 @@ of continuously optimized structures or batch validation of up to hundreds of
 millions of predicted simpler structures).
 
 As a solution, in this thesis, I implement _SQC_ (Structure Quality Control), a
-scalable service which incorporates the tools used by the Protein Data Bank
-validation pipeline and a Python library for simple access. Thanks to the
-implemented queueing system, it is possible to run batch validations of
-thousands of structures. The service is deployed via _Ansible_ to the
-_Kubernetes_ cluster provided by the _MetaCentrum_ virtual organization.
-
-#todo[Explain sections of thesis.]
+scalable service allowing for mass validation of macromolecular structures which
+incorporates the tools used by the _Protein Data Bank_ validation pipeline and a
+Python library for simple access. Thanks to the implemented queueing system, it
+is possible to run batch validations of thousands of structures. The service is
+deployed via _Ansible_ to the _Kubernetes_ cluster provided by the _MetaCentrum_
+virtual organization.
 
 #pagebreak()
 
@@ -172,17 +171,18 @@ consisting of many repeating subunits (monomers).] produced by living organisms
 biomacromolecules.
 
 == Proteins
-Proteins are polypeptides with a molecular mass of around 10,000 or more
-@iupac-glossary-95[p. 1361]. They comprise one or more chains of $alpha$-amino
-acids #footnote[There are over 500 different amino acids, but only 22 are
-incorporated into proteins @amino-acids.] linked by peptide bonds #footnote[Covalent
-bonds from the carbonyl carbon of one amino acid to the nitrogen atom of another
-with loss of water.] @iupac-glossary-95[p. 1356].
+Proteins are chains of aminoacids with a molecular mass of around 10,000 or more
+@iupac-glossary-95[p. 1361]. They comprise one or more chains of amino acids
+#footnote[There are over 500 different amino acids, but only 22 are incorporated
+into proteins @amino-acids.] linked by peptide bonds $dash.en$ covalent bonds
+from the carbonyl carbon of one amino acid to the nitrogen atom of another with
+loss of water @iupac-glossary-95[p. 1356]. An example of such a reaction can be
+seen in @figure-peptide-bond.
 
 #figure(
   image("img/AminoacidCondensation.svg"),
   caption: "The dehydration condensation of two amino acids to form a peptide bond (in red). Sourced from Wikimedia Commons."
-) <peptide-bond>
+) <figure-peptide-bond>
 
 Proteins perform a vast array of functions in organisms: catalyzing reactions,
 providing structure to cells, replicating DNA, transporting molecules, and more
@@ -218,7 +218,7 @@ starch in plants, glycogen in animals). Others function as building material for
 structures of cells @biology[p. 71].
 
 #pagebreak()
-= Macromolecular Structural Data
+= Macromolecular structural data
 Macromolecules can be represented in computers in one, two or three dimensions
 @chemo-informatics.  In this chapter we first introduce these representations,
 and then take a closer look at the three-dimensional representations, as they
@@ -248,8 +248,6 @@ to capture the topology of a molecule. In a molecular graph, vertices represent
 atoms and edges represent bonds between them @chemo-informatics[p.2]. Both
 vertices and edges can hold additional information, such as bond orders for
 edges or atomic numbers for vertices @chemo-informatics[p.2].
-
-#todo[Should I add examples of molecular graphs?]
 
 These molecular graphs can be encoded using various formats @chemical-formats,
 with _line notation_ being one of the simpler methods. A line notation
@@ -306,7 +304,7 @@ form of text files, which describe the locations of atoms in three-dimensional
 space. Metadata about the represented structure may also be included. In this
 chapter, the two formats relevant to this thesis are introduced.
 
-=== PDB Format 
+=== PDB format
 The Protein Data Bank format is the original format used by the Protein Data
 Bank @section-pdb. It was originally developed in 1976 as a simple
 human-readable format@pdb-history. 
@@ -367,6 +365,7 @@ equivalence with the PDB format @crystallographic-data[p. 195].
 
 In 2014, the PDBx/mmCIF format became the main format of the PDB.
 
+#pagebreak()
 = Tools and methods
 
 == Protein Data Bank <section-pdb>
@@ -375,22 +374,23 @@ macromolecular structures. Established in 1971, its purpose is to serve as a
 central repository for macromolecular data, ensuring their accessibility to all
 @pdb-history.
 
-#todo[add references]
 Since 2003, it is managed by the wwPDB consortium @wwpdb, consisting of: 
-- Research Collaboratory for Structural Bioinformatics (RCSB)
-- Macromolecular Structure Database (MSD) at the European Bioinformatics Institute (EBI) 
-- Protein Data Bank Japan (PDBj) at the Institute for Protein Research in Osaka University
-- Electron Microscopy Data Bank (EMDB)
+- Research Collaboratory for Structural Bioinformatics (RCSB) @pdb[p. D520]
+- Macromolecular Structure Database (MSD) at the European Bioinformatics
+  Institute (EBI) @pdb[p. D520]
+- Protein Data Bank Japan (PDBj) at the Institute for Protein Research in Osaka
+  University @pdb[p. D520]
+- Electron Microscopy Data Bank (EMDB) @emdb
 
 As of now (May 2024), it stores over two hundred and nineteen thousand
 structures @pdb-entry-stats. Eighty-four percent of this data was obtained using
 X-ray crystallography, nine percent using electron microscopy, and around six
 percent by nuclear magnetic resonance @pdb-stats-summary.
 
-As the number of large structures in the PDB continued to grow, the existing
-infrastructure proved inadequate. That is why the wwPDB initiated the
-development of OneDep, a novel system designed for deposition, biocuration, and
-validation @onedep[p. 536]. 
+As the number of large and complex structures in the PDB continued to grow, the
+existing deposition and validation infrastructure proved inadequate. That is why
+the wwPDB initiated the development of OneDep, a novel system designed for
+deposition, biocuration, and validation @onedep[p. 536]. 
 
 During the deposition process, the deposited structure is validated using
 community-made tools in OneDep's _validation pipeline_ @onedep[p. 539]. 
@@ -407,7 +407,7 @@ these recommendations, the pipeline was integrated with the OneDep system
 
 The VTFs recommended that deposited structures undergo validation against
 criteria falling into three categories. The first category encompasses criteria
-for validating the resulting atomic model; that is only the three-dimensional
+for validating the resulting atomic model, i.e. is only the three-dimensional
 computer representation. The second category involves analysis of the supplied
 experimental data. Lastly, the third category entails examining the fit between
 the supplied experimental data and the atomic model @pdb-validation[p. 1917].
@@ -425,17 +425,17 @@ the publicly available tools that was used in the implementation of this thesis
 is _MolProbity_ @molprobity, which we will explore further in
 @section-molprobity.
 
-There are three ways to access the validation pipeline: an anonymous web user
-interface, as part of the deposition and biocuration process, and as a web API
-@pdb-validation[p. 1921]. For the purposes of validations of large numbers of
-structures, the web API is most convenient, as it can be fully automated. It
+There are three ways to access the validation pipeline, via anonymous web user
+interface, as part of the deposition and biocuration process, and through a web
+API @pdb-validation[p. 1921]. For the purposes of validations of large numbers
+of structures, the web API is most convenient, as it can be fully automated. It
 offers both a CLI #footnote[Command Line Interface] application and a small
 Python library.
 
 == MolProbity <section-molprobity>
 _MolProbity_ is the single validation tool used in this thesis. It provides
 evaluation of atomic model quality for biomacromolecules @molprobity[p. 12]. The
-current maintainers are Richardson Laboratory of Duke University. Its source
+current maintainers are the Richardson Laboratory of Duke University. Its source
 code can be found in their GitHub repository
 #footnote[https://github.com/rlabduke/MolProbity].
 
@@ -505,11 +505,11 @@ thesis include:
   a running process in a cluster, making them the basic building blocks of a
   Kubernetes application.
 
-+ *Replicas*: Refer to multiple instances of a Pod running concurrently to ensure
-  high availability and reliability. Kubernetes uses ReplicaSets, often defined
-  within Deployments, to manage the desired number of replicas. This ensures that
-  the specified number of pod replicas are always running, allowing for automatic
-  scaling, self-healing, and load balancing across the cluster.
++ *Replicas*: Refer to multiple instances of a Pod running concurrently to
+  ensure high availability and reliability. Kubernetes uses ReplicaSet objects,
+  often defined within Deployments, to manage the desired number of replicas. This
+  ensures that the specified number of pod replicas are always running, allowing
+  for automatic scaling, self-healing, and load balancing across the cluster.
 
 + *Deployments*: Manage the deployment and scaling of application replicas. They
   ensure that the desired number of pod replicas are running and can update pods
@@ -531,17 +531,18 @@ thesis include:
   Secrets allow sensitive data to be used in pods without exposing it directly in
   pod specifications.
 
-These objects are defined in YAML or JSON format and submitted to the
-_Kubernetes_ API, which manages their lifecycle.
+These objects are defined in YAML #footnote[YAML Ain't Markup Language] or JSON
+#footnote[JavaScript Object Notation] format and submitted to the _Kubernetes_
+API, which manages their lifecycle.
 
 == Ansible
 _Ansible_ is an open-source automation tool widely used for IT orchestration,
-configuration management, and application deployment. It operates through
-playbooks, which are scripts written in the YAML format that define a series of
-tasks to be executed on managed nodes. Each task specifies an action, such as
-installing software or configuring network settings, and is applied to hosts
-listed in an inventory. Inventories categorize hosts into groups, allowing for
-targeted management and execution of tasks across different subsets of
+configuration management, and application deployment @ansible. It operates
+through playbooks, which are scripts written in the YAML format that define a
+series of tasks to be executed on managed nodes. Each task specifies an action,
+such as installing software or configuring network settings, and is applied to
+hosts listed in an inventory. Inventories categorize hosts into groups, allowing
+for targeted management and execution of tasks across different subsets of
 infrastructure.
 
 A fundamental aspect of _Ansible_ is its focus on idempotency. This ensures that
@@ -558,7 +559,7 @@ for deployment automation.
 
 == MetaCentrum
 The _MetaCentrum_ virtual organization provides computing resources to all
-students and employees of academic institutions in the Czech Republic.
+students and employees of academic institutions in the Czech Republic @metacentrum.
 Membership is free, with the requirement that members acknowledge _MetaCentrum_
 in their publications.
 
@@ -568,22 +569,21 @@ via a _Rancher_ #footnote[https://www.rancher.com/] instance.
 
 == RabbitMQ <section-rabbitmq>
 _RabbitMQ_ is a messaging and streaming broker, that supports several standard
-messsaging protocols. It is used as a mediator between producers and
+messsaging protocols @rabbitmq. It is used as a mediator between producers and
 consumers of messages.
 
-Publishers (producers) publish a message to an exchange #footnote[When the AMQP
-0-9-1 protocol is used, other protocols may use other destinations.]. The
-messesage is then routed to a queue. If the queue has any active consumers, the
-message is delivered to them. If no consumers are active, the message is cached
-on disk and delivered at next opportunity.
+Publishers (producers) publish a message to an exchange. The messesage is then
+routed to a queue. If the queue has any active consumers, the message is
+delivered to them. If no consumers are active, the message is cached on disk and
+delivered at next opportunity.
 
 == MinIO Object Store <section-minio>
 // TODO: Why MinIO and not a traditional database?
 // To store atomic structures and validation reports, a storage solution is required. 
 
 _MinIO_ is an object store inspired by and compatible with Amazon's S3 service
-#footnote[https://aws.amazon.com/s3/]. _MinIO_ is simple to deploy, as it's
-intended for use in the cloud, including using _Kubernetes_.
+#footnote[https://aws.amazon.com/s3/] @minio. _MinIO_ is simple to deploy, as
+it's intended for use in the cloud, including using _Kubernetes_.
 
 _MinIO_ offers high-performance storage of data by storing them as objects in
 _buckets_. A bucket is simply a container for objects, where each object has a
@@ -594,36 +594,17 @@ Access to _MinIO_ is mediated via an HTTP API originally designed for Amazon's
 S3 service. However, _MinIO_ also offers software development kits (SDKs) for
 multiple programming languages, including Python.
 
-Crucially, for this thesis, _MinIO_ can monitor events _bucket_ and publish
+Crucially, for this thesis, _MinIO_ can monitor events in a _bucket_ and publish
 notifications via multiple protocols
 #footnote[https://min.io/docs/minio/kubernetes/upstream/administration/monitoring.html].
 One of the supported protocols is _AMQP 0-9-1_, which is the protocol used by
-_RabbitMQ_. A few examples of such events are:
-- `s3:ObjectCreated:Put` which occurs when a new object is added to a bucket.
-- `s3:ObjectRemoved:Delete` which occurs when an object is deleted from a bucket.
-- `s3:ObjectCreated:CompleteMultipartUpload` which occurs when an object larger than 5MiB is added to a bucket. 
+_RabbitMQ_. A few examples of such events are: - `s3:ObjectCreated:Put` which
+occurs when a new object is added to a bucket.  - `s3:ObjectRemoved:Delete`
+which occurs when an object is deleted from a bucket.  -
+`s3:ObjectCreated:CompleteMultipartUpload` which occurs when an object larger
+than 5MiB is added to a bucket. 
 
-= Requirements
-In this chapter, we outline the functional and non-functional requirements of
-the SQC system.
-
-== Functional requirements
-+ The service must support running validations on atomic models.
-+ The service must support both the legacy PDB and PDBx/mmCIF formats as inputs.
-+ The service must provide a machine-readable output containing results of validations.
-+ The service must provide a schema for the output.
-+ The service must support many concurrent validations using a queueing system.
-+ The service must be easily deployable to the MetaCentrum Kubernetes cluster.
-+ The service must be easily scalable to accommodate higher loads.
-+ The service must provide a web-accessible API.
-+ The service must provide a Python library for accessing the API.
-
-== Non-functional requirements
-+ The service must be implemented using the Python programming language.
-+ The service must be containerized using Docker.
-+ The service must be deployed to the MetaCentrum Kubernetes cluster.
-+ The service must use Ansible to automate deployment to the MetaCentrum cluster.
-
+#pagebreak()
 = Implementation
 The result of this thesis is a service named SQC (Structure Quality Control)
 alongside a corresponding Python library, SQClib. The source code is available
@@ -634,6 +615,27 @@ for Biomolecular Research) organization on GitHub for both SQC
 
 This chapter begins with an introduction to SQC's high-level architecture and
 design decisions, followed by a closer examination of the implementation.
+
+== Requirements
+In this section, we outline the functional and non-functional requirements of
+the SQC system.
+
+=== Functional requirements
++ The service must support running validations on atomic models.
++ The service must support both the legacy PDB and PDBx/mmCIF formats as inputs.
++ The service must provide a machine-readable output containing results of validations.
++ The service must provide a schema for the output.
++ The service must support many concurrent validations using a queueing system.
++ The service must be easily deployable to the MetaCentrum Kubernetes cluster.
++ The service must be easily scalable to accommodate higher loads.
++ The service must provide a web-accessible API.
++ The service must provide a Python library for accessing the API.
+
+=== Non-functional requirements
++ The service must be implemented using the Python programming language.
++ The service must be containerized using Docker.
++ The service must be deployed to the MetaCentrum Kubernetes cluster.
++ The service must use Ansible to automate deployment to the MetaCentrum cluster.
 
 == Architecture
 Since supporting many concurrent validations is crucial, we needed to devise a
@@ -1004,6 +1006,7 @@ accessible documentation is always up to date. The documentation is then
 available in the `sb-ncbr` subdomain of the github.io domain
 #footnote[https://sb-ncbr.github.io/sqclib/].
 
+#pagebreak()
 = Deployment
 To deploy the main instance of SQC, we chose the Rancher _Kubernetes_
 distribution provided by _MetaCentrum_
@@ -1114,6 +1117,7 @@ configuration of resources.
   ) <figure-resources>
 ]
 
+#pagebreak()
 = Evaluation
 Compare aspects of the service to the PDB standalone validation server.
 
@@ -1123,20 +1127,33 @@ increasing number of replicas. We chose thirty structures because it is the
 highest number of replicas that can be provisioned in the _Kubernetes_ project,
 while fitting into quota memory limits. @figure-scaling shows that with the
 increasing number of replicas, the time spent on multiple structure validations
-drops rapidly.
+drops rapidly. Scaling replicas further is possible, the limiting factor is the
+resource quota in the _Kubernetes_ cluster.
 
 #figure(
   image("img/replica-perf.png"),
-  caption: "Time spent on validating 30 183d structures plotted against the number of SQC validation service replicas."
+  caption: "Time spent on validating 30 183d structures (PDB id 183d) plotted against the number of SQC validation service replicas."
 ) <figure-scaling>
 
-== API 
-Compare API access to PDB methods.
-
 == Validation Results
-Cry about different results and inaccessible reference data.
+Certain validations performed by MolProbity are heavily influenced by reference
+data. Unfortunately, the datasets used by PDB are not publicly available. After
+an email inquiry, PDB referred us to the MolProbity paper from 2017
+@molprobity-more-data. According to this paper, MolProbity in the PDB pipeline
+should be using the data provided by the Richardson Laboratory at Duke
+University. However, even after using their datasets from GitHub, some
+validations produced slightly different results. Without access to the specific
+files used by PDB, it is difficult to determine the cause of these
+discrepancies.
 
+#pagebreak()
 = Conclusion
+In this thesis, we aimed to reimplement parts of the PDB validation pipeline to
+improve the throughput of structure validation. By utilizing modern cloud
+technologies, we developed an easily scalable solution hosted in the
+_MetaCentrum_ virtual organization, that can be simply accessed using a Python
+library. Additionally, the service defines an output schema, which makes it easy
+to take advantage of. The deployment is fully automated and 
 
 == Future plans
 // TODO: higher project quota, automatic scaling, REST API

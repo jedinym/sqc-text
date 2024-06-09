@@ -1,0 +1,85 @@
+\documentclass[
+  aspectratio=169,
+]{beamer}
+
+\usepackage[slovak]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{expl3,biblatex}
+\addbibresource{example.bib}
+\usepackage{booktabs}
+\usetheme[
+  workplace=fi,
+  locale=czech,
+]{MU}
+
+\title[Structure Quality Control]{Replikácia funkcionality PDB validačného servera v prostredí MetaCentra}
+\subtitle[Alternatívny názov prezentácie]{Dlhý alternatívny názov prezentácie}
+\author[M.\, Jediný]{Martin Jediný\texorpdfstring{\\}{, }514269@mail.muni.cz}
+\institute[FI MU]{Fakulta informatiky Masarykovej univerzity}
+\date{\today}
+\subject{Predmet prezentace}
+\keywords{kľúčové, slová, prezentácie}
+\begin{document}
+
+\begin{frame}[plain]
+\maketitle
+\end{frame}
+
+\begin{frame}{Biomakromolekuly}
+\begin{itemize}
+  \item Hrajú kľúčovú úlohu v rôznych biologických procesoch
+  \item Veľmi veľké molekuly - tisíce a viac opakujúcich sa jednotiek
+  \begin{itemize}
+    \item Bielkoviny
+    \item Nukleové kyseliny
+    \item Polysacharidy
+  \end{itemize}
+  \item Funkcia určená štruktúrou
+  \item Určenie štruktúry je nevyhnutné pre pochopenie biologických procesov
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Štrukturálne dáta}
+\begin{itemize}
+  \item Polohy atómov v trojrozmernom priestore
+  \item Determinované pomocou rôznych experimentálnych metód
+  \begin{itemize}
+    \item Potenciál na vznik chýb
+  \end{itemize}
+  \item Nutná validácia výsledných dát
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Structure Quality Control}
+\begin{itemize}
+  \item Protein Data Bank (PDB) poskytuje verejný validačný server 
+  \item Nedostatočný na niektoré výskumné projekty SB-NCBR\footnote{Structural bioinformatics research group at National Centre for Biomolecular Research}
+  \begin{itemize}
+    \item Validácie miliónov malých štruktúr (e.g. \emph{AlphaFoldDB})
+    \item Rýchla iteratívna validácia pre optimizáciu štruktúr
+  \end{itemize}
+  \item Implementujeme službu Structure Quality Control (SQC), ktorá spĺňa požiadavky SB-NCBR
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Výsledky práce}
+\begin{itemize}
+  \item Implementácia horizontálne škáľovateľnej validačnej služby
+  \begin{itemize}
+    \item jasne definované výstupy služby
+  \end{itemize}
+
+  \item Implementácia jednoduchých programovacích rozhraní k službe
+  \begin{itemize}
+    \item v jazykoch Python a Bash
+  \end{itemize}
+  \item 
+
+  \item Nasadenie do Kubernetes prostredí je automatizované pomocou Ansible
+  \item Inštancia služby je nasadená v prostredí MetaCentra a je pripravená na použitie v projektoch SB-NCBR
+\end{itemize}
+\end{frame}
+
+\end{document}

@@ -48,11 +48,11 @@
   stepnumber=2,
   stringstyle=\color{mymauve},
   tabsize=4,
-  title=\lstname
+  title=\lstname,
 }
 
 \title[Structure Quality Control]{Replikácia funkcionality PDB validačného servera v prostredí MetaCentra}
-\subtitle[Alternatívny názov prezentácie]{Dlhý alternatívny názov prezentácie}
+\subtitle[Alternatívny názov prezentácie]{Structure Quality Control}
 \author[M.\, Jediný]{Martin Jediný\texorpdfstring{\\}{, }514269@mail.muni.cz}
 \institute[FI MU]{Fakulta informatiky Masarykovej univerzity}
 \date{\today}
@@ -106,18 +106,33 @@
 \begin{itemize}
   \item Služba využíva existujúce nástroje na validáciu štruktúr
   \item Nástroje sú integrové do služby s jediným prístupovým bodom
-  \item Inštancia služby je nasadená a dostupná
-  \begin{itemize}
-    \item Implementované rozhrania v Python a Bash
-  \end{itemize}
+  \item Škálovateľnosť je dôležitou vlastnosťou implementácie
+  \item Hlavná inštancia je nasadená v Kubernetes clusteri poskytnutom virtuálnou organizáciou MetaCentrum
+  \item Implementované rozhrania v Python a Bash
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Návrh}
 \begin{figure}
   \includegraphics[width=.8\textwidth,height=.8\textheight,keepaspectratio]{img/diagram.png}
-  \caption{Zdieľaná fronta je implementovaná pomocou služby na posielanie správ RabbitMQ. Škálovanie automaticky rieši Kubernetes.}
+  % \caption{Zdieľaná fronta je implementovaná pomocou služby na posielanie správ RabbitMQ. Škálovanie automaticky rieši Kubernetes.}
 \end{figure}
+\end{frame}
+
+\begin{frame}{Implementácia}
+\begin{itemize}
+  \item Docker využitý na zjednodušenie nasadenia
+  \item Ako úložisko je použitá služba MinIO
+  \begin{itemize}
+    \item Open-source alternatíva k Amazon S3 s rovnakým API
+  \end{itemize}
+  \item Kombinácia služby na posielanie správ RabbitMQ a úložiska MinIO
+        implementuje vzor Producent-Konzument
+  \item Všetky služby nasadené pomocou Kubernetes
+  \begin{itemize}
+    \item Implementácia škálovania
+  \end{itemize}
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Škálovanie replík}
@@ -127,26 +142,11 @@
 \end{figure}
 \end{frame}
 
-% \begin{frame}[fragile]{Programovacie rozhrania}
-%
-%   \begin{exampleblock}{Python}
-%     \begin{lstlisting}
-%       def foo():
-%         pass
-%     \end{lstlisting}
-%   \end{exampleblock}
-%   \begin{exampleblock}{Bash}
-%     \lstset{language=Bash}
-%     \begin{lstlisting}
-%       sqc localhost
-%     \end{lstlisting}
-%   \end{exampleblock}
-% \end{frame}
-
 \begin{frame}{Výsledky práce}
 \begin{itemize}
   \item Implementácia horizontálne škáľovateľnej validačnej služby
   \begin{itemize}
+    \item integruje validačné nastroje vyvinuté komunitou
     \item jasne definované výstupy služby
   \end{itemize}
 

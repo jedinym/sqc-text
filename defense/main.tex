@@ -52,112 +52,125 @@
 }
 
 \title[Structure Quality Control]{Replikácia funkcionality PDB validačného servera v prostredí MetaCentra}
-\subtitle[Alternatívny názov prezentácie]{Structure Quality Control}
-\author[M.\, Jediný]{Martin Jediný\texorpdfstring{\\}{, }514269@mail.muni.cz}
+\subtitle[Alternatívny názov prezentácie]{}
+\author[M.\, Jediný]{Martin Jediný \\
+  Advisor: Mgr. Vladimír Horský, Ph.D.}
 \institute[FI MU]{Fakulta informatiky Masarykovej univerzity}
-\date{\today}
-\subject{Predmet prezentace}
-\keywords{kľúčové, slová, prezentácie}
+\date{26. júna 2024}
 \begin{document}
 
-
 \begin{frame}[plain]
-\maketitle
+	\maketitle
 \end{frame}
 
-\begin{frame}{Biomakromolekuly}
-\begin{itemize}
-  \item Hrajú kľúčovú úlohu v rôznych biologických procesoch
-  \item Veľmi veľké molekuly --- tisíce a viac opakujúcich sa jednotiek
-  \begin{itemize}
-    \item Bielkoviny
-    \item Nukleové kyseliny
-    \item Polysacharidy
-  \end{itemize}
-  \item Funkcia určená štruktúrou
-  \item Určenie štruktúry je nevyhnutné pre pochopenie biologických procesov
-\end{itemize}
+\begin{frame}{Motivácia}{Biomakromolekuly}
+	\begin{itemize}
+		\item Kľúčovú úloha v rôznych biologických procesoch
+		\item Veľmi veľké molekuly --- tisíce a viac opakujúcich sa jednotiek
+		      \begin{itemize}
+			      \item Bielkoviny
+			      \item Nukleové kyseliny
+			      \item Polysacharidy
+		      \end{itemize}
+		\item Funkcia určená štruktúrou
+		\item Určenie štruktúry je nevyhnutné pre pochopenie biologických procesov
+	\end{itemize}
 \end{frame}
 
-\begin{frame}{Štrukturálne dáta}
-\begin{itemize}
-  \item Polohy atómov v trojrozmernom priestore
-  \item Determinované pomocou rôznych experimentálnych metód
-  \begin{itemize}
-    \item Potenciál na vznik chýb
-  \end{itemize}
-  \item Nutná validácia výsledných dát
-\end{itemize}
+\begin{frame}{Motivácia}{Štrukturálne dáta}
+	\begin{itemize}
+		\item Experimentálne alebo prediktívne metódy (\emph {AlphaFold DB})
+		      \begin{itemize}
+			      \item Potenciál na vznik chýb
+		      \end{itemize}
+		\item Uložené ako polohy atómov v trojrozmernom priestore
+		\item Nutná validácia výsledných dát
+	\end{itemize}
 \end{frame}
 
-\begin{frame}{Structure Quality Control}
-\begin{itemize}
-  \item Protein Data Bank (PDB) poskytuje verejný validačný server 
-  \item Nedostatočný na niektoré výskumné projekty SB-NCBR\footnote{Structural bioinformatics research group at National Centre for Biomolecular Research}
-  \begin{itemize}
-    \item Validácie miliónov malých štruktúr (e.g.\ \emph{AlphaFoldDB})
-    \item Rýchla iteratívna validácia pre optimizáciu štruktúr
-  \end{itemize}
-  \item Implementujeme službu Structure Quality Control (SQC), ktorá spĺňa požiadavky SB-NCBR
-\end{itemize}
+\begin{frame}{Motivácia}{Protein Data Bank}
+	\begin{itemize}
+		\item Protein Data Bank (PDB) poskytuje verejnú validačnú službu
+		\item Zjednocuje komunitné validačné nástroje
+		\item Nedostatočná na niektoré výskumné projekty SB NCBR\footnote{Výzkumná skupina Strukturní bioinformatika v rámci Národního centra pro výzkum biomolekul Přírodovědecké fakulty Masarykovy univerzity}
+		      \begin{itemize}
+			      \item Validácie miliónov štruktúr (\emph{AlphaFold DB})
+			      \item Rýchla validácia pre iteratívnu optimizáciu štruktúr
+		      \end{itemize}
+	\end{itemize}
 \end{frame}
 
-\begin{frame}{Structure Quality Control}
-\begin{itemize}
-  \item Služba využíva existujúce nástroje na validáciu štruktúr
-  \item Nástroje sú integrové do služby s jediným prístupovým bodom
-  \item Škálovateľnosť je dôležitou vlastnosťou implementácie
-  \item Hlavná inštancia je nasadená v Kubernetes clusteri poskytnutom virtuálnou organizáciou MetaCentrum
-  \item Implementované rozhrania v Python a Bash
-\end{itemize}
+\begin{frame}{Ciele práce}
+	\begin{itemize}
+		\item Reimplementácia validačnej služby využívajúcej existujúce nástroje
+		      \begin{itemize}
+			      \item MolProbity --- balík menších nástrojov
+		      \end{itemize}
+
+		\item Služba využíva existujúce nástroje na validáciu štruktúr
+		\item Nástroje sú integrové do služby s jediným prístupovým bodom
+		\item Implementované rozhrania v Python a Bash
+    \item Nasadenie pomocou virtuálnej organizácie MetaCentrum
+    \begin{itemize}
+      \item Poskytuje výpočetné zdroje pre výskum
+    \end{itemize}
+
+		\item Dôraz na škálovateľnosť
+	\end{itemize}
 \end{frame}
 
-\begin{frame}{Návrh}
-\begin{figure}
-  \includegraphics[width=.8\textwidth,height=.8\textheight,keepaspectratio]{img/diagram.png}
-  % \caption{Zdieľaná fronta je implementovaná pomocou služby na posielanie správ RabbitMQ. Škálovanie automaticky rieši Kubernetes.}
-\end{figure}
+\begin{frame}{Škálovanie}
+	\begin{figure}
+		\includegraphics[width=.8\textwidth,height=.8\textheight,keepaspectratio]{img/diagram.png}
+	\end{figure}
 \end{frame}
 
-\begin{frame}{Implementácia}
-\begin{itemize}
-  \item Docker využitý na zjednodušenie nasadenia
-  \item Ako úložisko je použitá služba MinIO
-  \begin{itemize}
-    \item Open-source alternatíva k Amazon S3 s rovnakým API
-  \end{itemize}
-  \item Kombinácia služby na posielanie správ RabbitMQ a úložiska MinIO
-        implementuje vzor Producent-Konzument
-  \item Všetky služby nasadené pomocou Kubernetes
-  \begin{itemize}
-    \item Implementácia škálovania
-  \end{itemize}
-\end{itemize}
+\begin{frame}{Architektúra}
+	\begin{figure}
+		\includegraphics[width=.9\textwidth,height=.9\textheight,keepaspectratio]{img/sequence.png}
+	\end{figure}
 \end{frame}
 
-\begin{frame}{Škálovanie replík}
-\begin{figure}
-  \includegraphics[width=.8\textwidth,height=.8\textheight,keepaspectratio]{img/replica-perf.png}
-  \caption{Graf znázorňujúci dopad škálovania SQC inštancií na rýchlosť validácie tridsiatich štruktúr.}
-\end{figure}
+\begin{frame}{Výsledky škálovania}
+	\begin{figure}
+		\includegraphics[width=.8\textwidth,height=.8\textheight,keepaspectratio]{img/replica-perf.png}
+		\caption{Graf znázorňujúci dopad škálovania SQC inštancií na rýchlosť validácie tridsiatich štruktúr.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Nasadenie}
+	\begin{itemize}
+		\item Docker využitý na zjednodušenie nasadenia
+
+		\item Všetky služby nasadené pomocou Kubernetes
+		      \begin{itemize}
+			      \item Cluster virtuálnej organizácie MetaCentrum
+			      \item Implementácia škálovania validačného servera
+			      \item Limitácia iba dostupnými prostriedkami clustera
+			      \item Potenciál na škálovanie aj fronty a úložiska
+		      \end{itemize}
+		\item Automatizované nástrojom Ansible
+	\end{itemize}
 \end{frame}
 
 \begin{frame}{Výsledky práce}
-\begin{itemize}
-  \item Implementácia horizontálne škáľovateľnej validačnej služby
-  \begin{itemize}
-    \item integruje validačné nastroje vyvinuté komunitou
-    \item jasne definované výstupy služby
-  \end{itemize}
+	\begin{itemize}
+		\item Implementácia horizontálne škáľovateľnej validačnej služby
+		      \begin{itemize}
+			      \item Integruje validačné nastroje vyvinuté komunitou
+			      \item Jasne definované výstupy služby
+		      \end{itemize}
 
-  \item Implementácia jednoduchých programovacích rozhraní k službe
-  \begin{itemize}
-    \item v jazykoch Python a Bash
-  \end{itemize}
+		\item Implementácia knižnice poskytujúcej rozhrania k službe
+		      \begin{itemize}
+			      \item V jazykoch Python a Bash
+		      \end{itemize}
 
-  \item Nasadenie do Kubernetes prostredí je automatizované pomocou Ansible
-  \item Inštancia služby je nasadená v prostredí MetaCentra a je pripravená na použitie v projektoch SB-NCBR
-\end{itemize}
+		\item Nasadenie do Kubernetes prostredí je automatizované pomocou Ansible
+		\item Inštancia služby je nasadená v prostredí MetaCentra a je pripravená na použitie v projektoch SB NCBR
+	\end{itemize}
 \end{frame}
+
+\makeoutro
 
 \end{document}
